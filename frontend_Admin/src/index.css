@@ -1,0 +1,246 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+  font-family: 'Dahlia';
+  src: url(../src/assets/dahlia-regular.otf);
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Liberation Sans';
+  src: url(../src/assets/LiberationSans-Regular-webfont.woff);
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'Liberation Sans Bold';
+  src: url(../src/assets/LiberationSans-Bold-webfont.woff);
+  font-weight: bold;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+  transition: background-color 0.2s ease-in-out;
+}
+
+
+
+body{
+  background-color: black;
+}
+
+*::-webkit-media-controls-panel {
+
+  display: none!important;
+
+  -webkit-appearance: none;
+
+}
+
+*::--webkit-media-controls-play-button {
+
+  display: none!important;
+
+  -webkit-appearance: none;
+
+}
+
+*::-webkit-media-controls-start-playback-button {
+
+  display: none!important;
+
+  -webkit-appearance: none;
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+label {
+  /* font-family: 'Urbanist', sans-serif; */
+  /* font-family: 'Liberation Sans Bold'; */
+  font-family: "Urbanist", sans-serif;
+  /* font-family: 'Clash Display', sans-serif; */
+}
+
+p,
+a,
+li,
+button,
+td,
+tbody,
+table,
+thead,
+select,
+input,
+textarea,
+option,
+span,
+ul,
+::placeholder {
+  font-family: 'Poppins', sans-serif;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+.active{
+  color: #b8d21e;
+  font-weight: 500;
+}
+@keyframes confetti {
+  0% {
+    opacity: 0;
+    transform: translateY(0%) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  35% {
+    transform: translateY(-800%) rotate(270deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(2000%) rotate(1440deg);
+  }
+}
+
+.particle {
+  opacity: 0;
+  position: absolute;
+  animation: confetti 3s ease-in infinite;
+}
+
+.c1 {
+  background-color: rgba(76, 175, 80, 0.5);
+}
+
+.c2 {
+  background-color: rgba(156, 39, 176, 0.5);
+}
+
+.page-content{
+  padding-top: 4rem;
+}
+.swiper-pagination-bullet-active{
+  background-color: #b8d21e!important;
+}
+.swiper-button-prev::after, .swiper-button-next::after{
+  font-size: 1rem!important;
+}
+.swiper-button-prev, .swiper-button-next{
+  color: #b8d21e!important;
+  background-color: white!important;
+  border-radius: 100%!important;
+  padding: 1rem!important;
+  height: 30px!important;
+  width: 30px!important;
+}
+.swiper-pagination-bullets{
+  background-color: white;
+  border-radius: 15px;
+  padding: 5px;
+}
+@layer utilities {
+  .ruby-text {
+    display: ruby-text;
+  }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none; /* For Chrome, Safari, and Opera */
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none; /* For Internet Explorer and Edge */
+      scrollbar-width: none; /* For Firefox */
+    }
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B8B8C2;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #828284;
+}
+
+select,input{
+  -webkit-appearance: initial;
+}
+::selection {
+  background-color: #E8BD3233;
+}
+
+/* Loader CSS */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 2s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 2s linear infinite;
+}
+
+/* Scroll Block */
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.required:after {
+  content:" *";
+  color: red;
+}
