@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
 // Middleware for parsing request bodies and cookies
 app.use(express.json());
+app.use(router);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
