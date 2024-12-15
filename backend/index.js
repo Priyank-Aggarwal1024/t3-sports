@@ -9,10 +9,15 @@ import productRouter from "./src/routes/product.route.js";
 import collectionRouter from "./src/routes/collection.route.js";
 import customerRouter from "./src/routes/customer.route.js";
 import chalk from "chalk"; // Importing chalk
+import ImageKit from "imagekit";
 
 // Create an Express app
 const app = express();
-
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY, // Replace with your ImageKit Public API Key
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY, // Replace with your ImageKit Private API Key
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT, // Replace with your ImageKit URL endpoint
+});
 // Middleware for CORS
 app.use((req, res, next) => {
   const origin = req.headers.origin;
@@ -45,7 +50,11 @@ connectDB()
     app.use("/api/products", productRouter);
     app.use("/api/collections", collectionRouter);
     app.use("/api/customers", customerRouter);
-
+    app.use("/api/customers", customerRouter);
+    app.get("/product/imagekit/auth", (req, res) => {
+      const authenticationParameters = imagekit.getAuthenticationParameters();
+      res.json(authenticationParameters);
+    });
     // Default route
     app.get("/", (req, res) => {
       res.send("Server is up and running!");

@@ -21,6 +21,7 @@ const Home = () => {
   } = useProducts();
 
   const [searchText, setSearchText] = useState("");
+
   // Pagination State
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(15); // Display 15 orders per page
@@ -33,6 +34,7 @@ const Home = () => {
     if (page < 0 || page >= totalPages) return; // Prevent going out of bounds
     setCurrentPage(page);
   };
+  const regex = new RegExp(searchText, "i")
 
   // Slice orders for the current page
   const currentProducts = products?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
@@ -98,8 +100,8 @@ const Home = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentProducts.map((product, index) => (
-                    <tr key={product._id} className="border border-gray-700 text-white">
+                  {currentProducts.map((product, index) => regex.test(product.name) && (
+                    <tr key={product._id} className="border border-gray-700 text-black dark:text-white">
                       <td className="px-4 py-1 text-sm">{index + 1 + (currentPage * itemsPerPage)}</td>
                       <td className="px-4 py-1 text-sm border border-gray-600">
                         {editingProduct?._id === product._id ? (

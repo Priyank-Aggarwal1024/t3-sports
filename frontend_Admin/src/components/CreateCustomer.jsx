@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { customerInitialState } from "../utils/constants";
 
 const CreateCustomer = () => {
-  const [customer, setCustomer] = useState({
-    fname: "",
-    lname: "",
-    phone: "",
-  });
+  const [customer, setCustomer] = useState(customerInitialState);
 
   const [message, setMessage] = useState("");
 
