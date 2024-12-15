@@ -8,6 +8,8 @@ import orderRouter from "./src/routes/order.route.js";
 import productRouter from "./src/routes/product.route.js";
 import collectionRouter from "./src/routes/collection.route.js";
 import customerRouter from "./src/routes/customer.route.js";
+import warehouseRoutes from "./src/routes/warehouse.route.js";
+import stockRoutes from "./src/routes/stock.route.js";
 import chalk from "chalk"; // Importing chalk
 
 // Create an Express app
@@ -45,6 +47,8 @@ connectDB()
     app.use("/api/products", productRouter);
     app.use("/api/collections", collectionRouter);
     app.use("/api/customers", customerRouter);
+    app.use("/api/warehouses", warehouseRoutes);
+    app.use("/api/stocks", stockRoutes);
 
     // Default route
     app.get("/", (req, res) => {

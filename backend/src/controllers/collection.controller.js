@@ -46,6 +46,7 @@ export const getCollectionByName = async (req, res) => {
   }
 };
 
+
 // Update a collection by id
 export const updateCollection = async (req, res) => {
   try {
@@ -60,6 +61,7 @@ export const updateCollection = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 // Delete a collection by id
 export const deleteCollection = async (req, res) => {
@@ -78,6 +80,7 @@ export const deleteCollection = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 // Add a product to a collection
 export const addProductToCollection = async (req, res) => {
@@ -98,6 +101,7 @@ export const addProductToCollection = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Remove a product from a collection
 export const removeProductFromCollection = async (req, res) => {
