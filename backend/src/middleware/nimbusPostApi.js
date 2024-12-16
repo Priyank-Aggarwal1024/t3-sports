@@ -13,6 +13,7 @@ const getNimbusPostToken = async () => {
     // API keys and credentials
   });
 
+  
   nimbusPostToken = response.data.token;
   tokenExpiryTime = new Date(new Date().getTime() + response.data.expires_in * 1000);
   return nimbusPostToken;

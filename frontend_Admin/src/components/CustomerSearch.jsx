@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const CustomerSearch = ({ onSelectCustomer }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -8,18 +9,29 @@ const CustomerSearch = ({ onSelectCustomer }) => {
 
   const handleSearch = async () => {
     try {
-      const { data } = await axios.get('/api/customers/');
+      const { data } = await axios.get('/api/customers');
       setCustomers(data.customers);
     } catch (error) {
       console.error("Error searching customers:", error);
     }
   };
+  const customerFilter = (customer) => {
+    const regex = new RegExp(searchQuery, 'i');
+    return regex.test(customer.fname) ||
+      regex.test(customer.lname) ||
+      regex.test(customer.phone) ||
+      regex.test(customer.email) ||
+      regex.test(customer.customerId)
+  }
+  console.log(customers)
 
   const handleSelectCustomer = (customer) => {
     setSelectedCustomer(customer);
     onSelectCustomer(customer); // Notify parent component about selected customer
   };
-
+  useEffect(() => {
+    handleSearch();
+  }, [])
   return (
     <div className="p-2 dark:text-white text-black">
       {/* <h2 className="text-2xl font-bold mb-4">Search Customer</h2> */}
@@ -42,14 +54,13 @@ const CustomerSearch = ({ onSelectCustomer }) => {
 
       <div>
         {customers.length > 0 ? (
-          <ul className="bg-white dark:bg-black rounded-md shadow-md p-4 dark:text-white text-black">
-            {customers.map((customer) => (
+          <ul className="bg-white dark:bg-black max-h-[150px] overflow-y-auto rounded-md shadow-md p-4 dark:text-white text-black">
+            {customers.map((customer) => customerFilter(customer) && (
               <li
                 key={customer._id}
                 onClick={() => handleSelectCustomer(customer)}
-                className={`p-2 border-b border-gray-300 dark:border-gray-700 cursor-pointer ${
-                  selectedCustomer?._id === customer._id ? 'bg-primary text-white' : ''
-                }`}
+                className={`p-2 border-b border-gray-300 dark:border-gray-700 cursor-pointer ${selectedCustomer?._id === customer._id ? 'bg-primary text-white' : ''
+                  }`}
               >
                 {customer.fname} {customer.lname} - {customer.phone}
               </li>

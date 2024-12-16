@@ -2,24 +2,40 @@ import Product from "../models/product.model.js";
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price, quantity, image, description, category, subcategory } = req.body;
-
+    const {
+      name,
+      description,
+      specifications,
+      size,
+      colour,
+      price,
+      originalprice,
+      images,
+      sizeChart,
+      quantity,
+      category,
+    } = req.body;
+    // console.log(req.body)
     const newProduct = new Product({
       name,
-      price,
-      quantity,
-      image,
       description,
+      specifications,
+      size,
+      colour,
+      price: Number(price),
+      images,
+      sizeChart,
+      quantity,
       category,
-      subcategory,
+      originalprice: Number(originalprice)
     });
-
     await newProduct.save();
     return res.status(201).json({ success: true, message: "Product created successfully", product: newProduct });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const getProducts = async (req, res) => {
   try {
@@ -29,6 +45,7 @@ export const getProducts = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const getProductById = async (req, res) => {
   try {
@@ -44,6 +61,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
+
 export const updateProduct = async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -57,6 +75,7 @@ export const updateProduct = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const deleteProduct = async (req, res) => {
   try {
