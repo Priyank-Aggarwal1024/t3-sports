@@ -3,7 +3,7 @@ import axios from "axios";
 import { customerFormControls, customerInitialState } from "../utils/constants";
 import CustomerFormControls from "./CustomerFormControls";
 import { createCustomerValidator } from "../utils/validators";
-
+import { toast } from 'react-hot-toast'
 const CreateCustomer = () => {
   const [customer, setCustomer] = useState(customerInitialState);
   const [customerErrorState, setCustomerErrorState] = useState(customerInitialState);
@@ -21,7 +21,7 @@ const CreateCustomer = () => {
       }
       console.log(customer)
       const { data } = await axios.post("/api/customers/create", customer);
-      setMessage(data.customer ? "Customer created successfully" : "Customer already exists");
+      data?.customer ? toast.success("Customer created successfully") : toast.error("Customer already exists")
       setCustomer(customerInitialState);
     } catch (err) {
       setMessage("An error occurred while creating the customer.");

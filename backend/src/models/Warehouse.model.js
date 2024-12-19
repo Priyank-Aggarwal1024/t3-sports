@@ -9,11 +9,23 @@ const WarehouseSchema = new mongoose.Schema({
         type: String,
         required: [true, "Warehouse address is required"]
     },
-    admin: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User", // Assuming a User model for admins
-        required: true
-    }
+    products: [
+        {
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product"
+            },
+            quantity: {
+                type: Number,
+                default: 0
+            }
+        }
+    ],
+    // admin: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User", // Assuming a User model for admins
+    //     required: true
+    // }
 }, { timestamps: true });
 
 const Warehouse = mongoose.model("Warehouse", WarehouseSchema);

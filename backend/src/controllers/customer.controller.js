@@ -53,7 +53,7 @@ import Product from '../models/product.model.js';
 // Create a new customer
 export const createCustomer = async (req, res) => {
   try {
-    const { fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email } = req.body;
+    const { fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype } = req.body;
 
     let customer = await Customer.findOne({
       $or: [
@@ -62,10 +62,10 @@ export const createCustomer = async (req, res) => {
       ]
     });
     if (customer) {
-      return res.status(200).json({ customer });
+      return res.status(200).json({ error: "Already a customer." });
     }
 
-    customer = new Customer({ fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email });
+    customer = new Customer({ fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype });
     await customer.save();
 
     res.status(201).json({ customer });
@@ -110,35 +110,35 @@ export const getCustomerBySearch = async (req, res) => {
 };
 
 // Update a product
-export const updateProduct = async (req, res) => {
+export const updateCustomer = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+    const customer = await Customer.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
 
-    const product = await Product.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
-
-    if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+    if (!customer) {
+      return res.status(404).json({ success: false, message: 'Customer not found' });
     }
 
-    res.status(200).json({ success: true, product });
+    res.status(200).json({ success: true, customer });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.log(err)
+    res.status(500).json({ error: err.message, success: false, message: "Internal Server Error" });
   }
 };
 
-// Delete a product
-export const deleteProduct = async (req, res) => {
+// Delete a Customer
+export const deleteCustomer = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const product = await Product.findByIdAndDelete(id);
+    const customer = await Customer.findByIdAndDelete(id);
 
-    if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+    if (!customer) {
+      return res.status(404).json({ success: false, message: 'Customer not found' });
     }
 
-    res.status(200).json({ success: true, message: 'Product deleted successfully' });
+    res.status(200).json({ success: true, message: 'Customer deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

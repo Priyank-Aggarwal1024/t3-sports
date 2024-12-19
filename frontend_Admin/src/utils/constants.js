@@ -17,7 +17,8 @@ export const initialErrorMessage = {
     quantity: "",
     size: "",
     colour: "",
-    images: ""
+    images: "",
+    originalprice: ""
 }
 export const customerInitialState = {
     fname: "",
@@ -28,6 +29,7 @@ export const customerInitialState = {
     state: "",
     sport: "",
     customertype: "",
+    othercustomertype: "",
     phone: "",
     email: "",
     othersport: ""
@@ -96,3 +98,10 @@ export const customerFormControls = [
         placeholder: "Enter email"
     },
 ]
+export const shippingDetailsValidatorMessage = {
+    address: "",
+    city: "",
+    pincode: "",
+    state: "",
+    payment_method: ""
+}

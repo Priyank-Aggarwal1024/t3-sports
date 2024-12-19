@@ -6,6 +6,8 @@ import { FaEdit } from "react-icons/fa";
 import CollectionList from "./CollectionList";
 import Customer from "../components/Customer";
 import useProducts from "../contexts/useProducts";
+import useWarehouse from "../contexts/useWarehouse";
+import WarehouseCard from "../components/WarehouseCard";
 
 const Home = () => {
   const {
@@ -21,7 +23,7 @@ const Home = () => {
   } = useProducts();
 
   const [searchText, setSearchText] = useState("");
-
+  const { warehouse } = useWarehouse();
   // Pagination State
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(15); // Display 15 orders per page
@@ -110,7 +112,7 @@ const Home = () => {
                             className="bg-gray-300 px-3 py-1 text-black"
                             value={updatedProductData.quantity}
                             onChange={(e) =>
-                              setUpdatedProductData({ ...updatedProductData, quantity: e.target.value })
+                              setUpdatedProductData({ ...updatedProductData, quantity: +e.target.value })
                             }
                           />
                         ) : (
@@ -170,6 +172,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <WarehouseCard />
       <CollectionList />
       <Customer />
     </div>

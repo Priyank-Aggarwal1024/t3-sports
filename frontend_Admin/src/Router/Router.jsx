@@ -16,6 +16,7 @@ import ProductList from "../Pages/ProductList";
 import Customer from "../components/Customer";
 import CreateCustomer from "../components/CreateCustomer";
 import Analytics from "../Pages/Analytics";
+import CreateWarehouse from "../components/CreateWarehouse";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
             element: <Order />,
           },
           {
+            path: "/create-warehouse",
+            element: <CreateWarehouse />
+          },
+          {
             path: "/analytics",
             element: <Analytics />,
           },
@@ -75,19 +80,19 @@ const router = createBrowserRouter([
                 `/api/business/all-listings/${params.id}`
               );
               const myBusiness = response.data;
-    
+
               // Replace http with https in image URLs
               if (Array.isArray(myBusiness.bannerImages)) {
-                myBusiness.bannerImages = myBusiness.bannerImages.map((imageUrl) => 
+                myBusiness.bannerImages = myBusiness.bannerImages.map((imageUrl) =>
                   imageUrl && imageUrl.startsWith("http:") ? imageUrl.replace("http:", "https:") : imageUrl
                 );
               }
-        
+
               // Check if profileImage is a string before calling startsWith
               if (typeof myBusiness.profileImage === 'string') {
                 myBusiness.profileImage = myBusiness.profileImage.startsWith("http:") ? myBusiness.profileImage.replace("http:", "https:") : myBusiness.profileImage;
               }
-        
+
               return myBusiness;
             },
           },

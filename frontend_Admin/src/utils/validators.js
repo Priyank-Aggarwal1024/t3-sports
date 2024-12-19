@@ -5,6 +5,9 @@ export const createProductValidator = (product) => {
     if (!product?.price || product.price === 0) {
         return { error: true, message: "Product price should be valid", field: "price" }
     }
+    if (!product?.originalprice || product.originalprice === 0) {
+        return { error: true, message: "Product Original price should be valid", field: "originalprice" }
+    }
     if (!product?.quantity || product.quantity === 0) {
         return { error: true, message: "Product quantity should be valid", field: "quantity" }
     }
@@ -16,6 +19,9 @@ export const createProductValidator = (product) => {
     }
     if (!product?.images || product.images.length == 0) {
         return { error: true, message: "Product should have at least 1 image", field: "images" }
+    }
+    if (product.images.length <= 4) {
+        return { error: true, message: "Product should have max 4 images", field: "images" }
     }
     return { error: false, message: "Success True" }
 }
@@ -33,6 +39,12 @@ export const createCustomerValidator = (customer) => {
     if (!customer?.pincode || customer.pincode.trim() === "") {
         return { error: true, message: "Customer pincode is required", field: "pincode" }
     }
+    if (isNaN(Number(customer.pincode))) {
+        return { error: true, message: "Enter a valid pincode", field: "pincode" }
+    }
+    if (String(customer.pincode).length != 6) {
+        return { error: true, message: "Pincode should have 6 digit", field: "pincode" }
+    }
     if (!customer?.city || customer.city.trim() === "") {
         return { error: true, message: "Customer city is required", field: "city" }
     }
@@ -42,11 +54,20 @@ export const createCustomerValidator = (customer) => {
     if (!customer?.phone || customer.phone.trim() === "") {
         return { error: true, message: "Customer phone number is required", field: "phone" }
     }
+    if (isNaN(Number(customer.phone))) {
+        return { error: true, message: "Enter a valid phone number", field: "phone" }
+    }
+    if (String(customer.phone).length != 10) {
+        return { error: true, message: "Phone number should have 10 digits", field: "phone" }
+    }
     if (!customer?.sport || customer.sport.trim() === "") {
         return { error: true, message: "Customer sport is required", field: "sport" }
     }
     if (customer.sport === "Others" && (!customer?.othersport || customer.othersport.trim() === "")) {
         return { error: true, message: "Customer sport is required", field: "othersport" }
+    }
+    if (customer.customertype === "Other" && (!customer?.othercustomertype || customer.othercustomertype.trim() === "")) {
+        return { error: true, message: "Customer type is required", field: "othercustomertype" }
     }
     if (!customer?.customertype || customer.customertype.trim() === "") {
         return { error: true, message: "Customer customer type is required", field: "customertype" }
@@ -55,4 +76,24 @@ export const createCustomerValidator = (customer) => {
         return { error: true, message: "Customer email is required", field: "email" }
     }
     return { error: false, message: "Validation successful" }
+}
+export const shippingValidator = (shippingDetails) => {
+    if (!shippingDetails.shippingDetails.shippingAddress
+    ) {
+        return { message: "Enter address correctly" }
+    }
+    if (!shippingDetails.products || shippingDetails.products.length == 0
+    ) {
+        return { message: "Select products" }
+    }
+    if (!shippingDetails.payment_method
+    ) {
+        return { message: "Enter payment method" }
+    }
+    if (!shippingDetails.customer
+    ) {
+        return { message: "Select Customer first" }
+    }
+    return { message: "" };
+
 }

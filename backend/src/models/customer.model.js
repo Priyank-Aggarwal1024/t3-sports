@@ -73,6 +73,9 @@ const customerSchema = new mongoose.Schema({
     required: [true, 'Customer Type is required'],
     enum: ['Coach', 'Player', 'Other'],
   },
+  othercustomertype: {
+    type: String,
+  },
   phone: {
     type: String,
     required: [true, 'Phone Number is required'],
