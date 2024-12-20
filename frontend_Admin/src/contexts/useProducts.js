@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const useProducts = () => {
+  const [count, setCount] = useState(0);
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState({ name: "", price: "" });
@@ -19,7 +20,7 @@ const useProducts = () => {
       }
     };
     fetchProducts();
-  }, []);
+  }, [count]);
 
   // Filter products based on search text
   const filterProducts = (searchText) => {
@@ -27,7 +28,12 @@ const useProducts = () => {
       product.name.toLowerCase().includes(searchText.toLowerCase())
     );
   };
-
+  const getProductById = (id) => {
+    if (products.findIndex((prd) => prd._id == id) != -1) {
+      return products[products.findIndex((prd) => prd._id == id)];
+    }
+    return;
+  }
   // Delete product
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm(
@@ -42,6 +48,7 @@ const useProducts = () => {
         console.error("Error deleting product:", error);
         toast.error("An error occurred while deleting the product");
       }
+      setCount((prev) => (prev + 1) % 1001);
     }
   };
 
@@ -49,8 +56,7 @@ const useProducts = () => {
   const handleEdit = (product) => {
     setEditingProduct(product);
     setUpdatedProductData({
-      name: product.name,
-      price: product.price,
+      ...product
     });
   };
 
@@ -68,6 +74,7 @@ const useProducts = () => {
       console.error("Error updating product:", error);
       toast.error("An error occurred while updating the product");
     }
+    setCount((prev) => (prev + 1) % 1001);
   };
 
   return {
@@ -81,6 +88,7 @@ const useProducts = () => {
     handleDelete,
     handleEdit,
     handleUpdate,
+    getProductById
   };
 };
 

@@ -10,14 +10,17 @@ const OrderSummary = ({ selectedCustomer, products }) => {
         Order Summary
       </h3>
       {/* <p>Order By: {selectedCustomer.fname + " " + selectedCustomer.lname}</p> */}
-      <p className="font-semibold text-sm">Total Quantity: {totalQuantity}</p>
-      <p className="font-semibold text-sm">Total Price: ₹{totalPrice.toFixed(2)}</p>
+      {selectedCustomer && <p className="font-semibold text-sm">To : <span className="font-medium">{selectedCustomer?.fname + " " + selectedCustomer?.lname}</span></p>}
+      <p className="font-semibold text-sm">Total Quantity : {totalQuantity}</p>
+      <p className="font-semibold text-sm">Total Quantity : {totalQuantity}</p>
+      <p className="font-semibold text-sm">Total Price : ₹{totalPrice.toFixed(2)}</p>
       <h4 className="font-semibold mt-4">Products:</h4>
       <ul>
         {products.map((product, index) => (
-          <li key={index} className="flex justify-between">
-            <span>{product.name}</span>
-            <span>{`Quantity: ${product.quantity}, Price: $${(product.price * product.quantity).toFixed(2)}`}</span>
+          <li key={index} className="flex justify-between w-full">
+            <span className=" w-full py-1 px-1 border">{product.name}</span>
+            <span className=" w-full py-1 px-1 border">{`Quantity: ${product.quantity} `} </span>
+            <span className=" w-full py-1 px-1 border">{`Price: ₹${(product.price * product.quantity).toFixed(2)}`}</span>
           </li>
         ))}
       </ul>

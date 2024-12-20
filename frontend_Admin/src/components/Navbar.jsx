@@ -46,6 +46,7 @@ const Navbar = () => {
     { path: "/", text: "Home", icon: <LuHome /> },
     { path: "/manage", text: "Manage", icon: <BiSolidOffer /> },
     { path: "/all-orders", text: "All Orders", icon: <MdOutlineExplore /> },
+    { path: "/create-warehouse", text: "Create Warehouse", icon: <MdOutlineExplore /> },
     { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
     { path: "/customer", text: "Create Customer", icon: <MdOutlineExplore /> },
     { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
@@ -78,9 +79,8 @@ const Navbar = () => {
       <div className="px-6 flex justify-between items-center">
         {/* Hamburger menu for mobile */}
         <button
-          className={`md:hidden text-2xl z-50 cursor-pointer hover:text-gray-400 transition-transform duration-300 ${
-            mobileMenuOpen ? "transform rotate-180" : ""
-          }`}
+          className={`md:hidden text-2xl z-50 cursor-pointer hover:text-gray-400 transition-transform duration-300 ${mobileMenuOpen ? "transform rotate-180" : ""
+            }`}
           onClick={toggleMobileMenu}
         >
           {mobileMenuOpen ? <CgClose /> : <RiMenu5Fill />}

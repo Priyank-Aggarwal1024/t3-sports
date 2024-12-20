@@ -1,23 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import useProducts from "../contexts/useProducts";
 
 const ProductSelection = ({ onProductSelect }) => {
-  const [products, setProducts] = useState([]);
+  const { products } = useProducts();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [quantities, setQuantities] = useState({}); // Track individual product quantities
-
-  useEffect(() => {
-    // Fetch products data when the component mounts
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("/api/products");
-        setProducts(response.data.products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-    fetchProducts();
-  }, []);
+  console.log(selectedProducts)
 
   const handleQuantityChange = (productId, quantity) => {
     // Ensure quantities are updated individually for each product
@@ -28,14 +17,14 @@ const ProductSelection = ({ onProductSelect }) => {
   };
 
   const handleSelectProduct = (product) => {
-    const productQuantity = quantities[product.id] || 1; // Default quantity to 1 if not set
-    const exists = selectedProducts.find((p) => p.id === product.id);
+    const productQuantity = quantities[product._id] || 1; // Default quantity to 1 if not set
+    const exists = selectedProducts.find((p) => p._id === product._id);
 
     if (exists) {
       // If product is already selected, update its quantity
       setSelectedProducts((prev) =>
         prev.map((p) =>
-          p.id === product.id ? { ...p, quantity: productQuantity } : p
+          p._id === product._id ? { ...p, quantity: productQuantity } : p
         )
       );
     } else {
@@ -49,7 +38,7 @@ const ProductSelection = ({ onProductSelect }) => {
     // Optionally, reset quantity input to 1 after adding the product
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [product.id]: 1, // Reset to 1 for next selection
+      [product._id]: 1, // Reset to 1 for next selection
     }));
   };
 
@@ -63,18 +52,29 @@ const ProductSelection = ({ onProductSelect }) => {
       <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
         Select Products
       </h3>
-      <div className="flex">
+      <div className="flex flex-col gap-2 max-h-40 overflow-y-auto">
+        <div className="flex w-full bg-black py-2 px-1">
+          <p className="dark:text-white text-black text-sm w-full">Name</p>
+          <p className="dark:text-white text-black text-sm w-full">Price</p>
+          <p className="dark:text-white text-black text-sm w-full">Colour</p>
+          <p className="dark:text-white text-black text-sm w-full">Size</p>
+          <p className="dark:text-white text-black text-sm w-full">Quantity</p>
+        </div>
         {products.map((product) => (
-          <div key={product.id} className="p-2 px-4 border flex justify-between items-center w-full border-gray-600 rounded-md dark:text-white text-black">
-            <h4 className="font-semibold">{product.name}</h4>
-            <p className="dark:text-white text-black text-sm">₹{product.price.toFixed(2)}</p>
-            <div className="flex items-center">
+          product.quantity > 0 &&
+          <div key={product._id} className="p-2 px-2 border flex justify-between items-center w-full border-gray-600 rounded-md dark:text-white text-black ">
+            <h4 className="font-semibold w-full">{product.name}</h4>
+            <p className="dark:text-white text-black text-sm w-full">₹{product.price.toFixed(2)}</p>
+            <p className="dark:text-white text-black text-sm w-full">{product.colour}</p>
+            <p className="dark:text-white text-black text-sm w-full">{product.size}</p>
+            <div className="flex items-center w-[128px]">
               <input
                 type="number"
                 min="1"
-                value={quantities[product.id] || 1} // Default value to 1
-                onChange={(e) => handleQuantityChange(product.id, +e.target.value)}
-                className=" rounded-md p-1 pl-4 mr-2 bg-black dark:text-white text-black text-sm"
+                max={product.quantity}
+                value={quantities[product._id] || 1} // Default value to 1
+                onChange={(e) => handleQuantityChange(product._id, +e.target.value)}
+                className="block w-[64px] rounded-md p-1 pl-4 mr-2 bg-black dark:text-white text-black text-sm"
               />
               <button
                 type="button" // Prevent form submission
@@ -87,13 +87,13 @@ const ProductSelection = ({ onProductSelect }) => {
           </div>
         ))}
       </div>
-      <div>
+      <div className="pt-4">
         {
           selectedProducts.map((item, index) => {
             return (
               <>
-              <div className="dark:text-white text-black">
-                Product {index+1} | <span> {item.name} = {item.quantity}units</span>
+                <div className="dark:text-white text-black">
+                  Product {index + 1} | <span> {item.name} = {item.quantity} units</span>
                 </div>
               </>
             )
@@ -105,4 +105,3 @@ const ProductSelection = ({ onProductSelect }) => {
 };
 
 export default ProductSelection;
-  

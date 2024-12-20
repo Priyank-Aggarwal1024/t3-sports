@@ -123,44 +123,48 @@ const AllOrders = () => {
           </button>
         </div>
       </div>
-      <table className="min-w-full bg-white dark:bg-black dark:text-white border border-gray-800">
-        <thead className="dark:bg-darkPrimary">
-          <tr className='text-sm text-left'>
-            <th className="py-2 px-4 border border-gray-600 whitespace-nowrap">Serial No.</th>
-            <th className="py-2 px-4 border border-gray-600">Order ID</th>
-            <th className="py-2 px-4 border border-gray-600">Customer Name</th>
-            <th className="py-2 px-4 border border-gray-600">Phone</th>
-            <th className="py-2 px-4 border border-gray-600">Order Amount</th>
-            <th className="py-2 px-4 border border-gray-600">Order Date</th>
-            <th className="py-2 px-4 border border-gray-600">Status</th>
-            <th className="py-2 px-4 border border-gray-600">Package Size</th>
-            <th className="py-2 px-4 border border-gray-600">Package Weight</th>
-            <th className="py-2 px-4 border border-gray-600">Payment Method</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentOrders.map((order, index) => (
-            <tr key={order._id} className='text-sm'>
-              <td className="py-2 px-4 border border-gray-600">{index + 1 + (currentPage * ordersPerPage)}</td>
-              <td className="py-2 px-4 border border-gray-600">{order.id}</td>
-              <td className="py-2 px-4 border border-gray-600">{`${order.shipping_fname} ${order.shipping_lname}`}</td>
-              <td className="py-2 px-4 border border-gray-600">{order.shipping_phone}</td>
-              <td className="py-2 px-4 border border-gray-600">₹{order.order_amount}</td>
-              <td className="py-2 px-4 border border-gray-600">{order.order_date}</td>
-              <td className="py-2 px-4 border border-gray-600">
-                <span className={`py-1 rounded-full px-3 text-xs ${order.status === 'cancelled' ? 'bg-red-500' :
+      <div className="w-full overflow-x-auto">
+
+        <table className="min-w-full bg-white dark:bg-black dark:text-white border border-gray-800">
+          <thead className="dark:bg-darkPrimary">
+            <tr className='text-sm text-left'>
+              <th className="py-2 px-4 border border-gray-600 whitespace-nowrap">Serial No.</th>
+              <th className="py-2 px-4 border border-gray-600">Order ID</th>
+              <th className="py-2 px-4 border border-gray-600">Customer Name</th>
+              <th className="py-2 px-4 border border-gray-600">Phone</th>
+              <th className="py-2 px-4 border border-gray-600">Order Amount</th>
+              <th className="py-2 px-4 border border-gray-600">Order Date</th>
+              <th className="py-2 px-4 border border-gray-600">Status</th>
+              <th className="py-2 px-4 border border-gray-600">Package Size</th>
+              <th className="py-2 px-4 border border-gray-600">Package Weight</th>
+              <th className="py-2 px-4 border border-gray-600">Payment Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentOrders.map((order, index) => (
+              <tr key={order._id} className='text-sm'>
+                <td className="py-2 px-4 border border-gray-600">{index + 1 + (currentPage * ordersPerPage)}</td>
+                <td className="py-2 px-4 border border-gray-600">{order.id}</td>
+                <td className="py-2 px-4 border border-gray-600">{`${order.shipping_fname} ${order.shipping_lname}`}</td>
+                <td className="py-2 px-4 border border-gray-600">{order.shipping_phone}</td>
+                <td className="py-2 px-4 border border-gray-600">₹{order.order_amount}</td>
+                <td className="py-2 px-4 border border-gray-600">{order.order_date}</td>
+                <td className="py-2 px-4 border border-gray-600">
+                  <span className={`py-1 rounded-full px-3 text-xs ${order.status === 'cancelled' ? 'bg-red-500' :
                     order.status === 'booked' ? 'bg-green-500' :
                       order.status === 'new' ? 'bg-orange-400' :
                         ''
-                  }`}>{order.status}</span>
-              </td>
-              <td className="py-2 px-4 border border-gray-600">{`${order.package_length} x ${order.package_breadth} x ${order.package_height}`}</td>
-              <td className="py-2 px-4 border border-gray-600">{`${order.package_weight}g`}</td>
-              <td className="py-2 px-4 border border-gray-600">{order.payment_method}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    }`}>{order.status}</span>
+                </td>
+                <td className="py-2 px-4 border border-gray-600">{`${order.package_length} x ${order.package_breadth} x ${order.package_height}`}</td>
+                <td className="py-2 px-4 border border-gray-600">{`${order.package_weight}g`}</td>
+                <td className="py-2 px-4 border border-gray-600">{order.payment_method}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 };
