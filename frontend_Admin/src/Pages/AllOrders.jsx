@@ -100,7 +100,7 @@ const AllOrders = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:bg-black bg-white">
       <div className='flex justify-between items-center'>
         <h2 className="text-lg md:text-2xl font-bold text-black dark:text-white my-6">Order List</h2>
         <div className="flex items-center gap-2 my-4">

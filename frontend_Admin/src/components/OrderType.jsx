@@ -15,7 +15,7 @@ const OrderType = ({ onChange }) => {
           id="payment_method"
           name="payment_method"
           onChange={handleOrderTypeChange}
-          className="mt-1 block w-full py-2 px-3 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary hover:cursor-pointer text-sm dark:bg-black dark:text-white"
+          className="mt-1 block w-full py-2 px-3 bg-white rounded-md focus:outline-none focus:ring-primary focus:border-primary hover:cursor-pointer text-sm dark:bg-black dark:text-white shadow-md"
         >
           <option value="">Select Order Type</option>
           <option value="prepaid">Prepaid</option>

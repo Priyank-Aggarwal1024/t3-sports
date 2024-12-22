@@ -3,34 +3,27 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 import { IoMdClose, IoMdAdd } from "react-icons/io";
+import useProducts from "../contexts/useProducts";
 
 
 const CollectionList = () => {
+  const { products, getProductById } = useProducts();
   const [collections, setCollections] = useState([]);
-  const [availableProducts, setAvailableProducts] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
-
+  const [selectedProducts, setSelectedProducts] = useState({});
+  const [colloading, setColloading] = useState(false)
   useEffect(() => {
     const fetchCollections = async () => {
+      setColloading(true);
       try {
         const response = await axios.get("/api/collections");
         setCollections(response.data.collections);
       } catch (error) {
         console.error("Error fetching collections", error);
       }
-    };
-
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("/api/products");
-        setAvailableProducts(response.data.products);
-      } catch (error) {
-        console.error("Error fetching products", error);
-      }
+      setColloading(false);
     };
 
     fetchCollections();
-    fetchProducts();
   }, []);
 
   const handleDelete = async (id) => {
@@ -50,17 +43,17 @@ const CollectionList = () => {
   };
 
   const handleAddProduct = async (collectionId) => {
-    if (!selectedProductId) return;
+    if (!selectedProducts[collectionId]) return;
     try {
-      await axios.put(`/api/collections/${collectionId}/add-product`, { productId: selectedProductId });
+      await axios.put(`/api/collections/${collectionId}/add-product`, { productId: selectedProducts[collectionId] });
       const updatedCollections = collections.map((collection) =>
         collection._id === collectionId
-          ? { ...collection, products: [...collection.products, availableProducts.find(product => product._id === selectedProductId)] }
+          ? { ...collection, products: [...collection.products, products.find(product => product._id === selectedProducts[collectionId])] }
           : collection
       );
       setCollections(updatedCollections);
+      setSelectedProducts({ ...selectedProducts, [collectionId]: "" })
       toast.success("Product added to collection successfully");
-      setSelectedProductId(null); // Reset the selected product after adding
     } catch (error) {
       console.error("Error adding product to collection:", error);
       toast.error("An error occurred while adding the product");
@@ -87,7 +80,7 @@ const CollectionList = () => {
     <div className="">
       <h2 className="text-3xl font-bold dark:text-white text-black mb-6">Our Collections</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {collections.map((collection) => (
+        {colloading ? <div className="text-white text-xl">Loading...</div> : collections.map((collection) => (
           <div
             key={collection._id}
             className="bg-white dark:bg-darkPrimary shadow-lg rounded-md p-6 transition-transform transform hover:scale-105"
@@ -105,8 +98,12 @@ const CollectionList = () => {
             <ul className="space-y-3">
               {collection.products.map((product) => (
                 <li key={product._id} className="flex justify-between items-center">
-                  <span className="font-medium text-black dark:text-white">{product.name}</span>
-                  <span className="text-primary font-semibold">${product.price}</span>
+                  <span className="font-medium text-black dark:text-white">
+                    {product?.name}
+                  </span>
+                  <span className="text-primary font-semibold">
+                    ${product?.price}
+                  </span>
                   <button
                     onClick={() => handleRemoveProduct(collection._id, product._id)}
                     className="bg-red-500 hover:bg-red-600 text-white rounded-md py-1 px-2 ml-4"
@@ -118,22 +115,36 @@ const CollectionList = () => {
             </ul>
             <div className="mt-4 flex gap-2">
               <select
-                value={selectedProductId || ""}
-                onChange={(e) => setSelectedProductId(e.target.value)}
+                name={collection._id}
+                value={selectedProducts[collection._id] || ""}
+                onChange={(e) =>
+                  setSelectedProducts((prev) => ({
+                    ...prev,
+                    [collection._id]: e.target.value,
+                  }))
+                }
                 className="border rounded-md w-full text-sm pl-2 hover:cursor-pointer"
               >
                 <option value="" disabled>
                   Select product to add
                 </option>
-                {availableProducts.map((product) => (
-                  <option key={product._id} value={product._id}>
-                    {product.name}
-                  </option>
-                ))}
+                {products
+                  .filter(
+                    (product) =>
+                      !collection.products.some(
+                        (wp) => wp._id === product._id
+                      )
+                  )
+                  .map((product) => (
+                    <option key={product._id} value={product._id}>
+                      {product.name}
+                    </option>
+                  ))}
               </select>
               <button
                 onClick={() => handleAddProduct(collection._id)}
-                className=" bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition duration-200"
+                className="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition duration-200"
+                disabled={!selectedProducts[collection._id]}
               >
                 <IoMdAdd />
               </button>

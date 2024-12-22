@@ -51,6 +51,9 @@ export const createCustomerValidator = (customer) => {
     if (!customer?.state || customer.state.trim() === "") {
         return { error: true, message: "Customer state is required", field: "state" }
     }
+    if (!customer?.country || customer.country.trim() === "") {
+        return { error: true, message: "Customer country is required", field: "country" }
+    }
     if (!customer?.phone || customer.phone.trim() === "") {
         return { error: true, message: "Customer phone number is required", field: "phone" }
     }

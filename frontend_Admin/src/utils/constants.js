@@ -27,6 +27,7 @@ export const customerInitialState = {
     pincode: "",
     city: "",
     state: "",
+    country: "",
     sport: "",
     customertype: "",
     othercustomertype: "",
@@ -70,6 +71,12 @@ export const customerFormControls = [
         label: "State",
         type: "text",
         placeholder: "Enter state"
+    },
+    {
+        name: "country",
+        label: "Country",
+        type: "text",
+        placeholder: "Enter Country"
     },
     {
         name: "sport",
