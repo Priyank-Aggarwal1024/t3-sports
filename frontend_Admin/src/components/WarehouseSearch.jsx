@@ -16,7 +16,7 @@ const WarehouseSearch = ({ selectedWarehouse, setSelectedWarehouse }) => {
                     placeholder="Search by name, email, or phone"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="p-2  rounded-lg w-full placeholder:text-sm text-sm bg-black dark:text-white text-black"
+                    className="p-2 rounded-lg w-full placeholder:text-sm text-sm dark:bg-black dark:text-white text-black bg-white shadow-md"
                 />
             </div>
             <div>

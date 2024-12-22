@@ -9,15 +9,17 @@ const CollectionList = () => {
   const [collections, setCollections] = useState([]);
   const [availableProducts, setAvailableProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
-
+  const [colloading, setColloading] = useState(false)
   useEffect(() => {
     const fetchCollections = async () => {
+      setColloading(true);
       try {
         const response = await axios.get("/api/collections");
         setCollections(response.data.collections);
       } catch (error) {
         console.error("Error fetching collections", error);
       }
+      setColloading(false);
     };
 
     const fetchProducts = async () => {
@@ -87,7 +89,7 @@ const CollectionList = () => {
     <div className="">
       <h2 className="text-3xl font-bold dark:text-white text-black mb-6">Our Collections</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {collections.map((collection) => (
+        {colloading ? <div className="text-white text-xl">Loading...</div> : collections.map((collection) => (
           <div
             key={collection._id}
             className="bg-white dark:bg-darkPrimary shadow-lg rounded-md p-6 transition-transform transform hover:scale-105"

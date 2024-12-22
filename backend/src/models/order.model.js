@@ -46,6 +46,10 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
+  insuranceRequired: {
+    type: Boolean,
+    default: false
+  },
   status: { type: String, enum: ['ordered', 'packaging', 'shipped', 'delivered', 'returned', 'customer unavailable'], default: 'ordered' },
   nimbuspostTrackingId: { type: String }, // For fetching status from Nimbuspost
   dateOfOrder: { type: Date, default: Date.now }

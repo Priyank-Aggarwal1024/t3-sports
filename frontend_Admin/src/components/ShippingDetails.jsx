@@ -9,15 +9,16 @@ const addressInitialState = {
   city: "",
 }
 const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
+  console.log(selectedCustomer)
   const [address, setAddress] = useState({
     address: selectedCustomer?.address || "",
     address_2: "",
     city: selectedCustomer?.city || "",
     state: selectedCustomer?.state || "",
     pincode: selectedCustomer?.pincode || "",
-    country: "",
+    country: selectedCustomer?.country || "",
   });
-  const { editCustomer, filterCustomerById, customers } = useCustomer();
+  const { editCustomer } = useCustomer();
   const [charges, setCharges] = useState({
     shippingCharges: 0,
     codCharges: 0,
@@ -57,6 +58,10 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
       setAddressErrorMessage({ ...addressInitialState, state: "Enter state" });
       return;
     }
+    if (!address.country || !address.country.trim() === "") {
+      setAddressErrorMessage({ ...addressInitialState, country: "Enter country" });
+      return;
+    }
     if (!address.pincode || !address.pincode.trim() === "") {
       setAddressErrorMessage({ ...addressInitialState, pincode: "Enter pincode" });
       return;
@@ -70,7 +75,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
       return;
     }
     try {
-      const { address_2, country, ...editadress } = address;
+      const { address_2, ...editadress } = address;
       const newCus = await editCustomer(selectedCustomer._id, editadress);
       if (newCus) {
         onEditCustomer(newCus);
@@ -89,7 +94,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
       ...charges,
       ...dimensions,
     });
-  }, [address, charges, dimensions]);
+  }, [address, charges, dimensions, selectedCustomer]);
 
   return (
     <div className="dark:text-white text-black">
@@ -102,7 +107,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="Address"
             value={address.address}
             onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
           /> : <p className="my-auto w-full">Address :<br /> {selectedCustomer?.address}</p>}
           {
             addressErrorMessage["address"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["address"]}</p>
@@ -114,7 +119,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="City"
             value={address.city}
             onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
           /> : <p className="my-auto w-full">City :<br /> {selectedCustomer?.city}</p>}
           {
             addressErrorMessage["city"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["city"]}</p>
@@ -127,10 +132,23 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="State"
             value={address.state}
             onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
           /> : <p className="my-auto w-full">State :<br /> {selectedCustomer?.state}</p>}
           {
             addressErrorMessage["state"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["state"]}</p>
+          }
+        </div>
+        <div className="w-full">
+
+          {edit ? <input
+            name="country"
+            placeholder="Country"
+            value={address.country}
+            onChange={handleAddressChange}
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
+          /> : <p className="my-auto w-full">Country :<br /> {selectedCustomer?.country}</p>}
+          {
+            addressErrorMessage["country"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["country"]}</p>
           }
         </div>
         <div className="w-full">
@@ -140,7 +158,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="Pincode"
             value={address.pincode}
             onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
           /> : <p className="my-auto w-full">Pincode :<br /> {selectedCustomer?.pincode}</p>}
           {
             addressErrorMessage["pincode"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["pincode"]}</p>
@@ -152,16 +170,8 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
           placeholder="Other Address"
           value={address.address_2}
           onChange={handleAddressChange}
-          className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+          className="w-full p-2 md:col-span-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md "
         />
-        <input
-          name="country"
-          placeholder="Country"
-          value={address.country}
-          onChange={handleAddressChange}
-          className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
-        />
-
         <div className="flex flex-col md:flex-row gap-2 items-center">
           <label
             htmlFor="shippingCharges"
@@ -176,7 +186,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="Shipping Charges"
             value={charges.shippingCharges}
             onChange={handleChargesChange}
-            className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
           />
         </div>
         <div className="flex flex-col md:flex-row gap-2 items-center">
@@ -193,7 +203,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="COD Charges"
             value={charges.codCharges}
             onChange={handleChargesChange}
-            className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
           />
         </div>
 
@@ -230,7 +240,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               placeholder="Height (cm)"
               value={dimensions.height}
               onChange={handleDimensionChange}
-              className="p-2 dark:text-white text-black text-sm bg-black rounded-md w-full"
+              className="p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md w-full"
             />
           </div>
           <div className="flex flex-col md:flex-row gap-2 items-center">
@@ -247,7 +257,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               placeholder="Length (cm)"
               value={dimensions.length}
               onChange={handleDimensionChange}
-              className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+              className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
             />
           </div>
           <div className="flex flex-col md:flex-row gap-2 items-center">
@@ -264,7 +274,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               placeholder="Breadth (cm)"
               value={dimensions.breadth}
               onChange={handleDimensionChange}
-              className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+              className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
             />
           </div>
         </div>

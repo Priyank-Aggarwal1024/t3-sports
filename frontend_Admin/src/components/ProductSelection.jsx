@@ -53,7 +53,7 @@ const ProductSelection = ({ onProductSelect }) => {
         Select Products
       </h3>
       <div className="flex flex-col gap-2 max-h-40 overflow-y-auto">
-        <div className="flex w-full bg-black py-2 px-1">
+        <div className="flex w-full dark:bg-black bg-white py-2 px-1">
           <p className="dark:text-white text-black text-sm w-full">Name</p>
           <p className="dark:text-white text-black text-sm w-full">Price</p>
           <p className="dark:text-white text-black text-sm w-full">Colour</p>
@@ -74,7 +74,7 @@ const ProductSelection = ({ onProductSelect }) => {
                 max={product.quantity}
                 value={quantities[product._id] || 1} // Default value to 1
                 onChange={(e) => handleQuantityChange(product._id, +e.target.value)}
-                className="block w-[64px] rounded-md p-1 pl-4 mr-2 bg-black dark:text-white text-black text-sm"
+                className="block w-[64px] rounded-md p-1 pl-4 mr-2 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
               />
               <button
                 type="button" // Prevent form submission

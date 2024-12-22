@@ -8,16 +8,19 @@ const useProducts = () => {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [updatedProductData, setUpdatedProductData] = useState({ name: "", price: "" });
+  const [ploading, setPloading] = useState(false)
 
   // Fetch products data
   useEffect(() => {
     const fetchProducts = async () => {
+      setPloading(true)
       try {
         const response = await axios.get("/api/products");
         setProducts(response.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
+      setPloading(false)
     };
     fetchProducts();
   }, [count]);
@@ -88,7 +91,8 @@ const useProducts = () => {
     handleDelete,
     handleEdit,
     handleUpdate,
-    getProductById
+    getProductById,
+    ploading
   };
 };
 

@@ -53,7 +53,7 @@ import Product from '../models/product.model.js';
 // Create a new customer
 export const createCustomer = async (req, res) => {
   try {
-    const { fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype } = req.body;
+    const { fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype, country } = req.body;
 
     let customer = await Customer.findOne({
       $or: [
@@ -65,7 +65,7 @@ export const createCustomer = async (req, res) => {
       return res.status(200).json({ error: "Already a customer." });
     }
 
-    customer = new Customer({ fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype });
+    customer = new Customer({ fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype, country });
     await customer.save();
 
     res.status(201).json({ customer });

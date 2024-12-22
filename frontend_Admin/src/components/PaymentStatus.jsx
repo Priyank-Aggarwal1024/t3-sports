@@ -15,7 +15,7 @@ const PaymentStatus = ({ onChange, orderDetails }) => {
                     id="payment_status"
                     name="payment_status"
                     onChange={handlePaymentStatusChange}
-                    className="mt-1 block w-full py-2 px-3 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary hover:cursor-pointer text-sm dark:bg-black dark:text-white"
+                    className="mt-1 block w-full py-2 px-3 bg-white rounded-md shadow-md focus:outline-none focus:ring-primary focus:border-primary hover:cursor-pointer text-sm dark:bg-black dark:text-white"
                     required
                 >
                     <option value="">Select Payment Status</option>

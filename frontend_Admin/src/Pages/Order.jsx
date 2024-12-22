@@ -3,8 +3,8 @@ import OrderForm from "../components/OrderForm";
 
 const Order = () => {
   return (
-    <div>
-      <h1>Create Order</h1>
+    <div className="dark:bg-black bg-white p-4">
+      {/* <h1>Create Order</h1> */}
       <OrderForm />
     </div>
   );

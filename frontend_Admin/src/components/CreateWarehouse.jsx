@@ -42,7 +42,7 @@ function CreateWarehouse(props) {
         setData(initialWarehouseState);
     }
     return (
-        <div className="w-full lg:px-8 lg:py-12 px-4 py-8">
+        <div className="w-full lg:px-8 lg:py-12 px-4 py-8 dark:bg-black bg-white">
             <h2 className="text-4xl dark:text-white text-black">Create Warehouse</h2>
             <form className="w-full pt-8 block">
                 <div className="grid md:grid-cols-2 p-4 gap-4 bg-neutral-100 dark:bg-darkPrimary rounded-lg">
@@ -88,7 +88,7 @@ function CreateWarehouse(props) {
                             }
                         </div>
                     </div>
-                    <div className="w-full flex flex-col bg-black rounded gap-2 text-balck dark:text-white p-4">
+                    <div className="w-full flex flex-col dark:bg-black bg-white rounded gap-2 text-balck dark:text-white p-4">
                         <div className="w-full rounded-md  py-2 px-4 flex items-center justify-between">
                             <span className="w-full text-center">Name</span>
                             <span className="w-full text-center">Colour</span>

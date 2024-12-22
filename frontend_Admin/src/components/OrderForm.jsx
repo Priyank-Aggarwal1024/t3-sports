@@ -255,7 +255,7 @@ const OrderForm = () => {
   const handleProductSelect = (selectedProducts) => {
     setProducts(selectedProducts);
   };
-  console.log(orderDetails)
+  console.log(shippingDetails)
 
   const handleShippingDetailsChange = (details) => {
     setShippingDetails(details);
@@ -396,6 +396,7 @@ const OrderForm = () => {
     );
     if (!confirmSubmission) return;
     try {
+      console.log(orderData);
       const response = await axios.post("/api/orders/create", orderData);
       alert(
         "Order created successfully with Order ID: " +
@@ -409,13 +410,13 @@ const OrderForm = () => {
   };
 
   return (
-    <div className="mx-2 md:mx-6">
+    <div className="mx-2 md:mx-6 dark:bg-black bg-white">
       <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-6">
         Create New Order
       </h2>
       <form
         onSubmit={handleSubmit}
-        className="grid lg:grid-cols-2 grid-cols-1 gap-2 bg-white dark:bg-black rounded-md shadow-lg"
+        className="grid md:grid-cols-2 grid-cols-1 gap-2 bg-white dark:bg-black rounded-md dark:shadow-lg"
       >
         <Accordion title={"Select Warehouse"}>
           <WarehouseSearch selectedWarehouse={selectedWarehouse} setSelectedWarehouse={setSelectedWarehouse} />
@@ -456,7 +457,7 @@ const OrderForm = () => {
               placeholder="Extra Note"
               value={orderDetails.note}
               onChange={({ target }) => handlePaymentMethodChange(target.name, target.value)}
-              className="w-full p-2 dark:text-white text-black text-sm bg-black rounded-md"
+              className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
             />
           </div>
         </Accordion>

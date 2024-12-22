@@ -17,6 +17,7 @@ import Customer from "../components/Customer";
 import CreateCustomer from "../components/CreateCustomer";
 import Analytics from "../Pages/Analytics";
 import CreateWarehouse from "../components/CreateWarehouse";
+import EditCustomer from "../components/EditCustomer";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
           {
             path: "/customer",
             element: <CreateCustomer />,
+          },
+          {
+            path: "/edit-customer/:id",
+            element: <EditCustomer />,
           },
           {
             path: "/manage",

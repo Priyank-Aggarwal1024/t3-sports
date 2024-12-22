@@ -60,6 +60,12 @@ const customerSchema = new mongoose.Schema({
     maxlength: [100, 'State name cannot exceed 100 characters'],
     trim: true,
   },
+  country: {
+    type: String,
+    required: [true, 'Country is required'],
+    maxlength: [100, 'Country name cannot exceed 100 characters'],
+    trim: true,
+  },
   sport: {
     type: String,
     required: [true, 'Sport is required'],

@@ -6,7 +6,7 @@ import axios from "axios";
 import { ThemeProvider } from "./contexts/theme";
 import Footer from "./components/Footer";
 import { LoadScript } from "@react-google-maps/api";
-import  { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import {
   signOutUserStart,
   signOutUserSuccess,
@@ -14,10 +14,11 @@ import {
   updateUserSuccess,
 } from "./redux/user/userSlice";
 import { OrdersProvider } from "./contexts/OrdersContext.jsx";
+import Loader from "./components/Loader.jsx";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-API-Key'] = import.meta.env.VITE_BACKEND_API_KEY; 
+axios.defaults.headers.common['X-API-Key'] = import.meta.env.VITE_BACKEND_API_KEY;
 
 const libraries = ["places"];
 
@@ -55,7 +56,7 @@ const App = () => {
       console.log("No current user found");
     }
   }, [currentUser]);
-  
+
 
   // useEffect(() => {
   //   const checkTokenValidity = async () => {
@@ -92,28 +93,30 @@ const App = () => {
 
   return (
     <LoadScript
-    googleMapsApiKey={import.meta.env.VITE_GEOCODE_KEY}
-    libraries={libraries}
-  >
-    <ThemeProvider value={{ themeMode, darkTheme, lightTheme }}>
-    <OrdersProvider>
-      <Navbar />
-      <Toaster
-          position="bottom-right"
-          toastOptions={{
-            duration: 2000,
-            style: {
-              background: "#b5d300",
-              color: "#000",
-              borderRadius: "20px",
-              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
-            },
-          }}
-        />
-      <Outlet />
-      <Footer />
-      </OrdersProvider>
-    </ThemeProvider>
+      googleMapsApiKey={import.meta.env.VITE_GEOCODE_KEY}
+      libraries={libraries}
+    >
+      <React.Suspense fallback={<Loader />}>
+        <ThemeProvider value={{ themeMode, darkTheme, lightTheme }}>
+          <OrdersProvider>
+            <Navbar />
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                duration: 2000,
+                style: {
+                  background: "#b5d300",
+                  color: "#000",
+                  borderRadius: "20px",
+                  boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
+                },
+              }}
+            />
+            <Outlet />
+            <Footer />
+          </OrdersProvider>
+        </ThemeProvider>
+      </React.Suspense>
     </LoadScript>
   );
 };

@@ -76,7 +76,7 @@ const Navbar = () => {
 
   return (
     <nav className="p-2 py-4 bg-white dark:bg-darkPrimary dark:text-white border-b border-dullBlack border-t dark:border-gray-600 ">
-      <div className="px-6 flex justify-between items-center">
+      <div className="xs:px-6 flex justify-between items-center">
         {/* Hamburger menu for mobile */}
         <button
           className={`md:hidden text-2xl z-50 cursor-pointer hover:text-gray-400 transition-transform duration-300 ${mobileMenuOpen ? "transform rotate-180" : ""
@@ -98,7 +98,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation items for desktop */}
-        <div className="hidden md:flex flex-grow justify-center space-x-4 ">
+        <div className="hidden md:flex flex-grow flex-wrap justify-center space-x-4 ">
           {navItems.map((item, index) => (
             <NavLink
               key={index}
@@ -146,7 +146,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden h-[80vh] dark:bg-secondary dark:text-white bg-black text-white my-6 py-4 px-4 w-full flex justify-between text-2xl items-left flex-col">
+        <div className="md:hidden h-[90vh] dark:bg-secondary dark:text-white bg-black text-white my-6 py-4 px-4 w-full flex justify-between text-2xl items-left flex-col">
           <div>
             {navItems.map((item, index) => (
               <NavLink
