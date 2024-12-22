@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FiPhone, FiMail } from 'react-icons/fi';
-import { HiLocationMarker } from 'react-icons/hi';
 import useCustomer from '../contexts/useCustomer';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
