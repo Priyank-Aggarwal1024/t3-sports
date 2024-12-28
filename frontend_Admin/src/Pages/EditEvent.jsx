@@ -319,7 +319,7 @@ const EditEvent = () => {
           <button
             disabled={editingEvent}
             type="submit"
-            className={`rounded-xl bg-black text-white dark:bg-primary dark:text-black py-2 px-4 ${
+            className={`rounded-xl bg-black text-white dark:bg-[#2F60F3] dark:text-black py-2 px-4 ${
               editingEvent ? "opacity-80 cursor-not-allowed" : ""
             }`}
           >

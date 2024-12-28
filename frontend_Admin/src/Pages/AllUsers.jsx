@@ -71,9 +71,8 @@ const AllUsers = () => {
               <button
                 onClick={goToPrevPage}
                 disabled={!canGoPrev}
-                className={`bg-black dark:bg-primary hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${
-                  !canGoPrev ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-black dark:bg-[#2F60F3] hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${!canGoPrev ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 <IoIosArrowBack className="inline-block mr-1" />
                 Prev
@@ -81,9 +80,8 @@ const AllUsers = () => {
               <button
                 onClick={goToNextPage}
                 disabled={!canGoNext}
-                className={`bg-black dark:bg-primary hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${
-                  !canGoNext ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-black dark:bg-[#2F60F3] hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${!canGoNext ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 Next
                 <IoIosArrowForward className="inline-block ml-1" />

@@ -11,7 +11,7 @@ export const getAllWarehouses = async (req, res) => {
 export const createWarehouses = async (req, res) => {
     try {
         const data = req.body;
-        if (!data || !data.name || !data.address) {
+        if (!data || !data.name || !data.address || !data.email) {
             return res.status(500).json({ message: "Invalid Data", success: false })
         }
         const warehouse = await (await Warehouse.create(data)).save();

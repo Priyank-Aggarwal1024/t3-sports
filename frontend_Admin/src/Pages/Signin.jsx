@@ -139,7 +139,7 @@ export default function SignIn() {
             </Link>
             <button
               disabled={loading}
-              className="w-full bg-black dark:bg-primary text-white dark:text-black py-3 rounded-xl uppercase hover:opacity-95 disabled:opacity-80 text-xs"
+              className="w-full bg-black dark:bg-[#2F60F3] text-white dark:text-black py-3 rounded-xl uppercase hover:opacity-95 disabled:opacity-80 text-xs"
             >
               {loading ? "Loading..." : "Sign In"}
             </button>
