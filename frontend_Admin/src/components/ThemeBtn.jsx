@@ -25,7 +25,7 @@ function ThemeBtn() {
         </>
       ) : (
         <>
-          <FaMoon className="text-primary" />
+          <FaMoon className="text-[#2F60F3] " />
           <span className="sr-only">Switch to Light Mode</span>
         </>
       )}

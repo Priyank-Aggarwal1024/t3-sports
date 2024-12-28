@@ -100,7 +100,7 @@ export default function SignIn() {
               <input
                 type="email"
                 placeholder="name@example.com"
-                className="w-full border text-xs rounded-xl py-3 px-4 text-black dark:text-white bg-transparent focus:outline-none dark:focus:border-primary focus:border-black"
+                className="w-full border text-xs rounded-xl py-3 px-4 text-black dark:text-white bg-transparent focus:outline-none dark:focus:border-[#2F60F3] focus:border-black"
                 id="email"
                 required
                 onChange={handleChange}
@@ -113,7 +113,7 @@ export default function SignIn() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="w-full text-black dark:text-white border bg-transparent rounded-xl py-3 px-4 focus:outline-none text-xs dark:focus:border-primary focus:border-black pr-12"
+                className="w-full text-black dark:text-white border bg-transparent rounded-xl py-3 px-4 focus:outline-none text-xs dark:focus:border-[#2F60F3] focus:border-black pr-12"
                 id="password"
                 required
                 onChange={handleChange}
@@ -121,7 +121,7 @@ export default function SignIn() {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 px-3 py-2 text-black dark:text-primary focus:outline-none"
+                className="absolute inset-y-0 right-0 px-3 py-2 text-black dark:text-[#2F60F3] focus:outline-none"
               >
                 {showPassword ? (
                   <RiEyeOffFill size={24} />
@@ -144,7 +144,7 @@ export default function SignIn() {
               {loading ? "Loading..." : "Sign In"}
             </button>
             <div className="mt-4 flex items-center justify-between">
-              <span className="border-b w-1/5 border-black/20 dark:border-primary lg:w-1/4"></span>
+              <span className="border-b w-1/5 border-black/20 dark:border-[#2F60F3] lg:w-1/4"></span>
               <Link
                 to={"/sign-in"}
                 className="text-xs text-center text-gray-500 uppercase"
@@ -152,7 +152,7 @@ export default function SignIn() {
                 OR
               </Link>
 
-              <span className="border-b w-1/5 border-black/20 dark:border-primary lg:w-1/4"></span>
+              <span className="border-b w-1/5 border-black/20 dark:border-[#2F60F3] lg:w-1/4"></span>
             </div>
             <div className="mt-4 flex items-center justify-center">
               <Link

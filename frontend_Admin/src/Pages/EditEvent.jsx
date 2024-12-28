@@ -143,7 +143,7 @@ const EditEvent = () => {
     setCurrentDate(new Date().toISOString().split("T")[0]);
   }, []);
 
-  const onLocationChange = (formattedAddress,state,city) => {
+  const onLocationChange = (formattedAddress, state, city) => {
     setFormData({
       ...formData,
       location: formattedAddress,
@@ -319,9 +319,8 @@ const EditEvent = () => {
           <button
             disabled={editingEvent}
             type="submit"
-            className={`rounded-xl bg-black text-white dark:bg-[#2F60F3] dark:text-black py-2 px-4 ${
-              editingEvent ? "opacity-80 cursor-not-allowed" : ""
-            }`}
+            className={`rounded-xl bg-black text-white dark:bg-[#2F60F3] dark:text-black py-2 px-4 ${editingEvent ? "opacity-80 cursor-not-allowed" : ""
+              }`}
           >
             {editingEvent ? "Updating Details..." : "Confirm Business Details"}
           </button>

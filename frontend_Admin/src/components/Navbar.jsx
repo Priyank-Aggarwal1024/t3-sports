@@ -144,7 +144,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden h-[90vh] dark:bg-secondary dark:text-white bg-black text-white my-6 py-4 px-4 w-full flex justify-between text-2xl items-left flex-col">
+        <div className="md:hidden h-[80vh] dark:bg-black dark:text-white bg-black text-white my-6 py-4 px-4 w-full flex justify-between text-2xl items-left flex-col">
           <div>
             {navItems.map((item, index) => (
               <NavLink
@@ -164,7 +164,7 @@ const Navbar = () => {
           </div>
           <div>
             <Link to="/">
-              <img src={logo} width={120} alt="logo" />
+              <img src={logo2} width={120} alt="logo" />
             </Link>
             <p className="text-xs mt-2">
               @2024 ListerJi | All Rights Reserved

@@ -67,7 +67,7 @@
 //           value={customer.firstname}
 //           onChange={(e) => setCustomer({ ...customer, firstname: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="text"
@@ -75,7 +75,7 @@
 //           value={customer.lastname}
 //           onChange={(e) => setCustomer({ ...customer, lastname: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 
@@ -86,7 +86,7 @@
 //           value={customer.address}
 //           onChange={(e) => setCustomer({ ...customer, address: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="text"
@@ -94,7 +94,7 @@
 //           value={customer.city}
 //           onChange={(e) => setCustomer({ ...customer, city: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 
@@ -105,7 +105,7 @@
 //           value={customer.state}
 //           onChange={(e) => setCustomer({ ...customer, state: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="text"
@@ -113,7 +113,7 @@
 //           value={customer.pincode}
 //           onChange={(e) => setCustomer({ ...customer, pincode: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 
@@ -124,7 +124,7 @@
 //           value={customer.phoneNumber}
 //           onChange={(e) => setCustomer({ ...customer, phoneNumber: e.target.value })}
 //           required
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 
@@ -142,14 +142,14 @@
 //           placeholder="Shipping Charges"
 //           value={orderDetails.shippingCharges}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, shippingCharges: e.target.value })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="number"
 //           placeholder="COD Charges"
 //           value={orderDetails.codCharges}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, codCharges: e.target.value })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 //       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -158,14 +158,14 @@
 //           placeholder="Tax Amount"
 //           value={orderDetails.taxAmount}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, taxAmount: e.target.value })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="number"
 //           placeholder="Discount"
 //           value={orderDetails.discount}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, discount: e.target.value })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 
@@ -176,25 +176,25 @@
 //           placeholder="Length"
 //           value={orderDetails.dimensions.length}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, dimensions: { ...orderDetails.dimensions, length: e.target.value } })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="number"
 //           placeholder="Width"
 //           value={orderDetails.dimensions.width}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, dimensions: { ...orderDetails.dimensions, width: e.target.value } })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //         <input
 //           type="number"
 //           placeholder="Height"
 //           value={orderDetails.dimensions.height}
 //           onChange={(e) => setOrderDetails({ ...orderDetails, dimensions: { ...orderDetails.dimensions, height: e.target.value } })}
-//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+//           className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2F60F3] dark:bg-gray-700 dark:border-gray-600 dark:text-white"
 //         />
 //       </div>
 
-//       <button type="submit" className="w-full py-2 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3]-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50">
+//       <button type="submit" className="w-full py-2 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3] -dark focus:outline-none focus:ring-2 focus:ring-[#2F60F3] focus:ring-opacity-50">
 //         Submit Order
 //       </button>
 //     </form>
@@ -255,7 +255,6 @@ const OrderForm = () => {
   const handleProductSelect = (selectedProducts) => {
     setProducts(selectedProducts);
   };
-  console.log(shippingDetails)
 
   const handleShippingDetailsChange = (details) => {
     setShippingDetails(details);
@@ -402,6 +401,7 @@ const OrderForm = () => {
         "Order created successfully with Order ID: " +
         response.data.order_id
       );
+      window.location.reload();
       // Optionally reset the form or redirect
     } catch (error) {
       console.error("Error creating order:", error.response?.data || error.message);
@@ -438,7 +438,7 @@ const OrderForm = () => {
           <div className="w-full">
             <div className="flex items-start md:flex-row md:gap-7 gap-6 w-full">
               <OrderType onChange={handleOrderType} />
-              <PaymentStatus onChange={handlePaymentMethodChange} orderDetails={orderDetails} />
+              <PaymentStatus onChnge={handlePaymentMethodChange} orderDetails={orderDetails} />
             </div>
             <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
           </div>
@@ -481,9 +481,9 @@ const OrderForm = () => {
               </label>
               <div className="flex items-center gap-6">
                 {
-                  orderDetails.insuranceRequired ? <span className="w-8 h-8 flex justify-center items-center rounded-md text-2xl dark:text-black cursor-pointer text-white dark:bg-white bg-black" onClick={handleInsuranceChange}>✔</span> : <span className="block w-8 h-8 rounded-md text-2xl dark:bg-white bg-black cursor-pointer" onClick={handleInsuranceChange}></span>
+                  orderDetails.insuranceRequired ? <span className="md:w-8 md:h-8 h-6 w-6 flex justify-center items-center rounded-md md:text-2xl text-xl dark:text-black cursor-pointer text-white dark:bg-white bg-black" onClick={handleInsuranceChange}>✔</span> : <span className="block md:w-8 md:h-8 h-6 w-6 rounded-md md:text-2xl text-xl dark:bg-white bg-black cursor-pointer" onClick={handleInsuranceChange}></span>
                 }
-                <div className="dark:text-white text-black text-xl font-normal font-['Inter']">{orderDetails.insuranceRequired ? "Yes" : "No"}
+                <div className="dark:text-white text-black text-md md:text-xl font-normal font-['Inter']">{orderDetails.insuranceRequired ? "Yes" : "No"}
                 </div>
               </div>
 
@@ -497,7 +497,7 @@ const OrderForm = () => {
         {validtionMessage && <p className="text-red-500 text-[16px] pt-1 pl-1">{validtionMessage}</p>}
         <button
           type="submit"
-          className="w-full lg:col-span-2 py-2 my-4 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3]-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+          className="w-full lg:col-span-2 py-2 my-4 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3] -dark focus:outline-none focus:ring-2 focus:ring-[#2F60F3] focus:ring-opacity-50"
         >
           Submit Order
         </button>

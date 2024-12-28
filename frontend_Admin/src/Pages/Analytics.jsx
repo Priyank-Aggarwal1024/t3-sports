@@ -178,7 +178,7 @@ const Analytics = () => {
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
-          className="py-2 px-6 rounded-md text-xs hover:cursor-pointer bg-transparent border border-primary dark:text-primary hover:bg-[#2F60F3] hover:dark:text-white hover:text-white"
+          className="py-2 px-6 rounded-md text-xs hover:cursor-pointer bg-transparent border border-[#2F60F3] dark:text-[#2F60F3] hover:bg-[#2F60F3] hover:dark:text-white hover:text-white"
         >
           <option value="week">Last 7 Days</option>
           <option value="month">Last 30 Days</option>
@@ -194,7 +194,7 @@ const Analytics = () => {
               <p className="text-gray-500">Total Revenue</p>
               <h3 className="text-2xl font-bold">₹{formatToIndianRupees(stats.totalRevenue)}</h3>
             </div>
-            <FiDollarSign className="text-primary text-2xl" />
+            <FiDollarSign className="text-[#2F60F3] text-2xl" />
           </div>
         </div>
 
@@ -204,7 +204,7 @@ const Analytics = () => {
               <p className="text-gray-500">Average Order Value</p>
               <h3 className="text-2xl font-bold">₹{formatToIndianRupees(stats.avgOrderValue)}</h3>
             </div>
-            <FiShoppingBag className="text-primary text-2xl" />
+            <FiShoppingBag className="text-[#2F60F3] text-2xl" />
           </div>
         </div>
 
@@ -214,7 +214,7 @@ const Analytics = () => {
               <p className="text-gray-500">Success Rate</p>
               <h3 className="text-2xl font-bold">{stats.successRate.toFixed(1)}%</h3>
             </div>
-            <FiTrendingUp className="text-primary text-2xl" />
+            <FiTrendingUp className="text-[#2F60F3] text-2xl" />
           </div>
         </div>
 
@@ -224,7 +224,7 @@ const Analytics = () => {
               <p className="text-gray-500">Total Orders</p>
               <h3 className="text-2xl font-bold">{stats.totalOrders}</h3>
             </div>
-            <FiUsers className="text-primary text-2xl" />
+            <FiUsers className="text-[#2F60F3] text-2xl" />
           </div>
         </div>
       </div>
