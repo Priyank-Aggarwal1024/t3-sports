@@ -166,9 +166,7 @@ const Navbar = () => {
             <Link to="/">
               <img src={logo} width={120} alt="logo" />
             </Link>
-            <p className="text-xs mt-2">
-              @2024 ListerJi | All Rights Reserved
-            </p>
+         
           </div>
         </div>
       )}
