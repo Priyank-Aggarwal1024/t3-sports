@@ -37,14 +37,14 @@ const CollectionForm = () => {
     <div className="flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="w-full rounded-lg shadow-md space-y-2"
+        className="w-full rounded-lg shadow-md lg:space-y-12 space-y-6"
       >
 
         {/* Collection Name */}
         <div>
           <label
             htmlFor="collectionName"
-            className="block text-gray-700 dark:text-gray-300 mb-2"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
           >
             Collection Name
           </label>
@@ -63,7 +63,7 @@ const CollectionForm = () => {
         <div>
           <label
             htmlFor="products"
-            className="block text-gray-700 dark:text-gray-300 mb-2"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
           >
             Select Products (hold Ctrl/Cmd to select multiple)
           </label>

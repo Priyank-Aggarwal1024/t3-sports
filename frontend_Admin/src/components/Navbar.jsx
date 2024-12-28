@@ -44,11 +44,9 @@ const Navbar = () => {
 
   const navItems = [
     { path: "/", text: "Home", icon: <LuHome /> },
-    { path: "/manage", text: "Manage", icon: <BiSolidOffer /> },
+    { path: "/create", text: "Create", icon: <BiSolidOffer /> },
     { path: "/all-orders", text: "All Orders", icon: <MdOutlineExplore /> },
-    { path: "/create-warehouse", text: "Create Warehouse", icon: <MdOutlineExplore /> },
     { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
-    { path: "/customer", text: "Create Customer", icon: <MdOutlineExplore /> },
     { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
   ];
 
@@ -75,7 +73,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="p-2 py-4 bg-white dark:bg-darkPrimary dark:text-white border-b border-dullBlack border-t dark:border-gray-600 ">
+    <nav className="p-2 py-8 bg-white dark:bg-black dark:text-white border-b border-dullBlack border-t dark:border-[#949494] ">
       <div className="xs:px-6 flex justify-between items-center">
         {/* Hamburger menu for mobile */}
         <button
@@ -98,14 +96,14 @@ const Navbar = () => {
         </div>
 
         {/* Navigation items for desktop */}
-        <div className="hidden md:flex flex-grow flex-wrap justify-center space-x-4 ">
+        <div className="hidden md:flex flex-grow flex-wrap justify-center gap-7">
           {navItems.map((item, index) => (
             <NavLink
               key={index}
               to={item.path}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-black text-white dark:text-black dark:bg-primary px-3 py-2 text-xs rounded-md"
+                  ? "bg-black font-[Inter] text-white dark:text-black dark:bg-primary px-3 py-2 text-xs rounded-md"
                   : "bg-transparent border border-black dark:border-0 text-black dark:text-white dark:bg-black px-3 py-2 text-xs rounded-md"
               }
             >

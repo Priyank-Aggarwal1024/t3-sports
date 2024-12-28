@@ -410,59 +410,89 @@ const OrderForm = () => {
   };
 
   return (
-    <div className="mx-2 md:mx-6 dark:bg-black bg-white">
-      <h2 className="text-3xl font-semibold text-gray-800 dark:text-white mb-6">
+    <div className="dark:bg-black bg-white">
+      <h2 className="text-3xl font-semibold text-gray-800 dark:text-white lg:mb-16 mb-7">
         Create New Order
       </h2>
       <form
         onSubmit={handleSubmit}
-        className="grid md:grid-cols-2 grid-cols-1 gap-2 bg-white dark:bg-black rounded-md dark:shadow-lg"
+        className="bg-white dark:bg-black rounded-md dark:shadow-lg"
       >
-        <Accordion title={"Select Warehouse"}>
-          <WarehouseSearch selectedWarehouse={selectedWarehouse} setSelectedWarehouse={setSelectedWarehouse} />
-        </Accordion>
-        <Accordion title={"Order Type"}>
-          <OrderType onChange={handleOrderType} />
-        </Accordion>
-        <Accordion title={"Payment Status"}>
-          <PaymentStatus onChange={handlePaymentMethodChange} orderDetails={orderDetails} />
-        </Accordion>
-        <Accordion title="Select Customer">
-          <CustomerSearch selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />
-        </Accordion>
-        <Accordion title="Select Products">
-          <ProductSelection onProductSelect={handleProductSelect} />
-        </Accordion>
-        <Accordion title="Shipping Details">
-          <ShippingDetails onEditCustomer={setSelectedCustomer} selectedCustomer={selectedCustomer} onChange={handleShippingDetailsChange} />
-        </Accordion>
-        <Accordion title="Insurance Required">
-          <div className="w-full flex items-center gap-4">
-            {
-              orderDetails.insuranceRequired ? <span className="w-8 h-8 flex justify-center items-center rounded-md text-2xl dark:text-black cursor-pointer text-white dark:bg-white bg-black" onClick={handleInsuranceChange}>✔</span> : <span className="block w-8 h-8 rounded-md text-2xl dark:bg-white bg-black cursor-pointer" onClick={handleInsuranceChange}></span>
-            }
-            <label htmlFor="insuranceRequired" onClick={handleInsuranceChange} className="block text-gray-700 dark:text-gray-200 cursor-pointer">
-              Insurance Required
-            </label>
+        <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
+          <div className="w-[200px]">
+            <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Order Details</div>
           </div>
-        </Accordion>
-        <Accordion title={"Note"}>
-          <div className="form-control">
-            <label htmlFor="note" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
-              Give Extra Note
-            </label>
-            <input
-              name="note"
-              id="note"
-              placeholder="Extra Note"
-              value={orderDetails.note}
-              onChange={({ target }) => handlePaymentMethodChange(target.name, target.value)}
-              className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-            />
+          <div className="w-full">
+            <ProductSelection onProductSelect={handleProductSelect} />
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+            <CustomerSearch selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+            <WarehouseSearch selectedWarehouse={selectedWarehouse} setSelectedWarehouse={setSelectedWarehouse} />
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
           </div>
-        </Accordion>
+        </div>
+        <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
+          <div className="w-[200px]">
+            <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Payment Details</div>
+          </div>
+          <div className="w-full">
+            <div className="flex items-start md:flex-row md:gap-7 gap-6 w-full">
+              <OrderType onChange={handleOrderType} />
+              <PaymentStatus onChange={handlePaymentMethodChange} orderDetails={orderDetails} />
+            </div>
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+          </div>
+        </div>
+
+
+        <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
+          <div className="w-[200px]">
+            <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Shipping Details</div>
+          </div>
+          <div className="w-full">
+            <ShippingDetails onEditCustomer={setSelectedCustomer} selectedCustomer={selectedCustomer} onChange={handleShippingDetailsChange} />
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+          </div>
+        </div>
+
+        <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
+          <div className="md:w-[200px]">
+            <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Additional Information</div>
+          </div>
+          <div className="w-full">
+
+            <div className="form-control">
+              <label htmlFor="note" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+                Note
+              </label>
+              <textarea
+                name="note"
+                id="note"
+                rows={5}
+                placeholder="Enter notes, remarks, or instructions..."
+                value={orderDetails.note}
+                onChange={({ target }) => handlePaymentMethodChange(target.name, target.value)}
+                className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+              />
+            </div>
+            <div className="w-full pt-10">
+              <label htmlFor="insuranceRequired" onClick={handleInsuranceChange} className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] cursor-pointer md:mb-6 mb-4">
+                Insurance Required
+              </label>
+              <div className="flex items-center gap-6">
+                {
+                  orderDetails.insuranceRequired ? <span className="w-8 h-8 flex justify-center items-center rounded-md text-2xl dark:text-black cursor-pointer text-white dark:bg-white bg-black" onClick={handleInsuranceChange}>✔</span> : <span className="block w-8 h-8 rounded-md text-2xl dark:bg-white bg-black cursor-pointer" onClick={handleInsuranceChange}></span>
+                }
+                <div className="dark:text-white text-black text-xl font-normal font-['Inter']">{orderDetails.insuranceRequired ? "Yes" : "No"}
+                </div>
+              </div>
+
+            </div>
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+          </div>
+        </div>
         <div className="md:grid-cols-2 md:col-span-2">
-          <OrderSummary selectedCustomer={selectedCustomer} products={products} />
+          <OrderSummary shippingDetails={shippingDetails} selectedCustomer={selectedCustomer} products={products} />
         </div>
         {validtionMessage && <p className="text-red-500 text-[16px] pt-1 pl-1">{validtionMessage}</p>}
         <button

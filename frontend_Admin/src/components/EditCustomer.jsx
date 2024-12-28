@@ -45,17 +45,19 @@ const EditCustomer = () => {
     };
 
     return (
-        <div className="bg-lightPrimary dark:bg-darkPrimary rounded-lg shadow-md p-6">
-            <h2 className="text-2xl my-6 font-bold dark:text-white text-black">Edit Customer</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {
-                    customerFormControls.map((control, idx) => <CustomerFormControls {...control} customer={customer} handleChange={handleChange} customerErrorState={customerErrorState} key={idx} />)
-                }
-                <button className="bg-primary  lg:col-span-3 text-white px-8 py-1 rounded-md h-fit md:col-span-2" onClick={handleSubmitCustomer}>
-                    Edit Customer
-                </button>
+        <div className="bg-black lg:p-16 md:p-8 px-4 py-8">
+            <div className="bg-lightPrimary dark:bg-darkPrimary rounded-lg shadow-md p-6">
+                <h2 className="text-2xl my-6 font-bold dark:text-white text-black">Edit Customer</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[74px] md:gap-y-12 gap-y-6">
+                    {
+                        customerFormControls.map((control, idx) => <CustomerFormControls {...control} customer={customer} handleChange={handleChange} customerErrorState={customerErrorState} key={idx} />)
+                    }
+                    <button className="bg-primary  md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
+                        Edit Customer
+                    </button>
+                </div>
+                {message && <p className="mt-4 dark:text-white text-black">{message}</p>}
             </div>
-            {message && <p className="mt-4 dark:text-white text-black">{message}</p>}
         </div>
     );
 };
