@@ -12,12 +12,10 @@ import axios from "axios";
 import DetailedList from "../Pages/DetailedList";
 import BusinessPage from "../Pages/BusinessPage";
 import Order from "../Pages/Order";
-import ProductList from "../Pages/ProductList";
 import Customer from "../components/Customer";
-import CreateCustomer from "../components/CreateCustomer";
 import Analytics from "../Pages/Analytics";
-import CreateWarehouse from "../components/CreateWarehouse";
 import EditCustomer from "../components/EditCustomer";
+import Create from "../Pages/Create";
 
 const router = createBrowserRouter([
   {
@@ -50,16 +48,12 @@ const router = createBrowserRouter([
             element: <Home />,
           },
           {
-            path: "/customer",
-            element: <CreateCustomer />,
+            path: "/create",
+            element: <Create />,
           },
           {
             path: "/edit-customer/:id",
             element: <EditCustomer />,
-          },
-          {
-            path: "/manage",
-            element: <ProductList />,
           },
           {
             path: "/all-orders",
@@ -68,10 +62,6 @@ const router = createBrowserRouter([
           {
             path: "/order",
             element: <Order />,
-          },
-          {
-            path: "/create-warehouse",
-            element: <CreateWarehouse />
           },
           {
             path: "/analytics",

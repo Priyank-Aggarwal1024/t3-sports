@@ -6,7 +6,7 @@ function CustomerFormControls({ name, label, type, options, handleChange, custom
             return <div className="w-full">
                 <label
                     htmlFor={name}
-                    className="block text-gray-700 dark:text-gray-300 mb-2"
+                    className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
                 >
                     {label}
                 </label>
@@ -27,7 +27,7 @@ function CustomerFormControls({ name, label, type, options, handleChange, custom
             return <div className="w-full">
                 <label
                     htmlFor={name}
-                    className="block text-gray-700 dark:text-gray-300 mb-2"
+                    className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
                 >
                     {label}
                 </label>

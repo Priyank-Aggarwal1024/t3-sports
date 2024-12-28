@@ -18,6 +18,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
     pincode: selectedCustomer?.pincode || "",
     country: selectedCustomer?.country || "",
   });
+  const [alternate, setAlternate] = useState(false);
   const { editCustomer } = useCustomer();
   const [charges, setCharges] = useState({
     shippingCharges: 0,
@@ -95,87 +96,142 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
       ...dimensions,
     });
   }, [address, charges, dimensions, selectedCustomer]);
-
+  useEffect(() => {
+    setAddress({
+      address: selectedCustomer?.address || "",
+      address_2: "",
+      city: selectedCustomer?.city || "",
+      state: selectedCustomer?.state || "",
+      pincode: selectedCustomer?.pincode || "",
+      country: selectedCustomer?.country || "",
+    })
+  }, [selectedCustomer])
   return (
     <div className="dark:text-white text-black">
       {/* <h2 className="text-3xl font-bold">Shipping Details</h2> */}
-      {!selectedCustomer && <h2 className="text-xl text-red-500">First select the customer then fill shipping details</h2>}
-      <div className="grid md:grid-cols-2 gap-2">
+      {!selectedCustomer && <h2 className="text-xl text-red-500 pb-4">First select the customer then fill shipping details</h2>}
+      <div className="grid md:grid-cols-2 md:gap-9 gap-5">
         <div className="w-full">
-          {edit ? <input
-            name="address"
-            placeholder="Address"
-            value={address.address}
-            onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-          /> : <p className="my-auto w-full">Address :<br /> {selectedCustomer?.address}</p>}
+          {edit ? <div className="">
+            <label htmlFor="address" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+              Address
+            </label>
+            <input
+              id="address"
+              name="address"
+              placeholder="Address"
+              value={address.address}
+              onChange={handleAddressChange}
+              className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+            />
+          </div> : <div className="w-full">
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">Address</p>
+            <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.address}</p>
+          </div>}
           {
             addressErrorMessage["address"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["address"]}</p>
           }
         </div>
         <div className="w-full">
-          {edit ? <input
-            name="city"
-            placeholder="City"
-            value={address.city}
-            onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-          /> : <p className="my-auto w-full">City :<br /> {selectedCustomer?.city}</p>}
+          {edit ? <div className="">
+            <label htmlFor="city" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+              City
+            </label>
+            <input
+              id="city"
+              name="city"
+              placeholder="City"
+              value={address.city}
+              onChange={handleAddressChange}
+              className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+            /> </div> : <div className="w-full">
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">City</p>
+            <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.city}</p>
+          </div>}
           {
             addressErrorMessage["city"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["city"]}</p>
           }
         </div>
         <div className="w-full">
-
-          {edit ? <input
-            name="state"
-            placeholder="State"
-            value={address.state}
-            onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-          /> : <p className="my-auto w-full">State :<br /> {selectedCustomer?.state}</p>}
+          {edit ? <div className="">
+            <label htmlFor="state" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+              State
+            </label>
+            <input
+              id="state"
+              name="state"
+              placeholder="State"
+              value={address.state}
+              onChange={handleAddressChange}
+              className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+            /> </div> : <div className="w-full">
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">State</p>
+            <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.state}</p>
+          </div>}
           {
             addressErrorMessage["state"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["state"]}</p>
           }
         </div>
         <div className="w-full">
-
-          {edit ? <input
-            name="country"
-            placeholder="Country"
-            value={address.country}
-            onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-          /> : <p className="my-auto w-full">Country :<br /> {selectedCustomer?.country}</p>}
+          {edit ? <div className="">
+            <label htmlFor="country" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+              Country
+            </label>
+            <input
+              id="country"
+              name="country"
+              placeholder="Country"
+              value={address.country}
+              onChange={handleAddressChange}
+              className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+            /> </div> : <div className="w-full">
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">Country</p>
+            <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.country}</p>
+          </div>}
           {
             addressErrorMessage["country"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["country"]}</p>
           }
         </div>
         <div className="w-full">
-
-          {edit ? <input
-            name="pincode"
-            placeholder="Pincode"
-            value={address.pincode}
-            onChange={handleAddressChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-          /> : <p className="my-auto w-full">Pincode :<br /> {selectedCustomer?.pincode}</p>}
+          {edit ? <div className="">
+            <label htmlFor="pincode" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+              Pincode
+            </label>
+            <input
+              id="pincode"
+              name="pincode"
+              placeholder="Pincode"
+              value={address.pincode}
+              onChange={handleAddressChange}
+              className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+            /> </div> : <div className="w-full">
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">Pincode</p>
+            <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.pincode}</p>
+          </div>}
           {
             addressErrorMessage["pincode"] && <p className="text-red-500 text-[12px] pt-1 pl-1">{addressErrorMessage["pincode"]}</p>
           }
         </div>
-        {edit ? <div className="w-full md:col-span-2 bg-green-600 text-center py-1 rounded-lg mx-auto cursor-pointer" onClick={handleSaveAddress}>Save Address</div> : <div className="w-full md:col-span-2 bg-primary text-center py-1 rounded-lg mx-auto cursor-pointer" onClick={() => setEdit(true)}>Edit Address</div>}
-        <input
-          name="address_2"
-          placeholder="Other Address"
-          value={address.address_2}
-          onChange={handleAddressChange}
-          className="w-full p-2 md:col-span-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md "
-        />
-        <div className="flex flex-col md:flex-row gap-2 items-center">
+        <div className="w-full flex flex-col gap-7 items-start justify-center">
+          <div className="w-full flex items-center justify-center md:gap-7 gap-4">
+            {edit ? <div className="text-[#3c98d6] text-xl font-semibold font-['Inter'] cursor-pointer" onClick={handleSaveAddress}>Save Address</div> : <div className="text-[#3c98d6] md:text-xl text-lg font-semibold font-['Inter'] cursor-pointer" onClick={() => setEdit(true)}>Edit Address</div>}
+            <div className="dark:text-white text-black text-xl font-medium font-['Inter']">or</div>
+            <div className="text-[#3c98d6] md:text-xl text-lg font-semibold font-['Inter'] cursor-pointer" onClick={() => setAlternate(true)} >Use Alternate Address</div>
+          </div>
+          {alternate && <input
+            name="address_2"
+            placeholder="Other Address"
+            value={address.address_2}
+            onChange={handleAddressChange}
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+          />}
+        </div>
+        {/* Shipping Charges */}
+        <div className="w-full md:pt-12 pt-0 md:col-span-2"></div>
+        <div className="w-full">
           <label
             htmlFor="shippingCharges"
-            className="block text-gray-700 dark:text-gray-300 mb-2 whitespace-nowrap w-full my-auto"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
           >
             Shipping Charges:
           </label>
@@ -186,13 +242,13 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="Shipping Charges"
             value={charges.shippingCharges}
             onChange={handleChargesChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
           />
         </div>
-        <div className="flex flex-col md:flex-row gap-2 items-center">
+        <div className="w-full">
           <label
             htmlFor="codCharges"
-            className="block w-full text-gray-700 dark:text-gray-300 mb-2 whitespace-nowrap"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4 whitespace-nowrap"
           >
             COD Charges:
           </label>
@@ -203,80 +259,77 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             placeholder="COD Charges"
             value={charges.codCharges}
             onChange={handleChargesChange}
-            className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
           />
         </div>
-
         {/* Adding input fields for dimensions */}
-        <div className="grid grid-cols-2 md:col-span-2 gap-4 mt-4 w-full ">
-          <div className="flex flex-col md:flex-row gap-2 items-center">
-            <label
-              htmlFor="weight"
-              className="block text-gray-700 dark:text-gray-300 mb-2 whitespace-nowrap w-full"
-            >
-              Weight (in grams):
-            </label>
-            <input
-              name="weight"
-              type="number"
-              min={0}
-              placeholder="Weight (g)"
-              value={dimensions.weight}
-              onChange={handleDimensionChange}
-              className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div className="flex flex-col md:flex-row gap-2 items-center">
-            <label
-              htmlFor="height"
-              className="block text-gray-700 dark:text-gray-300 mb-2 whitespace-nowrap w-full"
-            >
-              Height (in cm):
-            </label>
-            <input
-              name="height"
-              type="number"
-              min={0}
-              placeholder="Height (cm)"
-              value={dimensions.height}
-              onChange={handleDimensionChange}
-              className="p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md w-full"
-            />
-          </div>
-          <div className="flex flex-col md:flex-row gap-2 items-center">
-            <label
-              htmlFor="length"
-              className="block text-gray-700 dark:text-gray-300 mb-2 whitespace-nowrap w-full"
-            >
-              Length (in cm):
-            </label>
-            <input
-              name="length"
-              type="number"
-              min={0}
-              placeholder="Length (cm)"
-              value={dimensions.length}
-              onChange={handleDimensionChange}
-              className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-            />
-          </div>
-          <div className="flex flex-col md:flex-row gap-2 items-center">
-            <label
-              htmlFor="breadth"
-              className="block text-gray-700 dark:text-gray-300 mb-2 whitespace-nowrap w-full"
-            >
-              Breadth (in cm):
-            </label>
-            <input
-              name="breadth"
-              type="number"
-              min={0}
-              placeholder="Breadth (cm)"
-              value={dimensions.breadth}
-              onChange={handleDimensionChange}
-              className="w-full p-2 dark:text-white text-black text-sm dark:bg-black bg-white shadow-sm rounded-md"
-            />
-          </div>
+        <div className="w-full">
+          <label
+            htmlFor="weight"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+          >
+            Weight (in grams):
+          </label>
+          <input
+            name="weight"
+            type="number"
+            min={0}
+            placeholder="Weight (g)"
+            value={dimensions.weight}
+            onChange={handleDimensionChange}
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+          />
+        </div>
+        <div className="w-full">
+          <label
+            htmlFor="height"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+          >
+            Height (in cm):
+          </label>
+          <input
+            name="height"
+            type="number"
+            min={0}
+            placeholder="Height (cm)"
+            value={dimensions.height}
+            onChange={handleDimensionChange}
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+          />
+        </div>
+        <div className="w-full">
+          <label
+            htmlFor="length"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+          >
+            Length (in cm):
+          </label>
+          <input
+            name="length"
+            type="number"
+            min={0}
+            placeholder="Length (cm)"
+            value={dimensions.length}
+            onChange={handleDimensionChange}
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+          />
+        </div>
+        <div className="w-full">
+          <label
+            htmlFor="breadth"
+            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+          >
+            Breadth (in cm):
+          </label>
+          <input
+            name="breadth"
+            type="number"
+            min={0}
+            placeholder="Breadth (cm)"
+            value={dimensions.breadth}
+            onChange={handleDimensionChange}
+            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+          />
         </div>
       </div>
     </div>

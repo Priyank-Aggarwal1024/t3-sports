@@ -172,7 +172,7 @@ const Analytics = () => {
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="p-6 bg-light min-h-screen">
+    <div className="p-6 bg-light min-h-screen bg-white dark:bg-black">
       {/* Time Range Selector */}
       <div className="mb-6">
         <select
@@ -231,11 +231,74 @@ const Analytics = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 h-96 w-full">
+
+        <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full">
           <h2 className="text-xl font-bold mb-4">Revenue Trend</h2>
-          <Line
-            data={revenueChartData}
-            options={{
+          <div className="h-96 w-full ">
+            <Line
+              data={revenueChartData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full">
+          <h2 className="text-xl font-bold mb-4">Order Distribution</h2>
+          <div className="h-96 w-full ">
+
+            <Doughnut
+              data={orderDistributionData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-12'>
+
+        <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full mb-6">
+          <h2 className="text-xl font-bold mb-4">Hourly Order Distribution</h2>
+          <div className="h-96 w-full ">
+            <Bar
+              data={hourlyDistributionData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
+                },
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full mb-6">
+          <h2 className="text-xl font-bold mb-4">Top States by Orders</h2>
+          <div className="h-96 w-full ">
+            <Bar data={stateDistributionData} options={{
               responsive: true,
               maintainAspectRatio: false,
               scales: {
@@ -243,68 +306,15 @@ const Analytics = () => {
                   beginAtZero: true,
                 },
               },
-            }}
-          />
-        </div>
-
-        <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 h-96 w-full">
-          <h2 className="text-xl font-bold mb-4">Order Distribution</h2>
-          <Doughnut
-            data={orderDistributionData}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false,
               plugins: {
                 legend: {
-                  position: 'bottom',
+                  display: false,
                 },
               },
-            }}
-          />
+            }} />
+          </div>
         </div>
       </div>
-
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-12'>
-
-      <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 h-96 w-full mb-6">
-        <h2 className="text-xl font-bold mb-4">Hourly Order Distribution</h2>
-        <Bar
-          data={hourlyDistributionData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-          }}
-        />
-      </div>
-
-      <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 h-96 w-full mb-6">
-          <h2 className="text-xl font-bold mb-4">Top States by Orders</h2>
-          <Bar data={stateDistributionData} options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
-          }} />
-        </div>
-        </div>
     </div>
   );
 };

@@ -29,13 +29,12 @@ const CreateCustomer = () => {
   };
 
   return (
-    <div className="bg-lightPrimary dark:bg-darkPrimary rounded-lg shadow-md p-6">
-      <h2 className="text-2xl my-6 font-bold dark:text-white text-black">Create Customer</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="bg-lightPrimary dark:bg-darkPrimary rounded-lg shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[74px] md:gap-y-12 gap-y-6">
         {
           customerFormControls.map((control, idx) => <CustomerFormControls {...control} customer={customer} handleChange={handleChange} customerErrorState={customerErrorState} />)
         }
-        <button className="bg-primary  lg:col-span-3 text-white px-8 py-1 rounded-md h-fit md:col-span-2" onClick={handleSubmitCustomer}>
+        <button className="bg-primary  md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
           Create Customer
         </button>
       </div>

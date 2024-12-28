@@ -1,67 +1,56 @@
-
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
-  font-family: 'Dahlia';
+  font-family: "Dahlia";
   src: url(../src/assets/dahlia-regular.otf);
   font-weight: bold;
 }
 @font-face {
-  font-family: 'Liberation Sans';
+  font-family: "Liberation Sans";
   src: url(../src/assets/LiberationSans-Regular-webfont.woff);
   font-weight: normal;
 }
 @font-face {
-  font-family: 'Liberation Sans Bold';
+  font-family: "Liberation Sans Bold";
   src: url(../src/assets/LiberationSans-Bold-webfont.woff);
   font-weight: bold;
 }
-
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
+
   transition: background-color 0.2s ease-in-out;
 }
 
-
-
-body{
+body {
   background-color: black;
 }
 
 *::-webkit-media-controls-panel {
-
-  display: none!important;
+  display: none !important;
 
   -webkit-appearance: none;
-
 }
 
 *::--webkit-media-controls-play-button {
-
-  display: none!important;
+  display: none !important;
 
   -webkit-appearance: none;
-
 }
 
 *::-webkit-media-controls-start-playback-button {
-
-  display: none!important;
+  display: none !important;
 
   -webkit-appearance: none;
-
 }
 
 h1,
@@ -92,7 +81,7 @@ option,
 span,
 ul,
 ::placeholder {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 ul {
@@ -107,7 +96,7 @@ li {
   list-style: none;
 }
 
-.active{
+.active {
   color: #b8d21e;
   font-weight: 500;
 }
@@ -145,24 +134,26 @@ li {
   background-color: rgba(156, 39, 176, 0.5);
 }
 
-.page-content{
+.page-content {
   padding-top: 4rem;
 }
-.swiper-pagination-bullet-active{
-  background-color: #b8d21e!important;
+.swiper-pagination-bullet-active {
+  background-color: #b8d21e !important;
 }
-.swiper-button-prev::after, .swiper-button-next::after{
-  font-size: 1rem!important;
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 1rem !important;
 }
-.swiper-button-prev, .swiper-button-next{
-  color: #b8d21e!important;
-  background-color: white!important;
-  border-radius: 100%!important;
-  padding: 1rem!important;
-  height: 30px!important;
-  width: 30px!important;
+.swiper-button-prev,
+.swiper-button-next {
+  color: #b8d21e !important;
+  background-color: white !important;
+  border-radius: 100% !important;
+  padding: 1rem !important;
+  height: 30px !important;
+  width: 30px !important;
 }
-.swiper-pagination-bullets{
+.swiper-pagination-bullets {
   background-color: white;
   border-radius: 15px;
   padding: 5px;
@@ -171,15 +162,14 @@ li {
   .ruby-text {
     display: ruby-text;
   }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none; /* For Chrome, Safari, and Opera */
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none; /* For Internet Explorer and Edge */
-      scrollbar-width: none; /* For Firefox */
-    }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+    scrollbar-width: none; /* For Firefox */
+  }
 }
-
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -192,7 +182,7 @@ li {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #B8B8C2;
+  background: #b8b8c2;
   border-radius: 10px;
 }
 
@@ -200,11 +190,12 @@ li {
   background: #828284;
 }
 
-select,input{
+select,
+input {
   -webkit-appearance: initial;
 }
 ::selection {
-  background-color: #E8BD3233;
+  background-color: #e8bd3233;
 }
 
 /* Loader CSS */
@@ -241,7 +232,7 @@ select,input{
 }
 
 .required:after {
-  content:" *";
+  content: " *";
   color: red;
 }
 
