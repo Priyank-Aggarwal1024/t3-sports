@@ -80,7 +80,7 @@ const Poster = ({ formData, file }) => {
             />
           )}
 
-          <div className="bg-primary absolute bottom-2 right-2 w-28 p-1 rounded-xl opacity-100 z-10 ">
+          <div className="bg-[#2F60F3] absolute bottom-2 right-2 w-28 p-1 rounded-xl opacity-100 z-10 ">
             <img
               src={logo}
               alt="Watermark"
@@ -126,7 +126,7 @@ const Poster = ({ formData, file }) => {
       <button
         onClick={downloadPoster}
         disabled={loading}
-        className={`mt-4 dark:bg-primary bg-black text-white dark:text-black py-2 px-4 rounded-xl w-full
+        className={`mt-4 dark:bg-[#2F60F3] bg-black text-white dark:text-black py-2 px-4 rounded-xl w-full
           ${loading ? "cursor-not-allowed" : "cursor-pointer"}
           `}
       >

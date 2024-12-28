@@ -9,6 +9,10 @@ const WarehouseSchema = new mongoose.Schema({
         type: String,
         required: [true, "Warehouse address is required"]
     },
+    email: {
+        type: String,
+        required: [true, "Warehouse email is required"]
+    },
     products: [
         {
             productId: {

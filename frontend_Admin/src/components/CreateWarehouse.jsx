@@ -32,6 +32,10 @@ function CreateWarehouse(props) {
     const handleSubmit = async (e) => {
         setMessageWarehouse(errorWarehouseState);
         e.preventDefault();
+        if (!data.email || data.email.trim() == "") {
+            setMessageWarehouse({ ...errorWarehouseState, email: "Warehouse email is required." })
+            return;
+        }
         if (!data.name || data.name.trim() == "") {
             setMessageWarehouse({ ...errorWarehouseState, name: "Warehouse name is required." })
             return;
@@ -45,7 +49,7 @@ function CreateWarehouse(props) {
     }
     return (
         <form className="w-full block">
-            <div className="grid md:grid-cols-2 gap-12 bg-neutral-100 dark:bg-darkPrimary rounded-lg">
+            <div className="grid md:grid-cols-2 gap-12 dark:bg-darkPrimary rounded-lg">
                 <div className="w-full flex flex-col lg:gap-12 gap-6">
                     <div className="w-full">
                         <label
@@ -59,12 +63,12 @@ function CreateWarehouse(props) {
                             id="email"
                             name="email"
                             placeholder="Enter warehouse email"
-                            value={data.name}
+                            value={data.email}
                             onChange={handleChange}
                             className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         {
-                            messageWarehouse.name && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageWarehouse.name}</p>
+                            messageWarehouse.email && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageWarehouse.email}</p>
                         }
                     </div>
                     <div className="w-full">
@@ -126,7 +130,7 @@ function CreateWarehouse(props) {
                         </div>)
                     }
                 </div>
-                <div className="w-full md:col-span-2 rounded-md bg-primary cursor-pointer py-3 px-4 text-center text-white font-bold text-md uppercase" onClick={handleSubmit}>Create Warehouse</div>
+                <div className="w-full md:col-span-2 rounded-md bg-[#2F60F3] cursor-pointer py-3 px-4 text-center text-white font-bold text-md uppercase" onClick={handleSubmit}>Create Warehouse</div>
             </div>
         </form>
     );

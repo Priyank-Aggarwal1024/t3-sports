@@ -18,7 +18,7 @@ function ForgotPassword() {
           email: email,
         },
         {
-    
+
         }
       );
       if (response.data.Status === "Success") {
@@ -61,9 +61,8 @@ function ForgotPassword() {
           </div>
           <button
             type="submit"
-            className={`w-full bg-white dark:bg-primary text-black dark:text-black py-3 rounded-xl uppercase hover:opacity-95 disabled:opacity-80 ${
-              loading ? "opacity-80 cursor-not-allowed" : ""
-            }`}
+            className={`w-full bg-white dark:bg-[#2F60F3] text-black dark:text-black py-3 rounded-xl uppercase hover:opacity-95 disabled:opacity-80 ${loading ? "opacity-80 cursor-not-allowed" : ""
+              }`}
             disabled={loading} // Disable button while loading
           >
             {loading ? "Loading..." : "Submit"}

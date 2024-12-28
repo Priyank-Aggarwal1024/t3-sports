@@ -233,9 +233,8 @@ const Profile = () => {
 
                     <button
                       disabled={uploadingImage} // Disable button during image upload
-                      className={`border flex items-center gap-2 justify-center text-sm rounded-xl bg-transparent border-slate-300 py-2 px-4 ${
-                        uploadingImage ? "opacity-80 cursor-not-allowed" : ""
-                      }`}
+                      className={`border flex items-center gap-2 justify-center text-sm rounded-xl bg-transparent border-slate-300 py-2 px-4 ${uploadingImage ? "opacity-80 cursor-not-allowed" : ""
+                        }`}
                       type="submit"
                     >
                       <CgProfile />
@@ -297,9 +296,8 @@ const Profile = () => {
                       placeholder="Name"
                       defaultValue={currentUser.name}
                       id="name"
-                      className={`border p-2 md:p-3  text-black rounded-xl w-full ${
-                        errors.name ? "border-red" : ""
-                      }`}
+                      className={`border p-2 md:p-3  text-black rounded-xl w-full ${errors.name ? "border-red" : ""
+                        }`}
                       onChange={handleChange}
                     />
                     {errors.name && (
@@ -321,9 +319,8 @@ const Profile = () => {
                       placeholder="Username"
                       defaultValue={currentUser.username}
                       id="username"
-                      className={`border p-2 md:p-3 text-black rounded-xl w-full ${
-                        errors.username ? "border-red" : ""
-                      }`}
+                      className={`border p-2 md:p-3 text-black rounded-xl w-full ${errors.username ? "border-red" : ""
+                        }`}
                       onChange={handleChange}
                       required
                     />
@@ -366,9 +363,8 @@ const Profile = () => {
                       placeholder="PhoneNo"
                       id="phoneNo"
                       defaultValue={currentUser.phoneNo}
-                      className={`border p-2 md:p-3  text-black   rounded-xl w-full ${
-                        errors.name ? "border-red" : ""
-                      }`}
+                      className={`border p-2 md:p-3  text-black   rounded-xl w-full ${errors.name ? "border-red" : ""
+                        }`}
                       onChange={handleChange}
                     />
                     {errors.phoneNo && (
@@ -391,9 +387,8 @@ const Profile = () => {
                         placeholder="Password"
                         onChange={handleChange}
                         id="password"
-                        className={`border p-2 md:p-3  text-black  rounded-xl w-full ${
-                          errors.password ? "border-red" : ""
-                        }`}
+                        className={`border p-2 md:p-3  text-black  rounded-xl w-full ${errors.password ? "border-red" : ""
+                          }`}
                       />
 
                       <button
@@ -426,11 +421,10 @@ const Profile = () => {
                           onClick={() =>
                             handleTypeChange({ target: { value: type } })
                           }
-                          className={`cursor-pointer p-2 md:p-4 rounded-xl shadow-md flex items-center justify-center ${
-                            selectedInterests.includes(type)
-                              ? "dark:bg-primary font-poppins bg-black text-white dark:text-black"
+                          className={`cursor-pointer p-2 md:p-4 rounded-xl shadow-md flex items-center justify-center ${selectedInterests.includes(type)
+                              ? "dark:bg-[#2F60F3] font-poppins bg-black text-white dark:text-black"
                               : "bg-gray-100 dark:bg-gray-800 text-black dark:text-white"
-                          }`}
+                            }`}
                         >
                           {type}
                         </div>
@@ -440,7 +434,7 @@ const Profile = () => {
 
                   <button
                     disabled={loading}
-                    className="bg-primary text-black rounded-xl p-2 md:p-3 uppercase hover:opacity-95 disabled:opacity-80"
+                    className="bg-[#2F60F3] text-black rounded-xl p-2 md:p-3 uppercase hover:opacity-95 disabled:opacity-80"
                   >
                     {loading ? "Loading..." : "Update"}
                   </button>

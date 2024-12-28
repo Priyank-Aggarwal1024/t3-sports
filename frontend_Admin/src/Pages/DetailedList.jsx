@@ -209,7 +209,7 @@ const DetailedList = () => {
               />
 
               <button
-                className="bg-primary text-black hover:opacity-50  font-bold  w-1/2 rounded"
+                className="bg-[#2F60F3] text-black hover:opacity-50  font-bold  w-1/2 rounded"
                 onClick={handleApproveAll}
               >
                 Approve All
@@ -226,7 +226,7 @@ const DetailedList = () => {
                       .slice(startIndex, endIndex)
                       .map((event, index) => (
                         <Link to={`/business/${event._id}`}>
-                        <div key={index} className="bg-primary p-4 rounded-xl">
+                        <div key={index} className="bg-[#2F60F3] p-4 rounded-xl">
                           <div className="h-64 w-full">
                             <img className="w-full h-full rounded-xl object-cover" src={event.profileImage} alt="..." />
                           </div>
@@ -330,7 +330,7 @@ const DetailedList = () => {
               <button
                 onClick={goToPrevPage}
                 disabled={!canGoPrev}
-                className={`bg-black dark:bg-primary hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${
+                className={`bg-black dark:bg-[#2F60F3] hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${
                   !canGoPrev ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
@@ -340,7 +340,7 @@ const DetailedList = () => {
               <button
                 onClick={goToNextPage}
                 disabled={!canGoNext}
-                className={`bg-black dark:bg-primary hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${
+                className={`bg-black dark:bg-[#2F60F3] hover:scale-110 transition-all duration-300 text-white dark:text-black py-2 px-6 rounded-xl ${
                   !canGoNext ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >

@@ -2,7 +2,66 @@ import Customer from "../models/customer.model.js";
 import Order from "../models/order.model.js";
 import axios from 'axios';
 import Product from "../models/product.model.js";
+import Warehouse from "../models/Warehouse.model.js"
+import nodemailer from 'nodemailer'
 const NIMBUS_API_KEY = process.env.NIMBUS_API_KEY;
+
+const generateEmailHtml = (savedOrder, customerDetails, warehouse) => {
+  let str = `
+  <div style="font-family: Arial, sans-serif; padding: 10px; border: 1px solid #ccc; border-radius: 5px; max-width: 600px; margin: 0 auto;">
+    <div style="font-weight: bold; font-size: 16px; margin-bottom: 10px;">
+      <span style="display: inline-block; width: 120px;">Name</span>
+      <span style="display: inline-block; width: 70px;">Quantity</span>
+      <span style="display: inline-block; width: 70px;">Price</span>
+    </div>
+`;
+
+  savedOrder.products.forEach(prod => {
+    str += `
+    <div style="font-size: 14px; margin-bottom: 5px;">
+      <span style="display: inline-block; width: 120px;">${prod.productName}</span>
+      <span style="display: inline-block; width: 70px;">${prod.quantity}</span>
+      <span style="display: inline-block; width: 70px;">${prod.price}</span>
+    </div>
+  `;
+  });
+
+  let html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>T3 Sports | New Order</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9;">
+            <h2 style="color: #2c3e50;">This order is assigned to warehouse: <span style="color: #27ae60;">${warehouse.name}</span></h2>
+            <br/>
+            <h3 style="color: #34495e;">Order Summary</h3>
+            <h4 style="color: #34495e;">Customer Details:</h4>
+            <p style="margin: 5px 0; font-size: 14px;">Name: <strong>${customerDetails.fname} ${customerDetails.lname}</strong></p>
+            <br/>
+            <h4 style="color: #34495e;">Products:</h4>
+            <div style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #fff;">
+                ${str}
+            </div>
+            <br/>
+            <h4 style="color: #34495e;">Shipping Details</h4>
+            <p style="margin: 5px 0; font-size: 14px;">Address: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].address}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">Pincode: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].pincode}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">City: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].city}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">State: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].state}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">Country: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].country}</strong></p>
+            <br/>
+            <h3 style="color: #2c3e50;">Total Amount</h3>
+            <p style="font-size: 16px; font-weight: bold; color: #e74c3c;">Rs. ${savedOrder.totalAmount}</p>
+        </div>
+    </body>
+    </html>
+`;
+  return html
+}
+
+
 
 export const createOrder = async (req, res) => {
   try {
@@ -53,6 +112,21 @@ export const createOrder = async (req, res) => {
 
     savedOrder.nimbuspostTrackingId = nimbusResponse.data.tracking_id;
     await savedOrder.save();
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: `${process.env.NODEMAILER_EMAIL}`, // Your Gmail address
+        pass: `${process.env.NODEMAILER_PASS}`, // Replace with the app password
+      },
+    });
+    const warehouse = await Warehouse.findById(savedOrder.warehouse_id);
+    let emailHtml = generateEmailHtml(savedOrder, customerDetails, warehouse)
+    await transporter.sendMail({
+      from: `T3 Sports <${process.env.NODEMAILER_EMAIL}>`, // Sender address
+      to: `${warehouse.email}`, // List of recipients
+      subject: "New Order Created", // Subject line
+      html: emailHtml
+    });
     return res.status(201).json({
       success: true,
       message: "Order created successfully",

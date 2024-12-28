@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import {
-  MdOutlineDateRange,  
+  MdOutlineDateRange,
 } from "react-icons/md";
 import logo from "../assets/ItsThatSimple.svg";
 
@@ -73,7 +73,7 @@ const OfferPoster = ({ formData, file }) => {
             />
           )}
 
-          <div className="bg-primary absolute bottom-2 right-2 w-28 p-1 rounded-xl opacity-100 z-10 ">
+          <div className="bg-[#2F60F3] absolute bottom-2 right-2 w-28 p-1 rounded-xl opacity-100 z-10 ">
             <img
               src={logo}
               alt="Watermark"
@@ -87,16 +87,16 @@ const OfferPoster = ({ formData, file }) => {
           </h2>
           <div className="flex  flex-wrap justify-center mt-[0.5rem] mx-2 md:text-md text-xs">
             <p className="flex items-center gap-2 mx-2 text-[#fff]">
-                Offer expriring on <MdOutlineDateRange />
-                {formData.Date}
-            </p>            
+              Offer expriring on <MdOutlineDateRange />
+              {formData.Date}
+            </p>
           </div>
         </div>
       </div>
       <button
         onClick={downloadPoster}
         disabled={loading}
-        className={`mt-4 dark:bg-primary bg-black text-white dark:text-black py-2 px-4 rounded-xl w-full
+        className={`mt-4 dark:bg-[#2F60F3] bg-black text-white dark:text-black py-2 px-4 rounded-xl w-full
           ${loading ? "cursor-not-allowed" : "cursor-pointer"}
           `}
       >

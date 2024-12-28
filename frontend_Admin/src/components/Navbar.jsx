@@ -103,7 +103,7 @@ const Navbar = () => {
               to={item.path}
               className={({ isActive }) =>
                 isActive
-                  ? "bg-black font-[Inter] text-white dark:text-black dark:bg-primary px-3 py-2 text-xs rounded-md"
+                  ? "bg-black font-[Inter] text-white dark:text-black dark:bg-[#2F60F3] px-3 py-2 text-xs rounded-md"
                   : "bg-transparent border border-black dark:border-0 text-black dark:text-white dark:bg-black px-3 py-2 text-xs rounded-md"
               }
             >
@@ -126,7 +126,7 @@ const Navbar = () => {
 
               <button
                 onClick={handleSignOut}
-                className="bg-black text-white dark:bg-primary text-xs hover:opacity-90 dark:text-black py-2 px-4 rounded-md"
+                className="bg-black text-white dark:bg-[#2F60F3] text-xs hover:opacity-90 dark:text-black py-2 px-4 rounded-md"
               >
                 Sign Out
               </button>
@@ -134,7 +134,7 @@ const Navbar = () => {
           ) : (
             <Link
               to="/sign-in"
-              className="bg-black text-white dark:bg-primary text-xs hover:opacity-90 dark:text-black py-2 px-4 rounded-md"
+              className="bg-black text-white dark:bg-[#2F60F3] text-xs hover:opacity-90 dark:text-black py-2 px-4 rounded-md"
             >
               Sign in
             </Link>

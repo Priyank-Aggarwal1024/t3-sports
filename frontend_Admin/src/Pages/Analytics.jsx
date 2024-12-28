@@ -178,7 +178,7 @@ const Analytics = () => {
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
-          className="py-2 px-6 rounded-md text-xs hover:cursor-pointer bg-transparent border border-primary dark:text-primary hover:bg-primary hover:dark:text-white hover:text-white"
+          className="py-2 px-6 rounded-md text-xs hover:cursor-pointer bg-transparent border border-primary dark:text-primary hover:bg-[#2F60F3] hover:dark:text-white hover:text-white"
         >
           <option value="week">Last 7 Days</option>
           <option value="month">Last 30 Days</option>

@@ -107,7 +107,7 @@ const AllOrders = () => {
           <button
             onClick={() => changePage(currentPage - 1)}
             disabled={currentPage === 0}
-            className="py-1 px-2 bg-primary text-white rounded-md disabled:bg-gray-600"
+            className="py-1 px-2 bg-[#2F60F3] text-white rounded-md disabled:bg-gray-600"
           >
             <IoIosArrowBack className="" />
           </button>
@@ -117,7 +117,7 @@ const AllOrders = () => {
           <button
             onClick={() => changePage(currentPage + 1)}
             disabled={currentPage === totalPages - 1}
-            className="py-1 px-2 bg-primary text-white rounded-md disabled:bg-gray-600"
+            className="py-1 px-2 bg-[#2F60F3] text-white rounded-md disabled:bg-gray-600"
           >
             <IoIosArrowForward className="" />
           </button>

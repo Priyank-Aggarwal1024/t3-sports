@@ -52,7 +52,7 @@ const EditCustomer = () => {
                     {
                         customerFormControls.map((control, idx) => <CustomerFormControls {...control} customer={customer} handleChange={handleChange} customerErrorState={customerErrorState} key={idx} />)
                     }
-                    <button className="bg-primary  md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
+                    <button className="bg-[#2F60F3]  md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
                         Edit Customer
                     </button>
                 </div>

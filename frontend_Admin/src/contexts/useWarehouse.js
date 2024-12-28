@@ -67,9 +67,6 @@ function useWarehouse(props) {
         }
 
     }
-    if (warehouses) {
-        console.log(warehouses)
-    }
     useEffect(() => {
         getWarehouse();
     }, [count])

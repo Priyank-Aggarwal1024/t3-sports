@@ -113,7 +113,7 @@ const BusinessPage = () => {
               <h2 className="text-xl md:text-3xl font-bold">{event.name}</h2>
               <div className="flex gap-2 items-center justify-center">
                 <button
-                  className={`flex items-center gap-2 bg-primary text-black px-3 py-2 rounded-xl hover:bg-primary`}
+                  className={`flex items-center gap-2 bg-[#2F60F3] text-black px-3 py-2 rounded-xl hover:bg-[#2F60F3]`}
                   onClick={() => {
                     if (!currentUser) {
                       toast.error("Please log in to call");
@@ -126,7 +126,7 @@ const BusinessPage = () => {
                   {event.contactDetails?.phoneNumber}
                 </button>
                 <button
-                  className="flex items-center gap-2 bg-primary text-black px-3 py-2 rounded-xl hover:bg-primary"
+                  className="flex items-center gap-2 bg-[#2F60F3] text-black px-3 py-2 rounded-xl hover:bg-[#2F60F3]"
                   onClick={() => {
                     if (!currentUser) {
                       toast.error("Please log in to Email");
@@ -176,7 +176,7 @@ const BusinessPage = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-primary w-full items-center flex justify-center gap-2 p-3 rounded-xl text-primary underline"
+                  className="bg-[#2F60F3] w-full items-center flex justify-center gap-2 p-3 rounded-xl text-primary underline"
                 >
                   <TbLocationFilled className="wiggle" color="black" size={20} />{" "}
                   <span className="text-black">Go To Map</span>
