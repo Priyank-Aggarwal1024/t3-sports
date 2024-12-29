@@ -57,7 +57,7 @@ function ResetPassword() {
         `/api/auth/resend-otp`,
         { email },
         {
-   
+
         }
       );
       setResendStatus("OTP sent successfully");
@@ -84,7 +84,7 @@ function ResetPassword() {
       const response = await axios.get(
         `/api/auth/verifyOTP?code=${formData.otp}`,
         {
-   
+
         }
       );
 
@@ -102,7 +102,7 @@ function ResetPassword() {
               headers: {
                 "Content-Type": "application/json",
               },
-       
+
             }
           );
           const responseData = res.data;
@@ -130,7 +130,7 @@ function ResetPassword() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white dark:bg-darkPrimary dark:text-white  ">
       <div className="shadow-lg rounded-xl p-8 max-w-md w-full bg-lightSecondary dark:bg-darkSecondary dark:text-white">
-        <h1 className="text-3xl font-semibold text-center mb-6 text-primary">
+        <h1 className="text-3xl font-semibold text-center mb-6 text-[#2F60F3] ">
           Reset Password
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -145,9 +145,8 @@ function ResetPassword() {
               name="otp"
               id="otp"
               required
-              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${
-                errors.otp ? "border-red" : ""
-              }`}
+              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${errors.otp ? "border-red" : ""
+                }`}
               onChange={handleChange}
             />
             {errors.otp && (
@@ -164,7 +163,7 @@ function ResetPassword() {
           </button>
 
           {resendStatus && (
-            <p className="text-center text-primary">{resendStatus}</p>
+            <p className="text-center text-[#2F60F3] ">{resendStatus}</p>
           )}
 
           <div className="mb-4 relative">
@@ -174,9 +173,8 @@ function ResetPassword() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${
-                errors.password ? "border-red" : ""
-              }`}
+              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${errors.password ? "border-red" : ""
+                }`}
               id="password"
               name="password"
               required
@@ -188,7 +186,7 @@ function ResetPassword() {
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 px-3 py-2 text-primary focus:outline-none"
+              className="absolute inset-y-0 right-0 px-3 py-2 text-[#2F60F3] focus:outline-none"
             >
               {showPassword ? (
                 <RiEyeOffFill size={24} />
@@ -205,9 +203,8 @@ function ResetPassword() {
             <input
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
-              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${
-                errors.confirmPassword ? "border-red" : ""
-              }`}
+              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${errors.confirmPassword ? "border-red" : ""
+                }`}
               id="confirmPassword"
               name="confirmPassword"
               required
@@ -221,7 +218,7 @@ function ResetPassword() {
             <button
               type="button"
               onClick={toggleConfirmPasswordVisibility}
-              className="absolute inset-y-0 right-0 px-3 py-2 text-primary focus:outline-none"
+              className="absolute inset-y-0 right-0 px-3 py-2 text-[#2F60F3] focus:outline-none"
             >
               {showConfirmPassword ? (
                 <RiEyeOffFill size={24} />

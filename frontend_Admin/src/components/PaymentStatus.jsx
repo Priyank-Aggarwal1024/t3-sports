@@ -15,7 +15,7 @@ const PaymentStatus = ({ onChange, orderDetails }) => {
                     id="payment_status"
                     name="payment_status"
                     onChange={handlePaymentStatusChange}
-                    className="block w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md focus:outline-none focus:ring-primary focus:border-primary hover:cursor-pointer text-sm  dark:text-white shadow-md dark:bg-[#121212] bg-gray-300 placeholder:dark:text-[#858585] placeholder:text-gray-700"
+                    className="block w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md focus:outline-none focus:ring-[#2F60F3] focus:border-[#2F60F3] hover:cursor-pointer text-sm  dark:text-white shadow-md dark:bg-[#121212] bg-gray-300 placeholder:dark:text-[#858585] placeholder:text-gray-700"
                 >
                     <option value="">Select</option>
                     <option value="paid">Paid</option>
@@ -34,7 +34,7 @@ const PaymentStatus = ({ onChange, orderDetails }) => {
                     placeholder="Payment status"
                     value={orderDetails.otherpayment_status}
                     onChange={handlePaymentStatusChange}
-                    className="block w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md focus:outline-none focus:ring-primary focus:border-primary hover:cursor-pointer text-sm  dark:text-white shadow-md dark:bg-[#121212] bg-gray-300 placeholder:dark:text-[#858585] placeholder:text-gray-700"
+                    className="block w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md focus:outline-none focus:ring-[#2F60F3] focus:border-[#2F60F3] hover:cursor-pointer text-sm  dark:text-white shadow-md dark:bg-[#121212] bg-gray-300 placeholder:dark:text-[#858585] placeholder:text-gray-700"
                 />
             </div>}
         </div>

@@ -225,7 +225,7 @@ const Profile = () => {
                       />
                       <label
                         onClick={() => fileInputRef.current.click()}
-                        className="absolute bg-white border border-primary p-2 bottom-0 right-0 rounded-xl bg-gray  px-2 py-1 cursor-pointer"
+                        className="absolute bg-white border border-[#2F60F3] p-2 bottom-0 right-0 rounded-xl bg-gray  px-2 py-1 cursor-pointer"
                       >
                         <MdModeEditOutline className="text-black" />
                       </label>
@@ -394,7 +394,7 @@ const Profile = () => {
                       <button
                         type="button"
                         onClick={togglePasswordVisibility}
-                        className="absolute h-full flex items-center top-0 inset-y-4 right-0 px-3 py-2 text-primary focus:outline-none"
+                        className="absolute h-full flex items-center top-0 inset-y-4 right-0 px-3 py-2 text-[#2F60F3] focus:outline-none"
                       >
                         {showPassword ? (
                           <RiEyeOffFill size={24} />
@@ -422,8 +422,8 @@ const Profile = () => {
                             handleTypeChange({ target: { value: type } })
                           }
                           className={`cursor-pointer p-2 md:p-4 rounded-xl shadow-md flex items-center justify-center ${selectedInterests.includes(type)
-                              ? "dark:bg-[#2F60F3] font-poppins bg-black text-white dark:text-black"
-                              : "bg-gray-100 dark:bg-gray-800 text-black dark:text-white"
+                            ? "dark:bg-[#2F60F3] font-poppins bg-black text-white dark:text-black"
+                            : "bg-gray-100 dark:bg-gray-800 text-black dark:text-white"
                             }`}
                         >
                           {type}
@@ -440,7 +440,7 @@ const Profile = () => {
                   </button>
                 </div>
               </form>
-              <p className="text-primary mt-5">{error ? error : ""}</p>
+              <p className="text-[#2F60F3] mt-5">{error ? error : ""}</p>
             </div>
           </div>
         </div>

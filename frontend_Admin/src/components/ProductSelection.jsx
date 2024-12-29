@@ -70,9 +70,9 @@ const ProductSelection = ({ onProductSelect }) => {
         <label htmlFor="productsearch" className="text-xl min-w-36 block font-semibold text-gray-800 dark:text-white">
           Select Products
         </label>
-        <div className="w-full py-4 px-6 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black text-xl font-normal font-['Inter'] relative z-[1]">
+        <div className="w-full md:py-4 py-2 md:px-6 px-3 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black md:text-xl text-md font-normal font-['Inter'] relative z-[1]">
           <div className="flex items-center gap-2.5 w-full ">
-            <img src={search} alt="Search" />
+            <img src={search} alt="Search" className="md:w-7 md:h-7 w-5 h-5" />
             <input type="text" value={productSearch} onChange={({ target }) => setProductSearch(target.value)} name="productsearch" id="productsearch" placeholder="Search for products..." className="bg-transparent placeholder:dark:text-[#858585] placeholder:text-gray-700 outline-none border-none w-full" />
           </div>
           <button className="w-12 h-9 rounded-[5px] bg-[#2F60F3] flex items-center justify-center cursor-pointer disabled:bg-[#2f60f3cc] disabled:cursor-default"
@@ -92,7 +92,7 @@ const ProductSelection = ({ onProductSelect }) => {
               </div>
               {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                 product.quantity > 0 &&
-                <div key={product._id} className={`py-2 px-1 border flex justify-between items-center w-full border-gray-600 rounded-md cursor-pointer dark:text-white text-black text-center hover:bg-[#2f60f3cc] ${select && select._id == product._id && "bg-[#2F60F3]"}`}
+                <div key={product._id} className={`py-2 px-1 border flex justify-between items-center w-full border-gray-600 rounded-md cursor-pointer dark:text-white text-black text-center hover:bg-[#2f60f3cc] ${select && select._id == product._id && "bg-[#2F60F3] "}`}
                   onClick={() => setSelect(product._id == select?._id ? null : product)}
                 >
                   <h4 className="font-semibold text-lg w-full">{product.name}</h4>

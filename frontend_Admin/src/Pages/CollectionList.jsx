@@ -117,7 +117,7 @@ const CollectionList = () => {
                           <span className="font-medium text-black dark:text-white">
                             {product?.name}
                           </span>
-                          <span className="text-primary font-semibold">
+                          <span className="text-[#2F60F3] font-semibold">
                             ${product?.price}
                           </span>
                         </div>

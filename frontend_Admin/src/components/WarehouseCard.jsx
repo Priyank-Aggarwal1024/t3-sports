@@ -38,7 +38,7 @@
 //                                 {warehouse.products.map((product) => (
 //                                     <li key={product._id} className="flex justify-between items-center">
 //                                         <span className="font-medium text-black dark:text-white">{getProductById(product.productId)?.name}</span>
-//                                         <span className="text-primary font-semibold">${getProductById(product.productId)?.price}</span>
+//                                         <span className="text-[#2F60F3] font-semibold">${getProductById(product.productId)?.price}</span>
 //                                         <button
 //                                             onClick={() => handleRemoveProduct(warehouse._id, product._id)}
 //                                             className="bg-red-500 hover:bg-red-600 text-white rounded-md py-1 px-2 ml-4"
@@ -137,7 +137,7 @@ function WarehouseCard() {
                                             onClick={() => handleWarehouseClick(warehouse)}
                                         >
                                             <h3 className="text-xl font-semibold text-black dark:text-white ">
-                                                {warehouse.name} 
+                                                {warehouse.name}
                                             </h3>
                                             {
                                                 open[warehouse._id] ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" viewBox="0 0 16 13" fill="none">
@@ -156,7 +156,7 @@ function WarehouseCard() {
                                                                 <span className="font-medium text-black dark:text-white">
                                                                     {getProductById(product.productId)?.name}
                                                                 </span>
-                                                                <span className="text-primary font-semibold">
+                                                                <span className="text-[#2F60F3] font-semibold">
                                                                     ${getProductById(product.productId)?.price}
                                                                 </span>
                                                             </div>

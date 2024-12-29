@@ -20,13 +20,13 @@ function Footer() {
           <div className={"mt-4 lg:mb-0  flex space-x-4"}>
             <a href="#" target="_blank" rel="noopener noreferrer">
               <FaInstagram
-                className={`hover:text-primary transition duration-300`}
+                className={`hover:text-[#2F60F3] transition duration-300`}
               />
             </a>
 
             <a href="#" target="_blank" rel="noopener noreferrer">
               <FaLinkedin
-                className={`hover:text-primary transition duration-300`}
+                className={`hover:text-[#2F60F3] transition duration-300`}
               />
             </a>
           </div>
@@ -36,7 +36,7 @@ function Footer() {
           <ul className="list-unstyled  gap-4 flex justify-end">
             <li>
               <button onClick={scrollToTop} className="focus:outline-none">
-                <FaArrowCircleUp className=" text-primary text-3xl hover:text-primary transition duration-300" />
+                <FaArrowCircleUp className=" text-[#2F60F3] text-3xl hover:text-[#2F60F3] transition duration-300" />
               </button>
             </li>
           </ul>

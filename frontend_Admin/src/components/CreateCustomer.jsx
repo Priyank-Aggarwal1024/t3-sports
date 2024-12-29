@@ -34,7 +34,7 @@ const CreateCustomer = () => {
         {
           customerFormControls.map((control, idx) => <CustomerFormControls {...control} customer={customer} handleChange={handleChange} customerErrorState={customerErrorState} />)
         }
-        <button className="bg-[#2F60F3]  md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
+        <button className="bg-[#2F60F3] md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
           Create Customer
         </button>
       </div>

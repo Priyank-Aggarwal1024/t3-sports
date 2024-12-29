@@ -41,7 +41,7 @@ function ForgotPassword() {
       <div
         className={`bg-dullBlack z-10 shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 max-w-md w-5/6`}
       >
-        <h1 className="text-3xl font-semibold text-center mb-6 text-white dark:text-primary">
+        <h1 className="text-3xl font-semibold text-center mb-6 text-white dark:text-[#2F60F3] ">
           Forgot Password
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -55,7 +55,7 @@ function ForgotPassword() {
               name="email"
               value={email}
               required
-              className="w-full border border-gray-500 placeholder:text-xs md:placeholder:text-sm rounded-xl py-3 px-4 text-black dark:text-white bg-transparent focus:outline-none dark:focus:border-primary focus:border-white"
+              className="w-full border border-gray-500 placeholder:text-xs md:placeholder:text-sm rounded-xl py-3 px-4 text-black dark:text-white bg-transparent focus:outline-none dark:focus:border-[#2F60F3] focus:border-white"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>

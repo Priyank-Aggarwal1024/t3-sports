@@ -125,7 +125,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
             />
           </div> : <div className="w-full">
-            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">Address</p>
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white md:text-xl text-[15px] font-normal font-['Inter']">Address</p>
             <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.address}</p>
           </div>}
           {
@@ -145,7 +145,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               onChange={handleAddressChange}
               className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
             /> </div> : <div className="w-full">
-            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">City</p>
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white md:text-xl text-[15px] font-normal font-['Inter']">City</p>
             <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.city}</p>
           </div>}
           {
@@ -165,7 +165,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               onChange={handleAddressChange}
               className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
             /> </div> : <div className="w-full">
-            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">State</p>
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white md:text-xl text-[15px] font-normal font-['Inter']">State</p>
             <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.state}</p>
           </div>}
           {
@@ -185,7 +185,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               onChange={handleAddressChange}
               className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
             /> </div> : <div className="w-full">
-            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">Country</p>
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white md:text-xl text-[15px] font-normal font-['Inter']">Country</p>
             <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.country}</p>
           </div>}
           {
@@ -205,7 +205,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
               onChange={handleAddressChange}
               className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
             /> </div> : <div className="w-full">
-            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white text-xl font-normal font-['Inter']">Pincode</p>
+            <p className="w-full md:mb-6 mb-4 text-gray-800 dark:text-white md:text-xl text-[15px] font-normal font-['Inter']">Pincode</p>
             <p className="w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md dark:bg-[#121212] bg-gray-300 ">{selectedCustomer?.pincode}</p>
           </div>}
           {

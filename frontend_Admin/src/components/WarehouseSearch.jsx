@@ -26,14 +26,14 @@ const WarehouseSearch = ({ selectedWarehouse, setSelectedWarehouse }) => {
                     <label htmlFor="warehousesearch" className="text-xl min-w-40 block font-semibold text-gray-800 dark:text-white">
                         Select Warehouse
                     </label>
-                    <div className="w-full py-4 px-6 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black text-xl font-normal font-['Inter'] relative z-[1]">
+                    <div className="w-full md:py-4 py-2 md:px-6 px-3 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black md:text-xl text-md font-normal font-['Inter'] relative z-[1]">
                         <div className="flex items-center gap-2.5 w-full ">
-                            <img src={search} alt="Search" />
+                            <img src={search} alt="Search" className="md:w-7 md:h-7 w-5 h-5" />
                             <input
                                 type="text"
                                 id='warehousesearch'
                                 name='warehousesearch'
-                                placeholder="Search by name, email, or phone"
+                                placeholder="Search by warehouse name"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="bg-transparent placeholder:dark:text-[#858585] placeholder:text-gray-700 outline-none border-none w-full" />
@@ -41,7 +41,7 @@ const WarehouseSearch = ({ selectedWarehouse, setSelectedWarehouse }) => {
                         {searchQuery.trim() !== "" && <div className="absolute top-full mt-1 rounded-[10px] w-full z-[10] py-6 dark:bg-black bg-gray-300 shadow-xl dark:border left-0 px-4">
                             <div className="flex flex-col gap-2 max-h-[40vh] overflow-y-auto">
                                 {filterdWarehouse.length > 0 ? filterdWarehouse.map((warehouse) => (
-                                    <div key={warehouse._id} className={`py-2 px-1 border flex justify-between items-center w-full border-gray-600 rounded-md cursor-pointer dark:text-white text-black text-center hover:bg-[#2f60f3cc] ${selectedWarehouse && selectedWarehouse._id == warehouse._id && "bg-[#2F60F3]"}`}
+                                    <div key={warehouse._id} className={`py-2 px-1 border flex justify-between items-center w-full border-gray-600 rounded-md cursor-pointer dark:text-white text-black text-center hover:bg-[#2f60f3cc] ${selectedWarehouse && selectedWarehouse._id == warehouse._id && "bg-[#2F60F3] "}`}
                                         onClick={() => handlSelectWarehouse(warehouse)}
                                     >
                                         <li

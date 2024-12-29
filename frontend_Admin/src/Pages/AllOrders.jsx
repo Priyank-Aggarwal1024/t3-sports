@@ -15,7 +15,7 @@
 //             ) : (
 //                 <ul className='inline-flex flex-wrap gap-4 my-4'>
 //                     {orders.map((order) => (
-//                         <li key={order._id} className='p-4 border border-primary rounded-md w-fit'>
+//                         <li key={order._id} className='p-4 border border-[#2F60F3] rounded-md w-fit'>
 //                             <div>
 //                                 <p>Name: {order.shipping_fname} {order.shipping_lname}</p>
 //                                 <p>Phone: {order.shipping_phone}</p>
@@ -33,7 +33,7 @@
 //                                 <p>Volumetric Weight: {order.volumetricWeight}</p>
 //                                 <p>Total Amount: ₹{order.totalAmount}</p> */}
 //                                 <div>
-//                                     <h2 className='text-xl text-primary'>Products</h2>
+//                                     <h2 className='text-xl text-[#2F60F3] '>Products</h2>
 //                                     <ul className='flex flex-col'>
 //                                         {order.products.map((item, index) => {
 //                                             return(
@@ -46,7 +46,7 @@
 //                                 </div>
 
 //                                 <div>
-//                                     <h2 className='text-xl text-primary'>Shipping Address</h2>
+//                                     <h2 className='text-xl text-[#2F60F3] '>Shipping Address</h2>
 //                                     <p>Shipping Address: {order.shipping_address}</p>
 //                                     <p>Shipping City: {order.shipping_city}</p>
 //                                     <p>Shipping Country: {order.shipping_country}</p>
