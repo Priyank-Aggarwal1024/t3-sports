@@ -32,8 +32,8 @@ const CustomerSearch = ({ selectedCustomer, setSelectedCustomer }) => {
         <label htmlFor="customersearch" className="text-xl min-w-40 block font-semibold text-gray-800 dark:text-white">
           Select Customer
         </label>
-        <div className="w-full md:py-4 py-2 md:px-6 px-3 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black md:text-xl text-md font-normal font-['Inter'] relative z-[1]">
-          <div className="flex items-center gap-2.5 w-full ">
+        <div className="w-full md:py-4 py-2 md:px-6 px-3 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black md:text-xl text-md font-normal font-['Inter'] relative">
+          <div className="flex items-center gap-2.5 w-full relative z-[1]">
             <img src={search} alt="Search" className="md:w-7 md:h-7 w-5 h-5" />
             <input
               type="text"

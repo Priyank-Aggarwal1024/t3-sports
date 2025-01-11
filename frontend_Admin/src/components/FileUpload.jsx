@@ -1,9 +1,11 @@
 import ImageKit from "imagekit-javascript";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import toast from "react-hot-toast";
 
 function FileUpload({ sizechart, productImages, setFormData, formData, messageTxt, setMessageTxt, name, label }) {
     const [uploadImageLoading, setUploadImageLoading] = useState(false);
+    const [uploadPercentage, setUploadPercentage] = useState(0);
     const imagekit = new ImageKit({
         publicKey: import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY,
         urlEndpoint: import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT,
@@ -13,12 +15,26 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
         const files = productImages ? acceptedFiles : [acceptedFiles[0]];
         setUploadImageLoading(true);
         try {
+            const totalSize = files.reduce((acc, file) => acc + file.size, 0);
+            let currentLoaded = 0;
             const images = await Promise.all(
                 files.map(async (file, index) => {
                     const response = await fetch(`${import.meta.env.VITE_BASE_URL}/product/imagekit/auth`);
                     if (!response.ok) throw new Error("Failed to fetch authentication parameters");
                     const authParams = await response.json();
+                    var customXHR = new XMLHttpRequest();
+                    customXHR.upload.addEventListener('progress', function (e) {
+                        if (e.loaded <= file.size) {
+                            setUploadPercentage(Math.round(((currentLoaded + e.loaded) / totalSize) * 100));
+                        }
+
+                        if (e.loaded == e.total) {
+                            currentLoaded = currentLoaded + e.total
+                            setUploadPercentage(Math.round((currentLoaded / totalSize) * 100));
+                        }
+                    });
                     const uploadParams = {
+                        xhr: customXHR,
                         file,
                         fileName: file.name,
                         folder: "/uploads",
@@ -30,7 +46,6 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
                             if (error) reject(error);
                             else resolve(result.url);
                         });
-                        console.log(uploadRequest)
                     });
                 })
             );
@@ -40,8 +55,11 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
             } else {
                 setFormData((prevData) => ({ ...prevData, sizechart: images[0] }));
             }
+            setUploadPercentage(0);
         } catch (err) {
             console.error(err);
+            toast.error(err.message)
+            setUploadPercentage(0);
         }
         setUploadImageLoading(false);
     }, [imagekit]);
@@ -70,7 +88,7 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
 
                 <div className="flex flex-col gap-[43px] items-center text-[13px] md:text-[16px] lg:text-[20px]">
 
-                    {uploadImageLoading ? <p className=" dark:text-white text-black">Uploading...</p> : isDragActive ? (
+                    {uploadImageLoading ? <div className="flex items-center justify-center flex-col gap-3"><p className="text-xl dark:text-white text-black">{uploadPercentage}%</p> <p className=" dark:text-white text-black">Uploading...</p> </div> : isDragActive ? (
                         <p className=" dark:text-white text-black">Drop your images here...</p>
                     ) : (
                         <p className="dark:text-white text-black \font-normal font-['Inter']">Drag 'n' drop your JPG, JPEG, or PNG files here, or click to select them</p>

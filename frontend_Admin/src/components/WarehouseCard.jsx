@@ -150,7 +150,7 @@ function WarehouseCard() {
                                         {
                                             open[warehouse._id] && <div>
                                                 <ul className="pb-3">
-                                                    {warehouse.products.map((product) => (
+                                                    {warehouse.products.map((product) => getProductById(product.productId) && (
                                                         <li key={product._id} className="flex  items-center md:mb-[18px] mb-3 ">
                                                             <div className="flex justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
                                                                 <span className="font-medium text-black dark:text-white">

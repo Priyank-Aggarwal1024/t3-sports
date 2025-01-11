@@ -88,8 +88,8 @@ const CollectionList = () => {
     <div className="">
       <h2 className="text-3xl font-bold dark:text-white text-black mb-6">Our Collections</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {colloading ? <div className="text-white text-xl">Loading...</div> : collections.length > 0 ? collections.map((collection) => (
-          <div className="">
+        {colloading ? <div className="text-white text-xl">Loading...</div> : collections.length > 0 ? collections.map((collection, ind) => (
+          <div className="" key={ind}>
             <div
               key={collection._id}
               className="bg-white dark:bg-darkPrimary shadow-lg rounded-md md:p-9 p-6 transition-transform transform w-full flex flex-col md:gap-9 gap-5"

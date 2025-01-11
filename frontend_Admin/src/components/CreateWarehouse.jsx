@@ -17,7 +17,6 @@ function CreateWarehouse(props) {
     const { products, ploading } = useProducts();
     const { createWarehouse, warehouse } = useWarehouse();
     const [loading, setLoading] = useState(false);
-    console.log(warehouse);
     const [messageWarehouse, setMessageWarehouse] = useState(errorWarehouseState)
     const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });

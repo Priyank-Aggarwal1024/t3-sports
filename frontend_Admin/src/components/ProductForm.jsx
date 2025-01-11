@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import ImageKit from 'imagekit-javascript';
 import axios from "axios";
@@ -11,11 +11,12 @@ import FileUpload from './FileUpload';
 const ProductForm = () => {
   const [formData, setFormData] = useState(initialProductData);
   const [messageTxt, setMessageTxt] = useState(initialErrorMessage);
+  const [collections, setCollections] = useState([]);
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
-    console.log(formData)
     e.preventDefault();
     const { error, message, field } = createProductValidator(formData);
     if (error) {
@@ -24,15 +25,34 @@ const ProductForm = () => {
     } else {
       setMessageTxt(initialErrorMessage);
     }
+    setLoading(true)
     try {
-      const res = await axios.post("/api/products", formData);
-      toast.success("Product added successfully");
+      const { data } = await axios.post("/api/products", formData);
+      toast.success(data.message);
       setFormData(initialProductData);
       setMessageTxt(initialErrorMessage)
     } catch (error) {
-      console.error("Error creating product", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error(error.message);
     }
+    setLoading(false);
   };
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const response = await axios.get("/api/collections");
+        setCollections(response.data.collections);
+      } catch (error) {
+        console.error("Error fetching collections", error);
+      }
+    };
+
+    fetchCollections();
+  }, []);
   return (
     <div className="flex items-center justify-center">
       <form
@@ -205,6 +225,25 @@ const ProductForm = () => {
               className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+          {/* Select Collection */}
+          <div className="col-span-2">
+            <label
+              htmlFor={"collection"}
+              className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
+            >
+              Select Collection
+            </label>
+            <select
+              id={"collection"}
+              name={"collection"}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value={""} className="w-full dark:bg-gray-600 dark:text-white">Select Collection</option>
+              {collections.map((collection, ide) => <option key={ide} value={collection._id} className="w-full dark:bg-gray-600 dark:text-white">{collection.name}</option>)}
+            </select>
+          </div>
+
           {/* Upload Product Images */}
           <FileUpload productImages={true} setFormData={setFormData} formData={formData} sizechart={false} messageTxt={messageTxt} setMessageTxt={setMessageTxt} label={"Upload Product Images"} name={"images"} />
           <FileUpload productImages={false} setFormData={setFormData} formData={formData} sizechart={true} messageTxt={messageTxt} setMessageTxt={setMessageTxt} label={"Upload Sizechart Image"} name={"sizechart"} />
@@ -233,9 +272,10 @@ const ProductForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="w-full py-3 mt-4 bg-blue-600 flex items-center justify-center gap-4 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
-          Create Product
+          {loading && <span className="loader"></span>}
+          <span>Create Product</span>
         </button>
       </form>
     </div>
