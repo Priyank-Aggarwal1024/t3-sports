@@ -14,40 +14,34 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
         setUploadImageLoading(true);
         try {
             const images = await Promise.all(
-                files.map((file) => {
-                    return new Promise(async (resolve, reject) => {
-                        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/product/imagekit/auth`);
-                        const authParams = await response.json();
-                        const uploadParams = {
-                            file,
-                            fileName: file.name,
-                            folder: "/uploads", // Optional: specify folder in ImageKit
-                            ...authParams, // Include token, signature, and expire
-                        };
+                files.map(async (file, index) => {
+                    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/product/imagekit/auth`);
+                    if (!response.ok) throw new Error("Failed to fetch authentication parameters");
+                    const authParams = await response.json();
+                    const uploadParams = {
+                        file,
+                        fileName: file.name,
+                        folder: "/uploads",
+                        ...authParams,
+                    };
 
-                        // Upload the file using ImageKit
-                        imagekit.upload(uploadParams, (error, result) => {
-                            if (error) {
-                                console.error("Upload error:", error);
-                                reject(error);
-                            } else {
-                                console.log(result.url);
-                                resolve(result.url); // Resolve with the uploaded image URL
-                            }
+                    return new Promise((resolve, reject) => {
+                        const uploadRequest = imagekit.upload(uploadParams, (error, result) => {
+                            if (error) reject(error);
+                            else resolve(result.url);
                         });
+                        console.log(uploadRequest)
                     });
                 })
             );
-            console.log(images)
+
             if (productImages) {
-                setFormData({ ...formData, images })
+                setFormData((prevData) => ({ ...prevData, images }));
             } else {
-                setFormData({ ...formData, sizechart: images[0] })
+                setFormData((prevData) => ({ ...prevData, sizechart: images[0] }));
             }
-
-
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
         setUploadImageLoading(false);
     }, [imagekit]);

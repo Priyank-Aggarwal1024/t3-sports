@@ -14,8 +14,9 @@ const errorWarehouseState = {
 }
 function CreateWarehouse(props) {
     const [data, setData] = useState(initialWarehouseState);
-    const { products } = useProducts();
+    const { products, ploading } = useProducts();
     const { createWarehouse, warehouse } = useWarehouse();
+    const [loading, setLoading] = useState(false);
     console.log(warehouse);
     const [messageWarehouse, setMessageWarehouse] = useState(errorWarehouseState)
     const handleChange = (e) => {
@@ -44,7 +45,9 @@ function CreateWarehouse(props) {
             setMessageWarehouse({ ...errorWarehouseState, address: "Warehouse address is required." })
             return;
         }
-        createWarehouse(data);
+        setLoading(true);
+        await createWarehouse(data);
+        setLoading(false);
         setData(initialWarehouseState);
     }
     return (
@@ -121,7 +124,7 @@ function CreateWarehouse(props) {
                         <span className="w-full text-center">Action</span>
                     </div>
                     {
-                        products.map((prod, index) => <div className="w-full border-white rounded-md border py-2 px-4 bg-neutral-100 dark:bg-darkPrimary flex items-center justify-between" key={index}>
+                        ploading ? <span>Loading...</span> : products.map((prod, index) => <div className="w-full border-white rounded-md border py-2 px-4 bg-neutral-100 dark:bg-darkPrimary flex items-center justify-between" key={index}>
                             <span className="w-full text-center"> {prod.name}</span>
                             <div className="w-full text-center flex justify-center"><img className="w-12 h-12 rounded-md " src={prod.images[0]} alt="product image" /></div>
                             <span className="w-full text-center"> {prod.colour}</span>
@@ -130,7 +133,10 @@ function CreateWarehouse(props) {
                         </div>)
                     }
                 </div>
-                <div className="w-full md:col-span-2 rounded-md bg-[#2F60F3] cursor-pointer py-3 px-4 text-center text-white font-bold text-md uppercase" onClick={handleSubmit}>Create Warehouse</div>
+                <div className="w-full md:col-span-2 flex items-center justify-center gap-4  rounded-md bg-[#2F60F3] cursor-pointer py-3 px-4 text-center text-white font-bold text-md uppercase" onClick={handleSubmit}>
+                    {loading && <span className="loader"></span>}
+                    <span>Create Warehouse</span>
+                </div>
             </div>
         </form>
     );

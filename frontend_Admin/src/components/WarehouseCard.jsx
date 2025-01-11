@@ -127,8 +127,8 @@ function WarehouseCard() {
                         <div className="text-white text-xl">Loading...</div>
                     ) : warehouses.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {warehouses.map((warehouse) => (
-                                <div className="">
+                            {warehouses.map((warehouse, wid) => (
+                                <div className="" key={wid}>
                                     <div
                                         key={warehouse._id}
                                         className="bg-white dark:bg-darkPrimary shadow-lg rounded-md md:p-9 p-6 transition-transform transform w-full flex flex-col md:gap-9 gap-5"

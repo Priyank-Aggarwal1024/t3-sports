@@ -13,6 +13,7 @@ const EditCustomer = () => {
     const [customerErrorState, setCustomerErrorState] = useState(customerInitialState);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const handleChange = (e) => {
         setCustomer({ ...customer, [e.target.name]: e.target.value })
     }
@@ -33,13 +34,16 @@ const EditCustomer = () => {
                 return;
             }
             console.log(customer)
+            setLoading(true);
             const { data } = await axios.put(`/api/customers/customer/${id}`, customer);
             data?.customer ? toast.success("Customer edited successfully") : toast.error(data.message);
             if (data?.customer) {
                 navigate("/");
             }
+            setLoading(false);
             setCustomer(customerInitialState);
         } catch (err) {
+            setLoading(false);
             setMessage("An error occurred while creating the customer.");
         }
     };
@@ -52,8 +56,9 @@ const EditCustomer = () => {
                     {
                         customerFormControls.map((control, idx) => <CustomerFormControls {...control} customer={customer} handleChange={handleChange} customerErrorState={customerErrorState} key={idx} />)
                     }
-                    <button className="bg-[#2F60F3] md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
-                        Edit Customer
+                    <button className="bg-[#2F60F3] flex items-center justify-center gap-4 md:col-span-2 text-white px-8 py-1 rounded-md h-fit " onClick={handleSubmitCustomer}>
+                        {loading && <span className="loader"></span>}
+                        <span>Edit Customer</span>
                     </button>
                 </div>
                 {message && <p className="mt-4 dark:text-white text-black">{message}</p>}
