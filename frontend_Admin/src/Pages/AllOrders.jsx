@@ -142,7 +142,7 @@ const AllOrders = () => {
           </thead>
           <tbody>
             {currentOrders.map((order, index) => (
-              <tr key={order._id} className='text-sm'>
+              <tr key={index} className='text-sm'>
                 <td className="py-2 px-4 border border-gray-600">{index + 1 + (currentPage * ordersPerPage)}</td>
                 <td className="py-2 px-4 border border-gray-600">{order.id}</td>
                 <td className="py-2 px-4 border border-gray-600">{`${order.shipping_fname} ${order.shipping_lname}`}</td>

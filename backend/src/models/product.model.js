@@ -36,9 +36,7 @@ const ProductSchema = new mongoose.Schema({
         required: [true, 'Size is required']
     },
     colour: {
-        type: String,
-        maxlength: [50, 'Colour cannot exceed 50 characters'],
-        required: [true, 'Colour is required']
+        type: String
     },
     price: {
         type: Number,

@@ -9,14 +9,14 @@ export const initialProductData = {
     specification: "",
     size: "",
     colour: "",
-    sizechart: ""
+    sizechart: "",
+    collection: ""
 }
 export const initialErrorMessage = {
     name: "",
     price: "",
     quantity: "",
     size: "",
-    colour: "",
     images: "",
     originalprice: ""
 }

@@ -1,3 +1,4 @@
+import Collection from "../models/collection.model.js";
 import Product from "../models/product.model.js";
 
 export const createProduct = async (req, res) => {
@@ -14,6 +15,7 @@ export const createProduct = async (req, res) => {
       sizeChart,
       quantity,
       category,
+      collection
     } = req.body;
     // console.log(req.body)
     const newProduct = new Product({
@@ -30,6 +32,14 @@ export const createProduct = async (req, res) => {
       originalprice: Number(originalprice)
     });
     await newProduct.save();
+    console.log(collection)
+    if (collection) {
+      const coll = await Collection.findById(collection);
+      if (coll) {
+        coll.products.push(newProduct._id);
+        await coll.save();
+      }
+    }
     return res.status(201).json({ success: true, message: "Product created successfully", product: newProduct });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

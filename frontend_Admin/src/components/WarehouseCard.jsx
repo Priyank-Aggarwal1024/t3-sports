@@ -127,8 +127,8 @@ function WarehouseCard() {
                         <div className="text-white text-xl">Loading...</div>
                     ) : warehouses.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {warehouses.map((warehouse) => (
-                                <div className="">
+                            {warehouses.map((warehouse, wid) => (
+                                <div className="" key={wid}>
                                     <div
                                         key={warehouse._id}
                                         className="bg-white dark:bg-darkPrimary shadow-lg rounded-md md:p-9 p-6 transition-transform transform w-full flex flex-col md:gap-9 gap-5"
@@ -150,7 +150,7 @@ function WarehouseCard() {
                                         {
                                             open[warehouse._id] && <div>
                                                 <ul className="pb-3">
-                                                    {warehouse.products.map((product) => (
+                                                    {warehouse.products.map((product) => getProductById(product.productId) && (
                                                         <li key={product._id} className="flex  items-center md:mb-[18px] mb-3 ">
                                                             <div className="flex justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
                                                                 <span className="font-medium text-black dark:text-white">
