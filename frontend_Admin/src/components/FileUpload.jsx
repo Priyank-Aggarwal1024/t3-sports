@@ -2,6 +2,7 @@ import ImageKit from "imagekit-javascript";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
+import { MdDelete } from "react-icons/md";
 
 function FileUpload({ sizechart, productImages, setFormData, formData, messageTxt, setMessageTxt, name, label }) {
     const [uploadImageLoading, setUploadImageLoading] = useState(false);
@@ -12,7 +13,16 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
         authenticationEndpoint: `${import.meta.env.VITE_BASE_URL}/product/imagekit/auth`,
     });
     const onDrop = useCallback(async (acceptedFiles) => {
-        const files = productImages ? acceptedFiles : [acceptedFiles[0]];
+        const files = acceptedFiles;
+        if (productImages) {
+            if (files.length > 7) {
+                toast.error("Maximum limit 7 images");
+                return;
+            }
+        } else if (files.length > 1) {
+            toast.error("Maximum limit 1 image for sizechart.");
+            return;
+        }
         setUploadImageLoading(true);
         try {
             const totalSize = files.reduce((acc, file) => acc + file.size, 0);
@@ -51,7 +61,7 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
             );
 
             if (productImages) {
-                setFormData((prevData) => ({ ...prevData, images }));
+                setFormData((prevData) => ({ ...prevData, images: [...formData["images"], ...images] }));
             } else {
                 setFormData((prevData) => ({ ...prevData, sizechart: images[0] }));
             }
@@ -63,6 +73,15 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
         }
         setUploadImageLoading(false);
     }, [imagekit]);
+    const handleformdataimage = (indx, name) => {
+        if (name == "images") {
+            let images = formData[name].filter((item, idx) => idx != indx);
+            setFormData((prevdata) => ({ ...prevdata, images }));
+        }
+        else {
+            setFormData((prevdata) => ({ ...prevdata, [name]: "" }));
+        }
+    }
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
@@ -102,15 +121,13 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
             {
                 messageTxt[name] && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt[name]}</p>
             }
-            {
-                productImages ? formData[name].length > 0 && <div className="w-full py-4 rounded-lg mt-4 grid grid-cols-4 min-h-18 gap-4">
-                    {formData[name].slice(0, sizechart ? 1 : Math.min(4, formData[name].length)).map((image, index) => <img className="w-full aspect-square h-full border p-2 rounded-lg" src={image} key={index} />)}
-                </div> : formData[name] && <img className="lg:max-h-48 max-h-36 mt-4 aspect-square h-full border p-2 rounded-lg" src={formData[name]} />
-            }
-            {
-                productImages && formData[name].length > 4 && <p className="dark:text-white text-black">& More</p>
-            }
-
+            <div className="w-full overflow-x-auto max-w-full">
+                {
+                    productImages ? formData[name].length > 0 && <div className="w-full py-4 rounded-lg mt-4 flex items-center min-h-18 gap-4">
+                        {formData[name].map((image, index) => <div className="w-48 aspect-square h-48 border p-2 rounded-lg relative"><div className="absolute bg-white rounded-[10px] top-1 right-1 cursor-pointer z-[1] p-1"><MdDelete onClick={() => handleformdataimage(index, name)} className="text-4xl text-red-700 " /></div><img className="w-full h-full" src={image} key={index} /></div>)}
+                    </div> : formData[name] && <div className="w-48 aspect-square h-48 border p-2 rounded-lg relative mt-4"><div className="absolute bg-white rounded-[10px] top-1 right-1 cursor-pointer z-[1] p-1"><MdDelete onClick={() => handleformdataimage(0, name)} className="text-4xl text-red-700 " /></div><img className="w-full h-full" src={formData[name]} alt={name} /></div>
+                }
+            </div>
         </div>
     );
 }
