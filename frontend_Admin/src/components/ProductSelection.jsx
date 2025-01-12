@@ -70,12 +70,12 @@ const ProductSelection = ({ onProductSelect }) => {
         <label htmlFor="productsearch" className="text-xl min-w-36 block font-semibold text-gray-800 dark:text-white">
           Select Products
         </label>
-        <div className="w-full md:py-4 py-2 md:px-6 px-3 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black md:text-xl text-md font-normal font-['Inter'] relative z-[1]">
-          <div className="flex items-center gap-2.5 w-full ">
+        <div className="w-full md:py-4 py-2 md:px-6 px-3 dark:bg-[#121212] bg-gray-300 rounded-[10px] flex justify-between dark:text-white text-black md:text-xl text-md font-normal font-['Inter'] relative">
+          <div className="flex items-center gap-2.5 w-full  relative z-[1]">
             <img src={search} alt="Search" className="md:w-7 md:h-7 w-5 h-5" />
             <input type="text" value={productSearch} onChange={({ target }) => setProductSearch(target.value)} name="productsearch" id="productsearch" placeholder="Search for products..." className="bg-transparent placeholder:dark:text-[#858585] placeholder:text-gray-700 outline-none border-none w-full" />
           </div>
-          <button className="w-12 h-9 rounded-[5px] bg-[#2F60F3] flex items-center justify-center cursor-pointer disabled:bg-[#2f60f3cc] disabled:cursor-default"
+          <button className="w-12 h-9 rounded-[5px] bg-[#2F60F3] flex items-center justify-center cursor-pointer disabled:bg-[#2f60f3cc] disabled:cursor-default relative z-[1]"
             disabled={!select}
             onClick={() => handleSelectProduct(select)}
           >

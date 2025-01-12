@@ -252,6 +252,7 @@ const OrderForm = () => {
     breadth: 0,
   });
   const [validtionMessage, setValidationMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleProductSelect = (selectedProducts) => {
     setProducts(selectedProducts);
   };
@@ -497,9 +498,11 @@ const OrderForm = () => {
         {validtionMessage && <p className="text-red-500 text-[16px] pt-1 pl-1">{validtionMessage}</p>}
         <button
           type="submit"
-          className="w-full lg:col-span-2 py-2 my-4 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3] -dark focus:outline-none focus:ring-2 focus:ring-[#2F60F3] focus:ring-opacity-50"
+          className="w-full lg:col-span-2 py-2 flex items-center justify-center gap-4 my-4 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3] -dark focus:outline-none focus:ring-2 focus:ring-[#2F60F3] focus:ring-opacity-50"
         >
-          Submit Order
+          {loading && <span className="loader"></span>}
+          <span>Submit Order</span>
+
         </button>
       </form>
     </div>

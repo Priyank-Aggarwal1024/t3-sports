@@ -33,7 +33,7 @@ export const addProductInWarehouse = async (req, res) => {
             { new: true }
         );
         if (warehouse) {
-            return res.json({ success: true, message: "Product added successfully.", warehouse });
+            return res.json({ success: true, message: "Product added to warehouse successfully.", warehouse });
         }
         res.status(500).json({ message: "Something went wrong!", success: false });
     } catch (error) {
@@ -66,7 +66,7 @@ export const removeProductInWarehouse = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Product removed successfully.",
+            message: "Product removed from warehouse successfully.",
             warehouse
         });
     } catch (error) {

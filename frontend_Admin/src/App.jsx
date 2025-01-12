@@ -101,16 +101,16 @@ const App = () => {
           <OrdersProvider>
             <Navbar />
             <Toaster
-              position="bottom-right"
-              toastOptions={{
-                duration: 2000,
-                style: {
-                  background: "#b5d300",
-                  color: "#000",
-                  borderRadius: "20px",
-                  boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
-                },
-              }}
+              position="top-right"
+            // toastOptions={{
+            //   duration: 2000,
+            //   style: {
+            //     background: "#b5d300",
+            //     color: "#000",
+            //     borderRadius: "20px",
+            //     boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
+            //   },
+            // }}
             />
             <Outlet />
             <Footer />

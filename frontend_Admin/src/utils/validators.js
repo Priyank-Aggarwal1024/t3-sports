@@ -14,9 +14,6 @@ export const createProductValidator = (product) => {
     if (!product?.size || product.size === "") {
         return { error: true, message: "Product size should be required", field: "size" }
     }
-    if (!product?.colour || product.colour === "") {
-        return { error: true, message: "Product colour should be required", field: "colour" }
-    }
     if (!product?.images || product.images.length == 0) {
         return { error: true, message: "Product should have at least 1 image", field: "images" }
     }
