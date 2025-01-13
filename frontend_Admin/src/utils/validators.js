@@ -17,8 +17,8 @@ export const createProductValidator = (product) => {
     if (!product?.images || product.images.length == 0) {
         return { error: true, message: "Product should have at least 1 image", field: "images" }
     }
-    if (product.images.length > 4) {
-        return { error: true, message: "Product should have max 4 images", field: "images" }
+    if (product.images.length > 7) {
+        return { error: true, message: "Product should have max 7 images", field: "images" }
     }
     return { error: false, message: "Success True" }
 }
