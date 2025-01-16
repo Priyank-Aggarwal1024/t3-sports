@@ -439,7 +439,7 @@ const OrderForm = () => {
           <div className="w-full">
             <div className="flex items-start md:flex-row md:gap-7 gap-6 w-full">
               <OrderType onChange={handleOrderType} />
-              <PaymentStatus onChnge={handlePaymentMethodChange} orderDetails={orderDetails} />
+              <PaymentStatus onChange={handlePaymentMethodChange} orderDetails={orderDetails} />
             </div>
             <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
           </div>
