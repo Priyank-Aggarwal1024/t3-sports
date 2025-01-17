@@ -6,7 +6,6 @@ import { CgClose } from "react-icons/cg";
 import logo2 from "../assets/t3sports.png";
 import logo from "../assets/t3sports_dark.png";
 import axios from "axios";
-import graphicOne from "../assets/Layer_1.svg";
 import ThemeBtn from "../components/ThemeBtn";
 import { BiSolidOffer } from "react-icons/bi";
 import {
@@ -36,7 +35,6 @@ const Navbar = () => {
     } else {
       document.body.classList.remove("no-scroll");
     }
-    // Cleanup function to reset overflow when the component unmounts
     return () => {
       document.body.classList.remove("no-scroll");
     };

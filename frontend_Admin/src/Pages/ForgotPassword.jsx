@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import Axios
+import toast from "react-hot-toast";
 
 
 function ForgotPassword() {
@@ -25,7 +26,7 @@ function ForgotPassword() {
         navigate(`/reset-password?email=${email}`);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error?.message);
     } finally {
       setLoading(false); // Reset loading state after response is received
     }
@@ -35,9 +36,6 @@ function ForgotPassword() {
     <div
       className="min-h-screen bg-white text-black dark:bg-black dark:text-white flex items-center justify-center"
     >
-      {/* <div className="absolute w-full h-full bg-cover">
-      <img className="w-full object-cover h-full" src="https://assets.lummi.ai/assets/QmTqKQ4ALJx1AaFnkRWewhxHJCozxvotx2XttM3YQ4Q8n9?auto=format&w=1500" alt="" />
-        </div> */}
       <div
         className={`bg-dullBlack z-10 shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 max-w-md w-5/6`}
       >

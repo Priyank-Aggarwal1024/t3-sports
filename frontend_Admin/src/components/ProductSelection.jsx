@@ -8,15 +8,13 @@ const ProductSelection = ({ onProductSelect }) => {
   const [productSearch, setProductSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [quantities, setQuantities] = useState({}); // Track individual product quantities
-  const [price, setPrice] = useState({}); // Track individual product quantities
-  console.log(selectedProducts)
+  const [quantities, setQuantities] = useState({});
+  const [price, setPrice] = useState({});
   const [select, setSelect] = useState(null);
   const handleQuantityChange = (productId, quantity) => {
-    // Ensure quantities are updated individually for each product
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [productId]: quantity, // Update the quantity for the specific product
+      [productId]: quantity,
     }));
   };
 
@@ -58,9 +56,7 @@ const ProductSelection = ({ onProductSelect }) => {
       }))
     }
   }, [productSearch])
-  console.log(filteredProducts);
   useEffect(() => {
-    // Pass the selected products to the parent component (OrderForm)
     onProductSelect(selectedProducts);
   }, [selectedProducts, onProductSelect]);
 

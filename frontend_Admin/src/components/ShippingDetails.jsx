@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast'
 import useCustomer from "../contexts/useCustomer";
@@ -9,7 +8,6 @@ const addressInitialState = {
   city: "",
 }
 const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
-  console.log(selectedCustomer)
   const [address, setAddress] = useState({
     address: selectedCustomer?.address || "",
     address_2: "",

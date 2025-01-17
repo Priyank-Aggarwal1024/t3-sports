@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, ScrollRestoration, useLoaderData } from "react-router-dom";
+import { ScrollRestoration, useLoaderData } from "react-router-dom";
 import axios from "axios";
-import { FaMapMarkerAlt, FaPhoneAlt, FaRegStar, FaStar } from "react-icons/fa";
+import { FaPhoneAlt, FaStar } from "react-icons/fa";
 import { TbLocationFilled } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-
-// import useEvents from "../hooks/useEvents";
 import toast from "react-hot-toast";
 import { MdEmail, MdVerified } from "react-icons/md";
-
 import { VscUnverified } from 'react-icons/vsc'
-// import OfferCards from "../components/OfferCards";
-import { BiSolidCategory } from "react-icons/bi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   Pagination,

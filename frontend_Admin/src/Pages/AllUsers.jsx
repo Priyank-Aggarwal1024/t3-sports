@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
@@ -13,7 +14,7 @@ const AllUsers = () => {
       const res = await axios.get(`/api/user/get-users`);
       setUsers(res.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error?.message);
     }
   };
 
