@@ -70,11 +70,7 @@ export const createOrder = async (req, res) => {
     const customerDetails = await Customer.findById(orderdata.customer);
     if (!customerDetails) throw new Error('Customer not found');
 
-    // const nimbusProducts = orderdata.products.map((product) => ({
-    //   name: product.productName,
-    //   qty: product.quantity,
-    //   price: product.price
-    // }));
+
     const warehouseId = orderdata.warehouse_id;
     orderdata.products.forEach(async (prod) => {
 
@@ -169,7 +165,7 @@ export const getAssignedOrders = async (req, res) => {
       .populate("customer")
       .select("-__v");
     if (!assignedOrders || assignedOrders.length === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         success: false,
         message: "No assigned orders found.",
       });
@@ -185,6 +181,131 @@ export const getAssignedOrders = async (req, res) => {
       success: false,
       message: "Error fetching assigned orders.",
       error: error.message,
+    });
+  }
+};
+export const getOrderById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const order = await Order.findById(id)
+      .populate('warehouse_id')
+      .populate('customer');
+
+    if (!order) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
+    }
+
+    return res.status(200).json({ success: true, order });
+  } catch (error) {
+    console.error('Error fetching order by ID:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+export const fulfillOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { breadth, height, length, ...data } = req.body
+    const order = await Order.findByIdAndUpdate(id, { ...data, volumetricWeight: breadth * height * length, ordertype: "fulfilled" }, {
+      new: true, // Returns the updated document
+      runValidators: true, // Ensures validations defined in the schema are applied
+    }).populate("customer");
+    if (!order) {
+      return res.status(500).json({ success: false, message: 'Order id is required!' });
+    }
+    let nimbusdata = {};
+    if (order.platform == "nimbus") {
+      const nimbusProducts = order.products.map((product) => ({
+        name: product.productName,
+        qty: product.quantity,
+        price: product.nimbusprice
+      }));
+      const nimbusOrderData = {
+        order_number: order.order_number,
+        payment_method: order.payment_method,
+        amount: nimbusProducts.reduce(
+          (total, product) => total + product.qty * product.price,
+          0
+        ),
+        fname: order.customer.fname,
+        lname: order.customer.lname,
+        phone: order.customer.phone,
+        address: order.shippingDetails.shippingAddress.address,
+        city: order.shippingDetails.shippingAddress.city,
+        state: order.shippingDetails.shippingAddress.state,
+        pincode: order.shippingDetails.shippingAddress.pincode,
+        country: order.shippingDetails.shippingAddress.country,
+        products: nimbusProducts,
+        breadth, height, length,
+        weight: data.weight
+      };
+      const nimbusResponse = await axios.post(
+        'https://ship.nimbuspost.com/api/orders/create',
+        nimbusOrderData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'NP-API-KEY': NIMBUS_API_KEY
+          }
+        }
+      );
+      order.nimbuspostTrackingId = nimbusResponse.data.tracking_id;
+      await order.save();
+      nimbusdata = {
+        trackingId: nimbusResponse.data.tracking_id,
+        order_id: nimbusResponse.data.data
+      }
+
+    }
+    return res.status(201).json({
+      success: true,
+      message: "Order Fulfilled successfully",
+      order,
+      ...nimbusdata
+    });
+  } catch (error) {
+    console.error('Error fetching order by ID:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error', error });
+  }
+}
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the order to delete
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    // Iterate over products in the order to increment their quantities in the warehouse
+    const warehouseId = order.warehouse_id;
+    for (const product of order.products) {
+      await Warehouse.findOneAndUpdate(
+        { _id: warehouseId, "products.productId": product._id },
+        {
+          $inc: { "products.$.quantity": product.quantity }, // Increment the quantity
+        },
+        { new: true }
+      );
+    }
+
+    // Delete the order
+    await Order.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Order deleted and warehouse quantities updated successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting order:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting order: " + (error.response?.data?.message || error.message),
     });
   }
 };

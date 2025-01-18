@@ -6,7 +6,6 @@ function useWarehouse(props) {
     const [count, setCount] = useState(0);
     const [warehouses, setWarehouse] = useState([]);
     const [wloading, setWloading] = useState(false);
-    console.log(warehouses)
     const getWarehouse = async () => {
         setWloading(true);
         try {

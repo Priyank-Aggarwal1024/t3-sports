@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import { MdDeleteForever } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom';
 
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, handleDeleteOrder }) => {
     const navigate = useNavigate();
     return (
         <div className="bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-200">
@@ -20,7 +20,7 @@ const OrderCard = ({ order }) => {
                     >
                         {order.status.toUpperCase()}
                     </span>
-                    <MdDeleteForever className="text-red-500 text-2xl" />
+                    <MdDeleteForever className="text-red-500 text-2xl cursor-pointer mx-2" onClick={() => handleDeleteOrder(order._id)} />
                 </div>
             </div>
 
@@ -73,7 +73,7 @@ const OrderCard = ({ order }) => {
                 <p>{order.warehouse_id.email}</p>
             </div>
             <button
-                  onClick={()=>navigate(`/orders/assigned/${order._id}`)}
+                onClick={() => navigate(`/orders/assigned/${order._id}`)}
                 className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded shadow focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 mt-4 text-center w-full"
             >
                 Fulfill Order
@@ -91,24 +91,46 @@ function AssignedOrder(props) {
                 toast.success(response.data.message)
             }
             else {
+                setOrders([]);
+                toast.error(response.data.message)
+            }
+        } catch (err) {
+            setOrders([]);
+            toast.error(err.message)
+        }
+    }
+    const handleDeleteOrder = async (id) => {
+        try {
+            const confirmdelete = window.confirm(`Are you sure want to delete this order!`);
+            if (!confirmdelete) {
+                return;
+            }
+            const response = await axios.delete(`/api/orders/${id}`);
+            if (response.data.success) {
+                toast.success(response.data.message)
+            }
+            else {
                 toast.error(response.data.message)
             }
         } catch (err) {
             toast.error(err.message)
         }
+        fetchAssignOrders();
     }
     useEffect(() => {
         fetchAssignOrders();
     }, [])
     return (
-        <div className="container mx-auto p-4 dark:bg-transparent bg-white">
-            <h1 className="text-2xl font-bold mb-4">Assigned Orders</h1>
+        <div className="dark:bg-black bg-white sm:px-8 p-4">
+            <h1 className="text-2xl font-bold mb-4 dark:text-white">Assigned Orders</h1>
+
+
             {orders.length === 0 ? (
                 <p className="text-gray-500">No orders available.</p>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {orders.map((order) => (
-                        <OrderCard key={order._id} order={order} />
+                        <OrderCard key={order._id} order={order} handleDeleteOrder={handleDeleteOrder} />
                     ))}
                 </div>
             )}

@@ -38,7 +38,6 @@ function WarehouseCard({ upq, setUpq }) {
             setSelectedProducts((prev) => ({ ...prev, [warehouseId]: "" }));
         }
     };
-    console.log(warehouses)
     return (
         <>
             {warehouses && (

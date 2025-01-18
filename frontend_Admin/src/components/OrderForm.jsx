@@ -169,7 +169,6 @@ const OrderForm = () => {
         "Order assigned successfully "
         // response.data.order_id
       );
-      console.log(response.data);
       window.location.reload();
       // Optionally reset the form or redirect
     } catch (error) {
