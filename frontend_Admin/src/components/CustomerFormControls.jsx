@@ -40,6 +40,7 @@ function CustomerFormControls({ name, label, type, options, handleChange, custom
                     onChange={handleChange}
                     className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
+                    <option value={""} className="w-full dark:bg-gray-600 dark:text-white">Select Option</option>
                     {options.map((option, ide) => <option key={ide} value={option} className="w-full dark:bg-gray-600 dark:text-white">{option}</option>)}
                 </select>
                 {

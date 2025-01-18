@@ -29,7 +29,7 @@ const OAuth = () => {
           return;
         }
       } catch (error) {
-        console.log(error);
+        toast.error(error?.message);
       }
 
       const response = await axios.post(
@@ -50,13 +50,12 @@ const OAuth = () => {
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      console.log("Could not sign in with Google", error);
+      toast.error("Could not sign in with Google")
     }
   };
 
   const onFailure = (response) => {
     toast.error("Login failed. Please try again.");
-    console.log("Login failed: response:", response);
   };
 
   return (

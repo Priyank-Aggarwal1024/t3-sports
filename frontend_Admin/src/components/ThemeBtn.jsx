@@ -7,9 +7,9 @@ function ThemeBtn() {
 
   const onChangeTheme = () => {
     if (themeMode === "light") {
-      darkTheme(); // Call darkTheme function from context
+      darkTheme();
     } else {
-      lightTheme(); // Call lightTheme function from context
+      lightTheme();
     }
   };
 

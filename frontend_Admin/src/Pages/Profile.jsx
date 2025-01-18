@@ -120,7 +120,6 @@ const Profile = () => {
       setFile(null);
       fileInputRef.current.value = null;
     } catch (error) {
-      console.log(error);
       toast.error("Error uploading file");
     } finally {
       setUploadingImage(false);

@@ -33,7 +33,6 @@ const EditCustomer = () => {
                 setCustomerErrorState({ ...customerInitialState, [field]: message });
                 return;
             }
-            console.log(customer)
             setLoading(true);
             const { data } = await axios.put(`/api/customers/customer/${id}`, customer);
             data?.customer ? toast.success("Customer edited successfully") : toast.error(data.message);

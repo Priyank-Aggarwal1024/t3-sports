@@ -9,13 +9,13 @@ import { PrivateRoute } from "./RouteGuards";
 import AllOrders from "../Pages/AllOrders";
 import EditEvent from "../Pages/EditEvent";
 import axios from "axios";
-import DetailedList from "../Pages/DetailedList";
 import BusinessPage from "../Pages/BusinessPage";
 import Order from "../Pages/Order";
-import Customer from "../components/Customer";
 import Analytics from "../Pages/Analytics";
 import EditCustomer from "../components/EditCustomer";
+import AssignOrder from "../components/AssignOrder";
 import Create from "../Pages/Create";
+import AssignedOrder from "../Pages/AssignedOrder";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +66,14 @@ const router = createBrowserRouter([
           {
             path: "/analytics",
             element: <Analytics />,
+          },
+          {
+            path: "/assigned-order",
+            element: <AssignedOrder />,
+          },
+          {
+            path: "/orders/assigned/:id",
+            element: <AssignOrder />,
           },
           {
             path: "/business/:id",

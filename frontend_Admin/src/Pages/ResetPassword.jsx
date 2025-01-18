@@ -113,8 +113,6 @@ function ResetPassword() {
           toast.error("Password Reset Successfully");
           navigate("/sign-in");
         } catch (error) {
-          console.log(error.message);
-
           toast.error("Error in updating Password");
         }
       } else {

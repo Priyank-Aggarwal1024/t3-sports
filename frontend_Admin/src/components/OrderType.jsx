@@ -1,15 +1,15 @@
 import React from 'react'
 
 const OrderType = ({ onChange }) => {
-  const handleOrderTypeChange = (e) => {
-    onChange(e.target.value);
+  const handleOrderTypeChange = ({ target }) => {
+    onChange(target.name, target.value);
   };
 
   return (
     <div className="space-y-4 w-full">
       <div className="form-control">
         <label htmlFor="payment_method" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
-          Payment Type
+          Order Type
         </label>
         <select
           id="payment_method"

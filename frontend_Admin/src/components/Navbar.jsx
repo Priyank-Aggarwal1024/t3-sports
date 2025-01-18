@@ -6,7 +6,6 @@ import { CgClose } from "react-icons/cg";
 import logo2 from "../assets/t3sports.png";
 import logo from "../assets/t3sports_dark.png";
 import axios from "axios";
-import graphicOne from "../assets/Layer_1.svg";
 import ThemeBtn from "../components/ThemeBtn";
 import { BiSolidOffer } from "react-icons/bi";
 import {
@@ -36,7 +35,6 @@ const Navbar = () => {
     } else {
       document.body.classList.remove("no-scroll");
     }
-    // Cleanup function to reset overflow when the component unmounts
     return () => {
       document.body.classList.remove("no-scroll");
     };
@@ -48,6 +46,7 @@ const Navbar = () => {
     { path: "/all-orders", text: "All Orders", icon: <MdOutlineExplore /> },
     { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
     { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
+    { path: "/assigned-order", text: "Assigned Order", icon: <MdOutlineExplore /> },
   ];
 
   const handleSignOut = async () => {
@@ -166,9 +165,7 @@ const Navbar = () => {
             <Link to="/">
               <img src={logo2} width={120} alt="logo" />
             </Link>
-            <p className="text-xs mt-2">
-              @2024 ListerJi | All Rights Reserved
-            </p>
+         
           </div>
         </div>
       )}
