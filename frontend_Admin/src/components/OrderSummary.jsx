@@ -16,7 +16,7 @@ const OrderSummary = ({ selectedCustomer, products, shippingDetails }) => {
           <p className="dark:text-[#868686] text-black text-sm w-full">Product Image</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Name</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Price</p>
-          <p className="dark:text-[#868686] text-black text-sm w-full">Colour</p>
+          <p className="dark:text-[#868686] text-black text-sm w-full">Nimbus Price</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Size</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Quantity</p>
         </div>
@@ -27,7 +27,7 @@ const OrderSummary = ({ selectedCustomer, products, shippingDetails }) => {
             </div>
             <h4 className="font-semibold w-full">{product.name}</h4>
             <p className="dark:text-white text-black text-sm w-full">₹{product.price.toFixed(2)}</p>
-            <p className="dark:text-white text-black text-sm w-full">{product.colour}</p>
+            <p className="dark:text-white text-black text-sm w-full">₹{product.nimbusprice.toFixed(2)}</p>
             <p className="dark:text-white text-black text-sm w-full">{product.size}</p>
             <div className="flex items-center justify-around dark:text-white text-black text-sm w-full">
               <div className="">{product.quantity}</div>

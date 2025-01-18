@@ -1,15 +1,14 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import useProducts from "../contexts/useProducts";
 import search from '../assets/search.svg'
 import plus from '../assets/plus.svg'
-const ProductSelection = ({ onProductSelect }) => {
-  const { products } = useProducts();
+const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
   const [productSearch, setProductSearch] = useState("");
+  const products = selectedWarehouse?.products || []
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [price, setPrice] = useState({});
+  const [nimbusprice, setNimbusPrice] = useState({});
   const [select, setSelect] = useState(null);
   const handleQuantityChange = (productId, quantity) => {
     setQuantities((prevQuantities) => ({
@@ -19,21 +18,22 @@ const ProductSelection = ({ onProductSelect }) => {
   };
 
   const handleSelectProduct = (product) => {
-    const productQuantity = quantities[product._id] || 1; // Default quantity to 1 if not set
+    const productQuantity = quantities[product.productId._id] || 1; // Default quantity to 1 if not set
     const exists = selectedProducts.find((p) => p._id === product._id);
-    const pr = price[product._id] || product.price;
+    const pr = price[product.productId._id] || product.productId.price;
+    const nbpr = nimbusprice[product.productId._id] || 0;
     if (exists) {
       // If product is already selected, update its quantity
       setSelectedProducts((prev) =>
         prev.map((p) =>
-          p._id === product._id ? { ...p, quantity: productQuantity, price: pr } : p
+          p._id === product._id ? { ...p.productId, quantity: productQuantity, price: pr, nimbusprice: nbpr } : p
         )
       );
     } else {
       // Add new product to selectedProducts with the specified quantity
       setSelectedProducts((prev) => [
         ...prev,
-        { ...product, quantity: productQuantity, price: pr },
+        { ...product.productId, quantity: productQuantity, price: pr, nimbusprice: nbpr },
       ]);
     }
 
@@ -49,12 +49,10 @@ const ProductSelection = ({ onProductSelect }) => {
     setSelectedProducts(() => selectedProducts.filter((item) => item._id !== product._id))
   }
   useEffect(() => {
-    if (productSearch.trim() !== "") {
-      setFilteredProducts(() => products.filter((item) => {
-        const regex = new RegExp(productSearch.trim().split("").join(".*"), "i");
-        return regex.test(item.name) && selectedProducts.findIndex((prod) => prod._id == item._id) == -1;
-      }))
-    }
+    setFilteredProducts(() => [...products.filter((item) => {
+      const regex = new RegExp(productSearch.trim().split("").join(".*"), "i");
+      return regex.test(item.productId.name) && selectedProducts.findIndex((prod) => prod._id === item.productId._id) == -1;
+    })])
   }, [productSearch])
   useEffect(() => {
     onProductSelect(selectedProducts);
@@ -73,45 +71,61 @@ const ProductSelection = ({ onProductSelect }) => {
           </div>
           <button className="w-12 h-9 rounded-[5px] bg-[#2F60F3] flex items-center justify-center cursor-pointer disabled:bg-[#2f60f3cc] disabled:cursor-default relative z-[1]"
             disabled={!select}
-            onClick={() => handleSelectProduct(select)}
+            onClick={() => {
+              if (select.quantity < (quantities[select.productId._id || 1])) {
+                alert("Product quantity should less than current quantity!");
+                return;
+              };
+              handleSelectProduct(select)
+            }}
           >
             <img src={plus} alt="plus" />
           </button>
-          {productSearch && <div className="absolute top-full mt-1 rounded-[10px] w-full z-[10] py-6 dark:bg-black bg-gray-300 shadow-xl dark:border left-0 px-4">
+          {productSearch.trim() && <div className="absolute top-full mt-1 rounded-[10px] w-full z-[10] py-6 dark:bg-black bg-gray-300 shadow-xl dark:border left-0 px-4">
             <div className="flex flex-col gap-2 max-h-[40vh] overflow-y-auto">
               <div className="flex w-full dark:bg-[#121212] bg-white py-2 px-1 text-center">
                 <p className="dark:text-white text-black text-sm w-full">Name</p>
-                <p className="dark:text-white text-black text-sm w-full">Price</p>
-                <p className="dark:text-white text-black text-sm w-full">Colour</p>
                 <p className="dark:text-white text-black text-sm w-full">Size</p>
+                <p className="dark:text-white text-black text-sm w-full">Price</p>
+                <p className="dark:text-white text-black text-sm w-full">Nimbus Price</p>
                 <p className="dark:text-white text-black text-sm w-full">Quantity</p>
               </div>
               {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                 product.quantity > 0 &&
-                <div key={product._id} className={`py-2 px-1 border flex justify-between items-center w-full border-gray-600 rounded-md cursor-pointer dark:text-white text-black text-center hover:bg-[#2f60f3cc] ${select && select._id == product._id && "bg-[#2F60F3] "}`}
-                  onClick={() => setSelect(product._id == select?._id ? null : product)}
+                <div key={product._id} className={`py-2 px-1 border flex justify-between items-center w-full border-gray-600 rounded-md cursor-pointer dark:text-white text-black text-center hover:bg-[#2f60f3cc] ${select && select?.productId?._id === product.productId._id && "bg-[#2F60F3] "}`}
+                  onClick={() => setSelect(product.productId._id === select?.productId?._id ? null : product)}
                 >
-                  <h4 className="font-semibold text-lg w-full">{product.name}</h4>
+                  <h4 className="font-semibold text-lg w-full">{product.productId.name}</h4>
+                  <p className="dark:text-white text-black text-sm w-full">{product.productId.size}</p>
                   <div className="flex items-center w-full justify-center gap-2">
                     <p className="">₹</p>
                     <input
                       type="number"
                       min="0"
-                      value={price[product._id] || product.price} // Default value to 1
-                      onChange={(e) => setPrice({ ...price, [product._id]: + e.target.value })}
+                      value={price[product.productId._id] || product.productId.price} // Default value to 1
+                      onChange={(e) => setPrice({ ...price, [product.productId._id]: + e.target.value })}
                       className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
                       onClick={(e) => e.stopPropagation()}
                     />
                   </div>
-                  <p className="dark:text-white text-black text-sm w-full">{product.colour}</p>
-                  <p className="dark:text-white text-black text-sm w-full">{product.size}</p>
+                  <div className="flex items-center w-full justify-center gap-2">
+                    <p className="">₹</p>
+                    <input
+                      type="number"
+                      min="0"
+                      value={nimbusprice[product.productId._id] || "0"} // Default value to 1
+                      onChange={(e) => setNimbusPrice({ ...nimbusprice, [product.productId._id]: + e.target.value })}
+                      className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
                   <div className="flex items-center w-full justify-center gap-2">
                     <input
                       type="number"
                       min="1"
                       max={product.quantity}
-                      value={quantities[product._id] || 1} // Default value to 1
-                      onChange={(e) => handleQuantityChange(product._id, +e.target.value)}
+                      value={quantities[product.productId._id] || 1} // Default value to 1
+                      onChange={(e) => handleQuantityChange(product.productId._id, +e.target.value)}
                       className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
                       onClick={(e) => e.stopPropagation()}
                     />
@@ -129,9 +143,9 @@ const ProductSelection = ({ onProductSelect }) => {
         <div className="flex w-full dark:bg-black bg-white py-2 lg:px-8 px-4 text-center">
           <p className="dark:text-[#868686] text-black text-sm w-full">Product Image</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Name</p>
-          <p className="dark:text-[#868686] text-black text-sm w-full">Price</p>
-          <p className="dark:text-[#868686] text-black text-sm w-full">Colour</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Size</p>
+          <p className="dark:text-[#868686] text-black text-sm w-full">Price</p>
+          <p className="dark:text-[#868686] text-black text-sm w-full">Nimbus Price</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Quantity</p>
         </div>
         {selectedProducts.length > 0 ? selectedProducts.map((product) => (
@@ -140,9 +154,9 @@ const ProductSelection = ({ onProductSelect }) => {
               <img className="w-24 h-18 rounded-lg" src={product.images[0]} alt={product.name} />
             </div>
             <h4 className="font-semibold w-full">{product.name}</h4>
-            <p className="dark:text-white text-black text-sm w-full">₹{product.price.toFixed(2)}</p>
-            <p className="dark:text-white text-black text-sm w-full">{product.colour}</p>
             <p className="dark:text-white text-black text-sm w-full">{product.size}</p>
+            <p className="dark:text-white text-black text-sm w-full">₹{product.price.toFixed(2)}</p>
+            <p className="dark:text-white text-black text-sm w-full">₹{product.nimbusprice.toFixed(2)}</p>
             <div className="flex items-center justify-around dark:text-white text-black text-sm w-full">
               <div className="">{product.quantity}</div>
               <svg className="cursor-pointer" onClick={() => handleRemoveProduct(product)} xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22" fill="none">

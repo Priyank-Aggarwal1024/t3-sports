@@ -1,5 +1,6 @@
 import Collection from "../models/collection.model.js";
 import Product from "../models/product.model.js";
+import Warehouse from "../models/Warehouse.model.js";
 
 export const createProduct = async (req, res) => {
   try {
@@ -8,12 +9,9 @@ export const createProduct = async (req, res) => {
       description,
       specifications,
       size,
-      colour,
       price,
-      originalprice,
       images,
       sizeChart,
-      quantity,
       category,
       collection
     } = req.body;
@@ -23,13 +21,10 @@ export const createProduct = async (req, res) => {
       description,
       specifications,
       size,
-      colour,
       price: Number(price),
       images,
       sizeChart,
-      quantity,
       category,
-      originalprice: Number(originalprice)
     });
     await newProduct.save();
     console.log(collection)
@@ -94,6 +89,10 @@ export const deleteProduct = async (req, res) => {
     if (!deletedProduct) {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
+    await Warehouse.updateMany(
+      { "products.productId": req.params.id },  // Find warehouses where the product is referenced
+      { $pull: { products: { productId: req.params.id } } }  // Remove the product from the array
+    );
 
     return res.status(200).json({ success: true, message: "Product deleted" });
   } catch (error) {

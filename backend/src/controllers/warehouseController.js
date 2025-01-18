@@ -2,7 +2,10 @@ import Warehouse from "../models/Warehouse.model.js";
 
 export const getAllWarehouses = async (req, res) => {
     try {
-        const warehouses = await Warehouse.find().select("-__v"); // Exclude internal fields
+        const warehouses = await Warehouse.find().select("-__v").populate("products.productId"); // Exclude internal fields
+        warehouses.forEach((warehouse) => {
+            warehouse.products = warehouse.products.filter(product => product.productId !== null);
+        });
         res.status(200).json({ warehouses });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -87,5 +90,49 @@ export const deteteWarehouses = async (req, res) => {
         return res.json({ success: false, message: "Something Went Wrong!" });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
+    }
+};
+export const editWarehouseProductQuantity = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { productId, quantity } = req.body;
+        if (!id || !productId || quantity === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "Warehouse ID, Product ID, and quantity are required."
+            });
+        }
+
+        if (typeof quantity !== "number" || quantity < 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Quantity must be a non-negative number."
+            });
+        }
+
+        const warehouse = await Warehouse.findOneAndUpdate(
+            { _id: id, "products.productId": productId },
+            { $set: { "products.$.quantity": quantity } }, // Update quantity of the specific product
+            { new: true }
+        );
+
+        if (!warehouse) {
+            return res.status(404).json({
+                success: false,
+                message: "Warehouse or product not found."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Product quantity updated successfully.",
+            warehouse
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };

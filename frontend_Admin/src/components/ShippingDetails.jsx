@@ -23,12 +23,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
     codCharges: 0,
   });
   const [addressErrorMessage, setAddressErrorMessage] = useState(addressInitialState)
-  const [dimensions, setDimensions] = useState({
-    weight: 0,
-    height: 0,
-    length: 0,
-    breadth: 0,
-  });
+  
   const [edit, setEdit] = useState(false);
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
@@ -40,10 +35,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
     setCharges((prev) => ({ ...prev, [name]: parseFloat(value) || 0 }));
   };
 
-  const handleDimensionChange = (e) => {
-    const { name, value } = e.target;
-    setDimensions((prev) => ({ ...prev, [name]: parseFloat(value) || 0 }));
-  };
+  
   const handleSaveAddress = async (e) => {
     if (!address.address || !address.address.trim() === "") {
       setAddressErrorMessage({ ...addressInitialState, address: "Enter address" });
@@ -91,9 +83,8 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
     onChange({
       shippingAddress: address,
       ...charges,
-      ...dimensions,
     });
-  }, [address, charges, dimensions, selectedCustomer]);
+  }, [address, charges, selectedCustomer]);
   useEffect(() => {
     setAddress({
       address: selectedCustomer?.address || "",
@@ -213,16 +204,16 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
         <div className="w-full flex flex-col gap-7 items-start justify-center">
           <div className="w-full flex items-center justify-center md:gap-7 gap-4">
             {edit ? <div className="text-[#3c98d6] text-xl font-semibold font-['Inter'] cursor-pointer" onClick={handleSaveAddress}>Save Address</div> : <div className="text-[#3c98d6] md:text-xl text-lg font-semibold font-['Inter'] cursor-pointer" onClick={() => setEdit(true)}>Edit Address</div>}
-            <div className="dark:text-white text-black text-xl font-medium font-['Inter']">or</div>
-            <div className="text-[#3c98d6] md:text-xl text-lg font-semibold font-['Inter'] cursor-pointer" onClick={() => setAlternate(true)} >Use Alternate Address</div>
+            {/* <div className="dark:text-white text-black text-xl font-medium font-['Inter']">or</div>
+            <div className="text-[#3c98d6] md:text-xl text-lg font-semibold font-['Inter'] cursor-pointer" onClick={() => setAlternate(true)} >Use Alternate Address</div> */}
           </div>
-          {alternate && <input
+          {/* {alternate && <input
             name="address_2"
             placeholder="Other Address"
             value={address.address_2}
             onChange={handleAddressChange}
             className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
-          />}
+          />} */}
         </div>
         {/* Shipping Charges */}
         <div className="w-full md:pt-12 pt-0 md:col-span-2"></div>
@@ -260,75 +251,7 @@ const ShippingDetails = ({ onChange, selectedCustomer, onEditCustomer }) => {
             className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
           />
         </div>
-        {/* Adding input fields for dimensions */}
-        <div className="w-full">
-          <label
-            htmlFor="weight"
-            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
-          >
-            Weight (in grams):
-          </label>
-          <input
-            name="weight"
-            type="number"
-            min={0}
-            placeholder="Weight (g)"
-            value={dimensions.weight}
-            onChange={handleDimensionChange}
-            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
-          />
-        </div>
-        <div className="w-full">
-          <label
-            htmlFor="height"
-            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
-          >
-            Height (in cm):
-          </label>
-          <input
-            name="height"
-            type="number"
-            min={0}
-            placeholder="Height (cm)"
-            value={dimensions.height}
-            onChange={handleDimensionChange}
-            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
-          />
-        </div>
-        <div className="w-full">
-          <label
-            htmlFor="length"
-            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
-          >
-            Length (in cm):
-          </label>
-          <input
-            name="length"
-            type="number"
-            min={0}
-            placeholder="Length (cm)"
-            value={dimensions.length}
-            onChange={handleDimensionChange}
-            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
-          />
-        </div>
-        <div className="w-full">
-          <label
-            htmlFor="breadth"
-            className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
-          >
-            Breadth (in cm):
-          </label>
-          <input
-            name="breadth"
-            type="number"
-            min={0}
-            placeholder="Breadth (cm)"
-            value={dimensions.breadth}
-            onChange={handleDimensionChange}
-            className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
-          />
-        </div>
+        
       </div>
     </div>
   );

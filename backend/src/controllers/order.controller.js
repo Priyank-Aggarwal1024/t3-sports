@@ -1,7 +1,6 @@
 import Customer from "../models/customer.model.js";
 import Order from "../models/order.model.js";
 import axios from 'axios';
-import Product from "../models/product.model.js";
 import Warehouse from "../models/Warehouse.model.js"
 import nodemailer from 'nodemailer'
 const NIMBUS_API_KEY = process.env.NIMBUS_API_KEY;
@@ -46,11 +45,11 @@ const generateEmailHtml = (savedOrder, customerDetails, warehouse) => {
             </div>
             <br/>
             <h4 style="color: #34495e;">Shipping Details</h4>
-            <p style="margin: 5px 0; font-size: 14px;">Address: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].address}</strong></p>
-            <p style="margin: 5px 0; font-size: 14px;">Pincode: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].pincode}</strong></p>
-            <p style="margin: 5px 0; font-size: 14px;">City: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].city}</strong></p>
-            <p style="margin: 5px 0; font-size: 14px;">State: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].state}</strong></p>
-            <p style="margin: 5px 0; font-size: 14px;">Country: <strong>${savedOrder.shippingDetails[0].shippingAddress[0].country}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">Address: <strong>${savedOrder.shippingDetails.shippingAddress.address}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">Pincode: <strong>${savedOrder.shippingDetails.shippingAddress.pincode}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">City: <strong>${savedOrder.shippingDetails.shippingAddress.city}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">State: <strong>${savedOrder.shippingDetails.shippingAddress.state}</strong></p>
+            <p style="margin: 5px 0; font-size: 14px;">Country: <strong>${savedOrder.shippingDetails.shippingAddress.country}</strong></p>
             <br/>
             <h3 style="color: #2c3e50;">Total Amount</h3>
             <p style="font-size: 16px; font-weight: bold; color: #e74c3c;">Rs. ${savedOrder.totalAmount}</p>
@@ -65,52 +64,55 @@ const generateEmailHtml = (savedOrder, customerDetails, warehouse) => {
 
 export const createOrder = async (req, res) => {
   try {
-    const { length, breadth, height, ...orderdata } = req.body;
-    const newOrder = new Order({ ...orderdata, volumetricWeight: length * breadth * height });
+    const orderdata = req.body;
+    const newOrder = new Order({ ...orderdata, ordertype: "assign" });
     const savedOrder = await newOrder.save();
     const customerDetails = await Customer.findById(orderdata.customer);
     if (!customerDetails) throw new Error('Customer not found');
 
-    const nimbusProducts = orderdata.products.map((product) => ({
-      name: product.productName,
-      qty: product.quantity,
-      price: product.price
-    }));
+    // const nimbusProducts = orderdata.products.map((product) => ({
+    //   name: product.productName,
+    //   qty: product.quantity,
+    //   price: product.price
+    // }));
+    const warehouseId = orderdata.warehouse_id;
+    orderdata.products.forEach(async (prod) => {
 
-    const nimbusOrderData = {
-      order_number: savedOrder.order_number,
-      payment_method: savedOrder.payment_method,
-      amount: savedOrder.amount,
-      fname: customerDetails.fname,
-      lname: customerDetails.lname,
-      phone: customerDetails.phone,
-      address: savedOrder.shippingDetails[0].shippingAddress[0].address,
-      address_2: savedOrder.shippingDetails[0].shippingAddress[0].address_2,
-      city: savedOrder.shippingDetails[0].shippingAddress[0].city,
-      state: savedOrder.shippingDetails[0].shippingAddress[0].state,
-      pincode: savedOrder.shippingDetails[0].shippingAddress[0].pincode,
-      country: savedOrder.shippingDetails[0].shippingAddress[0].country,
-      products: nimbusProducts,
-      weight: savedOrder.weight,
-      length,
-      breadth,
-      height
-    };
-    orderdata.products.forEach(async (product) => {
-      const prd = await Product.findByIdAndUpdate(product._id, { $inc: { quantity: -product.quantity } }, { new: true });
+      const warehouse = await Warehouse.findOneAndUpdate(
+        { _id: warehouseId, "products.productId": prod._id },
+        {
+          $inc: { "products.$.quantity": -prod.quantity } // Decrement the quantity
+        },
+        { new: true }
+      );
     })
-    const nimbusResponse = await axios.post(
-      'https://ship.nimbuspost.com/api/orders/create',
-      nimbusOrderData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'NP-API-KEY': NIMBUS_API_KEY
-        }
-      }
-    );
 
-    savedOrder.nimbuspostTrackingId = nimbusResponse.data.tracking_id;
+    // const nimbusOrderData = {
+    //   order_number: savedOrder.order_number,
+    //   payment_method: savedOrder.payment_method,
+    //   amount: savedOrder.amount,
+    //   fname: customerDetails.fname,
+    //   lname: customerDetails.lname,
+    //   phone: customerDetails.phone,
+    //   address: savedOrder.shippingDetails.shippingAddress.address,
+    //   city: savedOrder.shippingDetails.shippingAddress.city,
+    //   state: savedOrder.shippingDetails.shippingAddress.state,
+    //   pincode: savedOrder.shippingDetails.shippingAddress.pincode,
+    //   country: savedOrder.shippingDetails.shippingAddress.country,
+    //   products: nimbusProducts,
+    // };
+    // const nimbusResponse = await axios.post(
+    //   'https://ship.nimbuspost.com/api/orders/create',
+    //   nimbusOrderData,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //       'NP-API-KEY': NIMBUS_API_KEY
+    //     }
+    //   }
+    // );
+
+    // savedOrder.nimbuspostTrackingId = nimbusResponse.data.tracking_id;
     await savedOrder.save();
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -129,10 +131,10 @@ export const createOrder = async (req, res) => {
     });
     return res.status(201).json({
       success: true,
-      message: "Order created successfully",
+      message: "Order Assigned successfully",
       order: savedOrder,
-      trackingId: nimbusResponse.data.tracking_id,
-      order_id: nimbusResponse.data.data
+      // trackingId: nimbusResponse.data.tracking_id,
+      // order_id: nimbusResponse.data.data
     });
 
   } catch (error) {
@@ -156,5 +158,33 @@ export const getOrders = async (req, res) => {
   } catch (error) {
     console.error('Error fetching orders:', error.message);
     res.status(500).json({ message: 'Failed to fetch orders' });
+  }
+};
+
+export const getAssignedOrders = async (req, res) => {
+  try {
+    // Fetch all orders with ordertype 'assign'
+    const assignedOrders = await Order.find({ ordertype: "assign" })
+      .populate("warehouse_id")
+      .populate("customer")
+      .select("-__v");
+    if (!assignedOrders || assignedOrders.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No assigned orders found.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Assigned orders retrieved successfully.",
+      data: assignedOrders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching assigned orders.",
+      error: error.message,
+    });
   }
 };

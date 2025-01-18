@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import ImageKit from 'imagekit-javascript';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { createProductValidator } from "../utils/validators";
 import toast from "react-hot-toast";
@@ -32,6 +30,7 @@ const ProductForm = () => {
       setFormData(initialProductData);
       setMessageTxt(initialErrorMessage)
     } catch (error) {
+      console.log(error)
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
       } else {
@@ -104,7 +103,8 @@ const ProductForm = () => {
               messageTxt.price && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.price}</p>
             }
           </div>
-          {/* Original Price Optional */}
+
+          {/* Original Price Optional
           <div className="w-full">
             <label
               htmlFor="originalprice"
@@ -125,8 +125,10 @@ const ProductForm = () => {
             {
               messageTxt.originalprice && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.originalprice}</p>
             }
-          </div>
-          {/* Quantity */}
+          </div> */}
+
+
+          {/* Quantity
           <div className="w-full">
             <label
               htmlFor="quantity"
@@ -146,7 +148,8 @@ const ProductForm = () => {
             {
               messageTxt.quantity && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.quantity}</p>
             }
-          </div>
+          </div> */}
+
           {/* Specifications */}
           <div className="w-full">
             <label
@@ -171,13 +174,13 @@ const ProductForm = () => {
               htmlFor="size"
               className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
             >
-              Size
+              Size - Colour
             </label>
             <input
               type="text"
               id="size"
               name="size"
-              placeholder="Enter size"
+              placeholder="Enter size - colour"
               value={formData.size}
               onChange={handleChange}
               className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -186,7 +189,8 @@ const ProductForm = () => {
               messageTxt.size && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.size}</p>
             }
           </div>
-          {/* Colour */}
+
+          {/* Colour
           <div className="w-full">
             <label
               htmlFor="colour"
@@ -206,7 +210,8 @@ const ProductForm = () => {
             {
               messageTxt.colour && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.colour}</p>
             }
-          </div>
+          </div> */}
+
           {/* Category */}
           <div className="w-full">
             <label

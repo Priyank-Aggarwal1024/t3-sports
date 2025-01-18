@@ -6,16 +6,15 @@ import { FaEdit } from "react-icons/fa";
 import CollectionList from "./CollectionList";
 import Customer from "../components/Customer";
 import useProducts from "../contexts/useProducts";
-import useWarehouse from "../contexts/useWarehouse";
 import WarehouseCard from "../components/WarehouseCard";
 import Loader from "../components/Loader";
 import { useOrders } from "../contexts/OrdersContext";
 import search from '../assets/search.svg'
+import axios from "axios";
 
 const Home = () => {
   const {
     products,
-    filterProducts,
     editingProduct,
     setEditingProduct,
     updatedProductData,
@@ -26,29 +25,44 @@ const Home = () => {
   } = useProducts();
 
   const [searchText, setSearchText] = useState("");
-  const { warehouse } = useWarehouse();
-
-
   const { todayOrders, todayRevenue, aov } = useOrders();
-
-
-  // Pagination State
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(15); // Display 15 orders per page
   const [homeLoading, setHomeLoading] = useState(true);
-  // Calculate total number of pages
   const totalPages = Math.ceil(products?.length / itemsPerPage);
-
-  // Function to change the page
   const changePage = (page) => {
     if (page < 0 || page >= totalPages) return; // Prevent going out of bounds
     setCurrentPage(page);
   };
   const regex = new RegExp(searchText, "i")
-
-  // Slice orders for the current page
-  const currentProducts = products?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+  const [fproducts, setFproducts] = useState(products);
+  const [warehouses, setWarehouses] = useState([]);
+  const [upq, setUpq] = useState(false);
+  const getWarehouse = async () => {
+    try {
+      const response = await axios.get("/api/warehouses");
+      setWarehouses([...response.data.warehouses]);
+    } catch (error) {
+      console.error("Error fetching warehouses:", error);
+    }
+  }
   useEffect(() => {
+    if (warehouses && warehouses.length > 0) {
+      const _products = (products?.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage) || []).map((item) => ({
+        ...item, quantity: warehouses.reduce((total, warehouse) => {
+          const product = warehouse?.products?.find(p => p.productId._id === item._id);
+          return product ? total + product.quantity : total;
+        }, 0)
+      }));
+      setFproducts(_products);
+    }
+    return () => { }
+  }, [products, warehouses])
+  useEffect(() => {
+    getWarehouse();
+  }, [upq])
+  useEffect(() => {
+    getWarehouse();
     setTimeout(() => {
       setHomeLoading(false);
     }, 1000)
@@ -72,7 +86,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="pt-6 w-full">
-                  <div className="dark:text-[#e2e2e2] text-black xl:text-5xl lg:text-4xl text-3xl font-medium font-['Inter']">{todayOrders}</div>
+                  <div className="dark:text-[#e2e2e2] text-black xl:text-5xl lg:text-4xl text-3xl font-medium font-['Inter']">{Number(todayOrders).toLocaleString()}</div>
                   <div className="dark:text-[#e2e2e2] text-black pt-2.5 lg:text-[17px] text-[14px] font-normal font-['Inter']">New orders</div>
                 </div>
               </div>
@@ -89,7 +103,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="pt-6 w-full">
-                  <div className="dark:text-[#e2e2e2] text-black xl:text-5xl lg:text-4xl text-3xl font-medium font-['Inter']">₹ {todayRevenue}</div>
+                  <div className="dark:text-[#e2e2e2] text-black xl:text-5xl lg:text-4xl text-3xl font-medium font-['Inter']">₹ {Number(todayRevenue).toLocaleString()}</div>
                   <div className="dark:text-[#e2e2e2] text-black pt-2.5 lg:text-[17px] text-[14px] font-normal font-['Inter']">View Net profit</div>
                 </div>
               </div>
@@ -106,7 +120,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="pt-6 w-full">
-                  <div className="dark:text-[#e2e2e2] text-black xl:text-5xl lg:text-4xl text-3xl font-medium font-['Inter']">₹ {aov.toFixed(2)}</div>
+                  <div className="dark:text-[#e2e2e2] text-black xl:text-5xl lg:text-4xl text-3xl font-medium font-['Inter']">₹ {Number(aov.toFixed(2)).toLocaleString()}</div>
                   <div className="dark:text-[#e2e2e2] text-black pt-2.5 lg:text-[17px] text-[14px] font-normal font-['Inter']">This week</div>
                 </div>
               </div>
@@ -146,7 +160,7 @@ const Home = () => {
               </div>
 
               <div className="block w-full overflow-x-auto">
-                {currentProducts.length === 0 ? (
+                {fproducts.length === 0 ? (
                   <p className="text-center text-black dark:text-white">No Products found.</p>
                 ) : (
                   <table className="items-center bg-transparent w-full border-collapse">
@@ -155,6 +169,7 @@ const Home = () => {
                         <th className="px-4 bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 align-middle border border-solid border-gray-200 dark:border-gray-700 py-3 text-xs uppercase whitespace-nowrap font-semibold text-left">
                           Serial No.
                         </th>
+
                         <th className="px-4 bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 align-middle border border-solid border-gray-200 dark:border-gray-700 py-3 text-xs uppercase whitespace-nowrap font-semibold text-left">
                           Quantity
                         </th>
@@ -169,13 +184,7 @@ const Home = () => {
                           Price
                         </th>
                         <th className="px-4 bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 align-middle border border-solid border-gray-200 dark:border-gray-700 py-3 text-xs uppercase whitespace-nowrap font-semibold text-left">
-                          Original Price
-                        </th>
-                        <th className="px-4 bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 align-middle border border-solid border-gray-200 dark:border-gray-700 py-3 text-xs uppercase whitespace-nowrap font-semibold text-left">
-                          Size
-                        </th>
-                        <th className="px-4 bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 align-middle border border-solid border-gray-200 dark:border-gray-700 py-3 text-xs uppercase whitespace-nowrap font-semibold text-left">
-                          Color
+                          Size - Colour
                         </th>
                         <th className="px-4 bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 align-middle border border-solid border-gray-200 dark:border-gray-700 py-3 text-xs uppercase whitespace-nowrap font-semibold text-left">
                           Category
@@ -186,23 +195,11 @@ const Home = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {currentProducts.map((product, index) => regex.test(product.name) && (
+                      {fproducts.map((product, index) => regex.test(product.name) && (
                         <tr key={product._id} className="border border-gray-700 text-black dark:text-white">
                           <td className="px-4 py-1 text-sm">{index + 1 + (currentPage * itemsPerPage)}</td>
                           <td className="px-4 py-1 text-sm border border-gray-600">
-                            {editingProduct?._id === product._id ? (
-                              <input
-                                type="number"
-                                min={0}
-                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                value={updatedProductData.quantity}
-                                onChange={(e) =>
-                                  setUpdatedProductData({ ...updatedProductData, quantity: +e.target.value })
-                                }
-                              />
-                            ) : (
-                              `${product.quantity} Units`
-                            )}
+                            {product?.quantity} Units
                           </td>
 
                           <td className="px-4 py-1 text-sm border border-gray-600">
@@ -240,21 +237,6 @@ const Home = () => {
                           <td className="px-4 py-1 text-sm border border-gray-600">
                             {editingProduct?._id === product._id ? (
                               <input
-                                type="number"
-                                min={0}
-                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                value={updatedProductData.originalprice}
-                                onChange={(e) =>
-                                  setUpdatedProductData({ ...updatedProductData, originalprice: e.target.value })
-                                }
-                              />
-                            ) : (
-                              `₹${product?.originalprice}`
-                            )}
-                          </td>
-                          <td className="px-4 py-1 text-sm border border-gray-600">
-                            {editingProduct?._id === product._id ? (
-                              <input
                                 type="text"
                                 className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
                                 value={updatedProductData.size}
@@ -264,20 +246,6 @@ const Home = () => {
                               />
                             ) : (
                               product.size
-                            )}
-                          </td>
-                          <td className="px-4 py-1 text-sm border border-gray-600">
-                            {editingProduct?._id === product._id ? (
-                              <input
-                                type="text"
-                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                value={updatedProductData.colour}
-                                onChange={(e) =>
-                                  setUpdatedProductData({ ...updatedProductData, colour: e.target.value })
-                                }
-                              />
-                            ) : (
-                              product.colour
                             )}
                           </td>
                           <td className="px-4 py-1 text-sm border border-gray-600">
@@ -320,7 +288,7 @@ const Home = () => {
             </div>
           </div>
           <div className="w-full lg:px-16 md:px-8 px-4 lg:py-14 py-8">
-            <WarehouseCard />
+            <WarehouseCard setUpq={setUpq} upq={upq} />
             <CollectionList />
             <Customer />
           </div>

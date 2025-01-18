@@ -3,11 +3,17 @@ import useWarehouse from '../contexts/useWarehouse';
 import useProducts from '../contexts/useProducts';
 import { IoMdClose, IoMdAdd } from "react-icons/io";
 
-function WarehouseCard() {
-    const { products, getProductById } = useProducts();
-    const { warehouses, deleteWarehouse, addProductInWarehouse, wloading, removeProductInWarehouse } = useWarehouse();
+function WarehouseCard({ upq, setUpq }) {
+    const { products } = useProducts();
+    const { warehouses, deleteWarehouse, addProductInWarehouse, wloading, removeProductInWarehouse, editWarehouseProductQuantity } = useWarehouse();
     const [selectedProducts, setSelectedProducts] = useState({}); // Track selected product per warehouse
     const [open, setOpen] = useState({});
+    const [quantity, setQuantity] = useState(0);
+    const [warehouseEdit, setWarehouseEdit] = useState({
+        warehouse: "",
+        productId: "",
+        quantity: 0
+    })
     const handleWarehouseClick = (warehouse) => {
         if (open[warehouse._id]) {
             setOpen({ ...open, [warehouse._id]: false });
@@ -19,8 +25,9 @@ function WarehouseCard() {
     const handleAddProduct = (warehouseId) => {
         const productId = selectedProducts[warehouseId];
         if (productId) {
-            addProductInWarehouse(warehouseId, productId);
+            addProductInWarehouse(warehouseId, productId, quantity);
             setSelectedProducts((prev) => ({ ...prev, [warehouseId]: "" }));
+            setQuantity(0);
         }
     };
 
@@ -31,7 +38,7 @@ function WarehouseCard() {
             setSelectedProducts((prev) => ({ ...prev, [warehouseId]: "" }));
         }
     };
-
+    console.log(warehouses)
     return (
         <>
             {warehouses && (
@@ -40,7 +47,7 @@ function WarehouseCard() {
                     {wloading ? (
                         <div className="text-white text-xl">Loading...</div>
                     ) : warehouses.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {warehouses.map((warehouse, wid) => (
                                 <div className="" key={wid}>
                                     <div
@@ -64,22 +71,50 @@ function WarehouseCard() {
                                         {
                                             open[warehouse._id] && <div>
                                                 <ul className="pb-3">
-                                                    {warehouse.products.map((product) => getProductById(product.productId) && (
+                                                    {warehouse.products.map((product) => (
                                                         <li key={product._id} className="flex  items-center md:mb-[18px] mb-3 ">
                                                             <div className="flex justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
                                                                 <span className="font-medium text-black dark:text-white">
-                                                                    {getProductById(product.productId)?.name}
+                                                                    {product.productId.name}
                                                                 </span>
+                                                                {warehouseEdit.productId == product.productId._id && warehouseEdit.warehouse == warehouse._id ? <input type="number" className='bg-white placeholder:dark:text-[#858585] placeholder:text-gray-700 border rounded-md w-12 text-sm pl-2 hover:cursor-pointer' name="quantity" id="quantity" min={0} value={warehouseEdit.quantity} onChange={({ target }) => setWarehouseEdit({ ...warehouseEdit, quantity: +target.value })} /> : <span className="font-medium text-black dark:text-white">
+                                                                    {product.quantity}
+                                                                </span>}
                                                                 <span className="text-[#2F60F3] font-semibold">
-                                                                    ${getProductById(product.productId)?.price}
+                                                                    ${product.productId.price}
                                                                 </span>
                                                             </div>
-                                                            <button
-                                                                onClick={() => handleRemoveProduct(warehouse._id, product.productId)}
-                                                                className="dark:text-white text-black rounded-md py-1 pl-1 text-2xl cursor-pointer"
-                                                            >
-                                                                <IoMdClose />
-                                                            </button>
+                                                            <div className="flex items-center">
+                                                                {warehouseEdit.productId == product.productId._id && warehouseEdit.warehouse == warehouse._id ? <button
+                                                                    onClick={() => {
+                                                                        editWarehouseProductQuantity(warehouseEdit);
+                                                                        setWarehouseEdit({
+                                                                            warehouse: "",
+                                                                            productId: "",
+                                                                            quantity: 0
+                                                                        });
+                                                                        setUpq(!upq);
+                                                                    }}
+                                                                    className="dark:text-white text-black rounded-md py-1 text-lg cursor-pointer bg-green-500 w-16 ml-2"
+                                                                >
+                                                                    Save
+                                                                </button> : <button
+                                                                    onClick={() => setWarehouseEdit({ quantity: product.quantity, productId: product.productId._id, warehouse: warehouse._id })}
+                                                                    className="dark:text-white text-black rounded-md py-1 text-lg cursor-pointer bg-yellow-500 w-16 ml-2"
+                                                                >
+                                                                    Edit
+                                                                </button>}
+                                                                <button
+                                                                    onClick={() => {
+                                                                        handleRemoveProduct(warehouse._id, product.productId._id);
+                                                                        setUpq(!upq);
+                                                                    }}
+                                                                    className="dark:text-white text-black rounded-md py-1 pl-1 text-2xl cursor-pointer"
+                                                                >
+                                                                    <IoMdClose />
+                                                                </button>
+                                                            </div>
+
                                                         </li>
                                                     ))}
                                                 </ul>
@@ -102,7 +137,7 @@ function WarehouseCard() {
                                                             .filter(
                                                                 (product) =>
                                                                     !warehouse.products.some(
-                                                                        (wp) => wp.productId === product._id
+                                                                        (wp) => wp.productId._id === product._id
                                                                     )
                                                             )
                                                             .map((product) => (
@@ -111,8 +146,12 @@ function WarehouseCard() {
                                                                 </option>
                                                             ))}
                                                     </select>
+                                                    <input type="number" className='bg-white placeholder:dark:text-[#858585] placeholder:text-gray-700 border rounded-md w-12 text-sm pl-2 hover:cursor-pointer' name="quantity" id="quantity" value={quantity} onChange={({ target }) => setQuantity(+target.value)} />
                                                     <button
-                                                        onClick={() => handleAddProduct(warehouse._id)}
+                                                        onClick={() => {
+                                                            handleAddProduct(warehouse._id);
+                                                            setUpq(!upq);
+                                                        }}
                                                         className="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition duration-200"
                                                         disabled={!selectedProducts[warehouse._id]}
                                                     >

@@ -1,22 +1,4 @@
-// import mongoose from "mongoose";
-
-
-// const ProductSchema = new mongoose.Schema({
-//     name: { type: String, required: true },
-//     price: { type: Number, required: true },
-//     quantity: { type: Number, required: true },
-//     image: { type: String },
-//     description: { type: String },
-//     category: { type: String },
-//     subcategory: { type: String }
-//   }, { timestamps: true });
-
-// const Product = mongoose.model('Product', ProductSchema);
-// export default Product;
-
-
 import mongoose from "mongoose";
-
 const ProductSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -30,22 +12,14 @@ const ProductSchema = new mongoose.Schema({
     specifications: {
         type: String,
         maxlength: [1000, 'Product Specifications cannot exceed 1000 characters']
-    },
-    size: {
+    }, size: {
         type: String,
-        required: [true, 'Size is required']
-    },
-    colour: {
-        type: String
+        required: true
     },
     price: {
         type: Number,
         required: [true, 'Price is required'],
         min: [0, 'Price must be a positive number']
-    },
-    originalprice: {
-        type: Number,
-        min: [0, 'Original Price must be a positive number']
     },
     images: [{
         type: String,
@@ -54,11 +28,6 @@ const ProductSchema = new mongoose.Schema({
     sizeChart: {
         type: String,
         // match: [/^https?:\/\//, 'Size Chart must be a valid URL']
-    },
-    quantity: {
-        type: Number,
-        required: [true, 'Quantity is required'],
-        min: [0, 'Quantity must be a positive number']
     },
     category: {
         type: String,

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 const OrderSchema = new mongoose.Schema({
-  warehouse_id: { type: mongoose.Schema.Types.ObjectId },
+  warehouse_id: { type: mongoose.Schema.Types.ObjectId, ref: "Warehouse" },
   order_number: { type: String, required: true },
   payment_status: {
     type: String,
@@ -22,20 +22,21 @@ const OrderSchema = new mongoose.Schema({
   products: [{
     productName: { type: String, required: true },
     quantity: { type: Number, required: true },
-    price: { type: Number, required: true }
+    price: { type: Number, required: true },
+    nimbusprice: { type: Number, required: true }
   }],
-  shippingDetails: [{
-    shippingAddress: [{
+  shippingDetails: {
+    shippingAddress: {
       address: { type: String, required: true },
       address_2: { type: String },
       city: { type: String, required: true },
       state: { type: String, required: true },
       pincode: { type: String, required: true },
       country: { type: String, required: true }
-    }],
+    },
     shippingCharges: { type: Number, required: true },
     codCharges: { type: Number },
-  }],
+  },
   courier_id: { type: Number },
   taxAmount: { type: Number },
   discount: { type: Number },
@@ -46,13 +47,31 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
+  shipping_type: {
+    type: String,
+    enum: ["express", "surface"],
+    required: true
+  },
+  platform: {
+    type: String,
+    enum: ["delhivery", "nimbus", "others"],
+    required: true
+  },
+  other_platform: {
+    type: String,
+  },
   insuranceRequired: {
     type: Boolean,
     default: false
   },
   status: { type: String, enum: ['ordered', 'packaging', 'shipped', 'delivered', 'returned', 'customer unavailable'], default: 'ordered' },
   nimbuspostTrackingId: { type: String }, // For fetching status from Nimbuspost
-  dateOfOrder: { type: Date, default: Date.now }
+  dateOfOrder: { type: Date, default: Date.now },
+  ordertype: {
+    type: String,
+    enum: ["assign", "fulfilled"],
+    deafult: "assign"
+  }
 }, { timestamps: true });
 
 const Order = mongoose.model('Order', OrderSchema);

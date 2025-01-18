@@ -15,22 +15,20 @@ const OrderForm = () => {
     codCharges: 0,
     taxAmount: 0,
     discount: 0,
-    weight: 0,
-    height: 0,
-    length: 0,
-    breadth: 0,
     payment_method: "",
     otherpayment_status: "",
     note: "",
-    payment_status: "", // Added payment_status to orderDetails
-    insuranceRequired: false, // Added insuranceRequired to orderDetails
+    payment_status: "",
+    insuranceRequired: false,
+    shipping_type: "",
+    platform: "",
+    other_platform: ""
   });
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [shippingDetails, setShippingDetails] = useState({
     shippingAddress: {
       address: "",
-      address_2: "",
       city: "",
       state: "",
       pincode: "",
@@ -38,36 +36,22 @@ const OrderForm = () => {
     },
     shippingCharges: 0,
     codCharges: 0,
-    weight: 0,
-    height: 0,
-    length: 0,
-    breadth: 0,
   });
   const [validtionMessage, setValidationMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const handleProductSelect = (selectedProducts) => {
     setProducts(selectedProducts);
   };
-
   const handleShippingDetailsChange = (details) => {
     setShippingDetails(details);
     setOrderDetails((prev) => ({
       ...prev,
       shippingCharges: details.shippingCharges,
       codCharges: details.codCharges,
-      weight: details.weight,
-      height: details.height,
-      length: details.length,
-      breadth: details.breadth,
     }));
   };
-  const handleOrderType = (ordertype) => {
-    setOrderDetails((prev) => ({
-      ...prev,
-      payment_method: ordertype,
-    }));
-  }
-  const handlePaymentMethodChange = (name, value) => {
+
+  const handleOrderDetailChange = (name, value) => {
     setOrderDetails((prev) => ({
       ...prev,
       [name]: value,
@@ -111,22 +95,19 @@ const OrderForm = () => {
       setValidationMessage("Enter your country.");
       return;
     }
-    if (orderDetails.weight == 0) {
-      setValidationMessage("Weight should not be 0.");
+    if (orderDetails.shipping_type.trim() === "") {
+      setValidationMessage("Type of shipping should be valid.");
       return;
     }
-    if (orderDetails.length == 0) {
-      setValidationMessage("Length should not be 0.");
+    if (orderDetails.platform.trim() === "") {
+      setValidationMessage("Platform should be valid.");
       return;
     }
-    if (orderDetails.height == 0) {
-      setValidationMessage("Height should not be 0.");
+    if (orderDetails.platform === "others" && orderDetails.other_platform.trim() === "") {
+      setValidationMessage("Give Other Shipping Platform note.");
       return;
     }
-    if (orderDetails.breadth == 0) {
-      setValidationMessage("Breadth should not be 0.");
-      return;
-    }
+
     // Calculate the total amount from products
     const totalAmount = products.reduce((total, product) => {
       return total + product.price * product.quantity;
@@ -154,44 +135,41 @@ const OrderForm = () => {
         productName: p.name,
         quantity: p.quantity,
         price: p.price,
+        nimbusprice: p.nimbusprice
       })),
-      shippingDetails: [
+      shippingDetails: {
+        shippingAddress:
         {
-          shippingAddress: [
-            {
-              address: shippingDetails.shippingAddress.address,
-              address_2: shippingDetails.shippingAddress.address_2 || "",
-              city: shippingDetails.shippingAddress.city,
-              state: shippingDetails.shippingAddress.state,
-              pincode: shippingDetails.shippingAddress.pincode,
-              country: shippingDetails.shippingAddress.country,
-            },
-          ],
-          shippingCharges: shippingDetails.shippingCharges || 0,
-          codCharges: shippingDetails.codCharges || 0,
+          address: shippingDetails.shippingAddress.address,
+          city: shippingDetails.shippingAddress.city,
+          state: shippingDetails.shippingAddress.state,
+          pincode: shippingDetails.shippingAddress.pincode,
+          country: shippingDetails.shippingAddress.country,
         },
-      ],
+        shippingCharges: shippingDetails.shippingCharges || 0,
+        codCharges: shippingDetails.codCharges || 0,
+      },
       taxAmount: orderDetails.taxAmount || 0,
       discount: orderDetails.discount || 0,
-      weight: orderDetails.weight || 0,
-      height: Number(orderDetails.height) || 0,
-      length: Number(orderDetails.length) || 0,
-      breadth: Number(orderDetails.breadth) || 0,
       totalAmount: finalAmount,
-      insuranceRequired: orderDetails.insuranceRequired, // Include insurance in orderData
+      insuranceRequired: orderDetails.insuranceRequired,
+      shipping_type: orderDetails.shipping_type,
+      platform: orderDetails.platform,
+      other_platform: orderDetails.other_platform
     };
 
 
     const confirmSubmission = window.confirm(
-      "Are you sure you want to submit this order?"
+      "Are you sure you want to assign this order?"
     );
     if (!confirmSubmission) return;
     try {
       const response = await axios.post("/api/orders/create", orderData);
       alert(
-        "Order created successfully with Order ID: " +
-        response.data.order_id
+        "Order assigned successfully "
+        // response.data.order_id
       );
+      console.log(response.data);
       window.location.reload();
       // Optionally reset the form or redirect
     } catch (error) {
@@ -203,7 +181,7 @@ const OrderForm = () => {
   return (
     <div className="dark:bg-black bg-white">
       <h2 className="text-3xl font-semibold text-gray-800 dark:text-white lg:mb-16 mb-7">
-        Create New Order
+        Assign New Order
       </h2>
       <form
         onSubmit={handleSubmit}
@@ -214,12 +192,13 @@ const OrderForm = () => {
             <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Order Details</div>
           </div>
           <div className="w-full">
-            <ProductSelection onProductSelect={handleProductSelect} />
+            <WarehouseSearch selectedWarehouse={selectedWarehouse} setSelectedWarehouse={setSelectedWarehouse} />
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+            <ProductSelection onProductSelect={handleProductSelect} selectedWarehouse={selectedWarehouse} />
             <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
             <CustomerSearch selectedCustomer={selectedCustomer} setSelectedCustomer={setSelectedCustomer} />
             <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
-            <WarehouseSearch selectedWarehouse={selectedWarehouse} setSelectedWarehouse={setSelectedWarehouse} />
-            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+
           </div>
         </div>
         <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
@@ -228,8 +207,8 @@ const OrderForm = () => {
           </div>
           <div className="w-full">
             <div className="flex items-start md:flex-row md:gap-7 gap-6 w-full">
-              <OrderType onChange={handleOrderType} />
-              <PaymentStatus onChange={handlePaymentMethodChange} orderDetails={orderDetails} />
+              <OrderType onChange={handleOrderDetailChange} />
+              <PaymentStatus onChange={handleOrderDetailChange} orderDetails={orderDetails} />
             </div>
             <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
           </div>
@@ -245,7 +224,70 @@ const OrderForm = () => {
             <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
           </div>
         </div>
-
+        <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
+          <div className="w-[200px]">
+            <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Shipping Partner Details</div>
+          </div>
+          <div className="w-full">
+            <div className="dark:text-white text-black">
+              <div className="grid md:grid-cols-2 md:gap-9 gap-5">
+                <div className="w-full">
+                  <label
+                    htmlFor={"shipping_type"}
+                    className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+                  >
+                    Type of Shipping
+                  </label>
+                  <select
+                    type={"select"}
+                    id={"shipping_type"}
+                    name={"shipping_type"}
+                    onChange={({ target }) => handleOrderDetailChange(target.name, target.value)}
+                    className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+                  >
+                    <option value={""} className="w-full dark:bg-gray-600 dark:text-white">Select Type of Shipping</option>
+                    <option value={"express"} className="w-full dark:bg-gray-600 dark:text-white">Express</option>
+                    <option value={"surface"} className="w-full dark:bg-gray-600 dark:text-white">Surface</option>
+                  </select>
+                </div>
+                <div className="w-full">
+                  <label
+                    htmlFor={"platform"}
+                    className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+                  >
+                    Shipping Platform
+                  </label>
+                  <select
+                    type={"select"}
+                    id={"platform"}
+                    name={"platform"}
+                    onChange={({ target }) => handleOrderDetailChange(target.name, target.value)}
+                    className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
+                  >
+                    <option value={""} className="w-full dark:bg-gray-600 dark:text-white">Select Platform</option>
+                    <option value={"nimbus"} className="w-full dark:bg-gray-600 dark:text-white">Nimbus</option>
+                    <option value={"delhivery"} className="w-full dark:bg-gray-600 dark:text-white">Delhivery</option>
+                    <option value={"others"} className="w-full dark:bg-gray-600 dark:text-white">Others with note</option>
+                  </select>
+                </div>
+                {orderDetails.platform == "others" && <div className="form-control pt-4">
+                  <label htmlFor="otherpayment_status" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] mb-2">
+                    Give note for other platform
+                  </label>
+                  <input
+                    name="other_platform"
+                    id="other_platform"
+                    placeholder="Other Platorm"
+                    value={orderDetails.other_platform}
+                    onChange={({ target }) => handleOrderDetailChange(target.name, target.value)}
+                    className="block w-full md:py-4 py-2.5 md:px-6 px-4 rounded-md focus:outline-none focus:ring-[#2F60F3] focus:border-[#2F60F3] text-sm  dark:text-white shadow-md dark:bg-[#121212] bg-gray-300 placeholder:dark:text-[#858585] placeholder:text-gray-700"
+                  />
+                </div>}
+              </div>
+            </div>
+            <div className="w-full dark:bg-[#8A8A8A] bg-gray-600 lg:my-16 my-8 h-[0.5px]"></div>
+          </div>
+        </div>
         <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4">
           <div className="md:w-[200px]">
             <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Additional Information</div>
@@ -262,7 +304,7 @@ const OrderForm = () => {
                 rows={5}
                 placeholder="Enter notes, remarks, or instructions..."
                 value={orderDetails.note}
-                onChange={({ target }) => handlePaymentMethodChange(target.name, target.value)}
+                onChange={({ target }) => handleOrderDetailChange(target.name, target.value)}
                 className="w-full md:py-4 py-2.5 md:px-6 px-4 dark:text-white text-black text-sm dark:bg-[#121212] bg-gray-300  shadow-sm rounded-md"
               />
             </div>
@@ -291,7 +333,7 @@ const OrderForm = () => {
           className="w-full lg:col-span-2 py-2 flex items-center justify-center gap-4 my-4 bg-[#2F60F3] text-white rounded-lg shadow-md hover:bg-[#2F60F3] -dark focus:outline-none focus:ring-2 focus:ring-[#2F60F3] focus:ring-opacity-50"
         >
           {loading && <span className="loader"></span>}
-          <span>Submit Order</span>
+          <span>Assign Order</span>
 
         </button>
       </form>
