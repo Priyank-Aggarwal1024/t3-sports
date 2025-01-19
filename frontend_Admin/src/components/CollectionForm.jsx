@@ -7,7 +7,6 @@ const CollectionForm = () => {
   const [selectedProducts, setSelectedProducts] = useState([]);
 
   useEffect(() => {
-    // Fetch all products for the dropdown
     const fetchProducts = async () => {
       try {
         const response = await axios.get("/api/products");
@@ -39,8 +38,6 @@ const CollectionForm = () => {
         onSubmit={handleSubmit}
         className="w-full rounded-lg shadow-md lg:space-y-12 space-y-6"
       >
-
-        {/* Collection Name */}
         <div>
           <label
             htmlFor="collectionName"

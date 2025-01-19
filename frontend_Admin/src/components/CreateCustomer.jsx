@@ -20,7 +20,6 @@ const CreateCustomer = () => {
         setCustomerErrorState({ ...customerInitialState, [field]: message });
         return;
       }
-      console.log(customer)
       setLoading(true)
       const { data } = await axios.post("/api/customers/create", customer);
       data?.customer ? toast.success("Customer created successfully") : toast.error("Customer already exists")

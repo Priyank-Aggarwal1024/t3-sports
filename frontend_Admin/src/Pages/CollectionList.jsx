@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { MdDelete } from "react-icons/md";
 import { IoMdClose, IoMdAdd } from "react-icons/io";
 import useProducts from "../contexts/useProducts";
 

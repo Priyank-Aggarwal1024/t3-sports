@@ -85,7 +85,6 @@ const EditEvent = () => {
         navigate(-1);
       }
     } catch (error) {
-      console.log(error);
       if (error.response && error.response.status === 400) {
         toast.error(error.response.data.message);
       } else {

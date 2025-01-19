@@ -5,12 +5,6 @@ export const createProductValidator = (product) => {
     if (!product?.price || product.price === 0) {
         return { error: true, message: "Product price should be valid", field: "price" }
     }
-    if (!product?.originalprice || product.originalprice === 0) {
-        return { error: true, message: "Product Original price should be valid", field: "originalprice" }
-    }
-    if (!product?.quantity || product.quantity === 0) {
-        return { error: true, message: "Product quantity should be valid", field: "quantity" }
-    }
     if (!product?.size || product.size === "") {
         return { error: true, message: "Product size should be required", field: "size" }
     }

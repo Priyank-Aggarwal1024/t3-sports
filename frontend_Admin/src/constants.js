@@ -58,12 +58,6 @@ export const validateInput = (name, value) => {
       return "";
   }
 };
-
-
-
-
-
-// Month names array
 export const monthNames = [
   "January",
   "February",

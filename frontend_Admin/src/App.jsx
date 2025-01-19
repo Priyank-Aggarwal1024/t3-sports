@@ -11,7 +11,6 @@ import {
   signOutUserStart,
   signOutUserSuccess,
   signOutUserFailure,
-  updateUserSuccess,
 } from "./redux/user/userSlice";
 import { OrdersProvider } from "./contexts/OrdersContext.jsx";
 import Loader from "./components/Loader.jsx";
@@ -48,7 +47,6 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      // Check the user role only if currentUser is not null
       if (currentUser.role !== "Admin" && currentUser.role !== "admin") {
         handleSignOut();
       }
@@ -56,25 +54,6 @@ const App = () => {
       console.log("No current user found");
     }
   }, [currentUser]);
-
-
-  // useEffect(() => {
-  //   const checkTokenValidity = async () => {
-  //     try {
-  //       const res = await axios.get(`/api/auth/check-token`);
-  //       const data = res.data;
-  //       if (data.success === false) {
-  //         dispatch(signOutUserSuccess({}));
-  //       }
-
-  //       dispatch(updateUserSuccess(data.user));
-  //     } catch (error) {
-  //       console.error("Error checking token validity:", error);
-  //     }
-  //   };
-
-  //   checkTokenValidity();
-  // }, []);
 
   const handleSignOut = async () => {
     try {
@@ -90,6 +69,7 @@ const App = () => {
       dispatch(signOutUserFailure(error.message));
     }
   };
+  console.log("Designed by: \n\nElanine Creatives \n\n[elanine.com]\n")
 
   return (
     <LoadScript
@@ -102,15 +82,6 @@ const App = () => {
             <Navbar />
             <Toaster
               position="top-right"
-            // toastOptions={{
-            //   duration: 2000,
-            //   style: {
-            //     background: "#b5d300",
-            //     color: "#000",
-            //     borderRadius: "20px",
-            //     boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
-            //   },
-            // }}
             />
             <Outlet />
             <Footer />

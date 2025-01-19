@@ -7,9 +7,9 @@ export const createCollection = async (req, res) => {
     const { name, productIds } = req.body;
     const products = await Product.find({ _id: { $in: productIds } });
 
-    if (!products.length) {
-      return res.status(400).json({ success: false, message: "No valid products found" });
-    }
+    // if (!products.length) {
+    //   return res.status(400).json({ success: false, message: "No valid products found" });
+    // }
 
     const newCollection = new Collection({ name, products: productIds });
     await newCollection.save();

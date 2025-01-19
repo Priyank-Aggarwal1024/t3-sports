@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast'
 
 function useCustomer(props) {
@@ -17,7 +17,6 @@ function useCustomer(props) {
         setCloading(false)
     };
     const editCustomer = async (id, updatedata) => {
-        console.log(id, updatedata)
         try {
             const { data } = await axios.put(`/api/customers/customer/${id}`, updatedata);
             if (data.customer) {
@@ -36,7 +35,6 @@ function useCustomer(props) {
         return;
     }
     const deleteCustomer = async (id) => {
-        console.log(id)
         try {
             const { data } = await axios.delete(`/api/customers/customer/${id}`);
             if (data.success) {

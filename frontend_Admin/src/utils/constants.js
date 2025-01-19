@@ -1,24 +1,19 @@
 export const initialProductData = {
     name: "",
     price: 0,
-    quantity: 0,
     images: [],
     description: "",
     category: "",
-    originalprice: 0,
     specification: "",
     size: "",
-    colour: "",
     sizechart: "",
     collection: ""
 }
 export const initialErrorMessage = {
     name: "",
     price: "",
-    quantity: "",
     size: "",
     images: "",
-    originalprice: ""
 }
 export const customerInitialState = {
     fname: "",

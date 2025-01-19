@@ -124,7 +124,7 @@ function FileUpload({ sizechart, productImages, setFormData, formData, messageTx
             <div className="w-full overflow-x-auto max-w-full">
                 {
                     productImages ? formData[name].length > 0 && <div className="w-full py-4 rounded-lg mt-4 flex items-center min-h-18 gap-4">
-                        {formData[name].map((image, index) => <div className="w-48 aspect-square h-48 border p-2 rounded-lg relative"><div className="absolute bg-white rounded-[10px] top-1 right-1 cursor-pointer z-[1] p-1"><MdDelete onClick={() => handleformdataimage(index, name)} className="text-4xl text-red-700 " /></div><img className="w-full h-full" src={image} key={index} /></div>)}
+                        {formData[name].map((image, index) => <div className="w-48 aspect-square h-48 border p-2 rounded-lg relative" key={index} ><div className="absolute bg-white rounded-[10px] top-1 right-1 cursor-pointer z-[1] p-1"><MdDelete onClick={() => handleformdataimage(index, name)} className="text-4xl text-red-700 " /></div><img className="w-full h-full" src={image} key={index} /></div>)}
                     </div> : formData[name] && <div className="w-48 aspect-square h-48 border p-2 rounded-lg relative mt-4"><div className="absolute bg-white rounded-[10px] top-1 right-1 cursor-pointer z-[1] p-1"><MdDelete onClick={() => handleformdataimage(0, name)} className="text-4xl text-red-700 " /></div><img className="w-full h-full" src={formData[name]} alt={name} /></div>
                 }
             </div>

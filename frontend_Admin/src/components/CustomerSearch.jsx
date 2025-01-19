@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useEffect } from 'react';
 import useCustomer from '../contexts/useCustomer';
 import search from '../assets/search.svg'
