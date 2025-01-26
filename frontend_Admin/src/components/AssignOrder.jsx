@@ -12,6 +12,8 @@ function AssignOrder() {
         length: 0,
         breadth: 0,
     });
+    const [nimbusprice, setNimbusPrice] = useState({});
+
     const [editdata, setEditData] = useState({});
     const navigate = useNavigate();
     const handleDimensionChange = (e) => {
@@ -76,8 +78,21 @@ function AssignOrder() {
             setValidationMessage("Give Other Shipping Platform note.");
             return;
         }
-        const data = { ...editdata, ...dimensions };
-
+        setValidationMessage("");
+        const products = order.products ? order.products.map((prod) => {
+            if (nimbusprice[prod._id]) {
+                return {
+                    ...prod,
+                    price: nimbusprice[prod._id]
+                }
+            } else {
+                return {
+                    ...prod,
+                    price: 0
+                }
+            }
+        }):[];
+        const data = { ...editdata, ...dimensions, nimbusProducts: products };
         try {
             const response = await axios.put(`/api/orders/fulfill/${id}`, data);
             if (response.data.success) {
@@ -374,6 +389,47 @@ function AssignOrder() {
                     </div>
                 </div>
             </div>
+            <div className="flex w-full items-start lg:flex-row flex-col md:gap-8 gap-4 pt-6 sm:pt-4">
+                <div className="w-[200px]">
+                    <div className="text-[#3c98d6] text-xl font-medium font-['Inter']">Add Nimbus Price</div>
+
+                </div>
+                <div className="w-full">
+                    <div className="dark:text-white text-black">
+                        <div className="flex flex-col gap-2 lg:mt-12 md:mt-6 mt-3">
+                            <div className="flex w-full dark:bg-black bg-white py-2 lg:px-8 px-4 text-center">
+                                <p className="dark:text-[#868686] text-black text-sm w-full">Name</p>
+                                <p className="dark:text-[#868686] text-black text-sm w-full">Quantity</p>
+                                <p className="dark:text-[#868686] text-black text-sm w-full">Price</p>
+                                <p className="dark:text-[#868686] text-black text-sm w-full">Nimbus Price</p>
+                            </div>
+                            {order && order.products && order.products.map((product) => (
+                                <div key={product._id} className="lg:p-8 md:p-6 p-4 border flex justify-between items-center w-full border-gray-600 rounded-xl dark:bg-[#121212] bg-gray-300 dark:text-white text-black text-center">
+
+                                    <h4 className="font-semibold w-full">{product?.productName}</h4>
+                                    <h4 className="font-semibold w-full">{product?.quantity}</h4>
+                                    <h4 className="font-semibold w-full">{product?.price.toFixed(2)}</h4>
+                                    <div className="w-full flex justify-center gap-2 items-center">
+                                        <p className="">₹</p>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={nimbusprice[product?._id] || "0"} // Default value to 1
+                                            onChange={(e) => setNimbusPrice({ ...nimbusprice, [product?._id]: + e.target.value })}
+                                            className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
             {validtionMessage && <p className="text-red-500 text-[16px] pt-1 pl-1">{validtionMessage}</p>}
             <button
                 onClick={handleSubmit}

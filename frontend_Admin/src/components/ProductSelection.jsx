@@ -8,7 +8,6 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [price, setPrice] = useState({});
-  const [nimbusprice, setNimbusPrice] = useState({});
   const [select, setSelect] = useState(null);
   const handleQuantityChange = (productId, quantity) => {
     setQuantities((prevQuantities) => ({
@@ -21,19 +20,18 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
     const productQuantity = quantities[product.productId._id] || 1; // Default quantity to 1 if not set
     const exists = selectedProducts.find((p) => p._id === product._id);
     const pr = price[product.productId._id] || product.productId.price;
-    const nbpr = nimbusprice[product.productId._id] || 0;
     if (exists) {
       // If product is already selected, update its quantity
       setSelectedProducts((prev) =>
         prev.map((p) =>
-          p._id === product._id ? { ...p.productId, quantity: productQuantity, price: pr, nimbusprice: nbpr } : p
+          p._id === product._id ? { ...p.productId, quantity: productQuantity, price: pr } : p
         )
       );
     } else {
       // Add new product to selectedProducts with the specified quantity
       setSelectedProducts((prev) => [
         ...prev,
-        { ...product.productId, quantity: productQuantity, price: pr, nimbusprice: nbpr },
+        { ...product.productId, quantity: productQuantity, price: pr },
       ]);
     }
 
@@ -87,7 +85,6 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
                 <p className="dark:text-white text-black text-sm w-full">Name</p>
                 <p className="dark:text-white text-black text-sm w-full">Size</p>
                 <p className="dark:text-white text-black text-sm w-full">Price</p>
-                <p className="dark:text-white text-black text-sm w-full">Nimbus Price</p>
                 <p className="dark:text-white text-black text-sm w-full">Quantity</p>
               </div>
               {filteredProducts.length > 0 ? filteredProducts.map((product) => (
@@ -104,17 +101,6 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
                       min="0"
                       value={price[product.productId._id] || product.productId.price} // Default value to 1
                       onChange={(e) => setPrice({ ...price, [product.productId._id]: + e.target.value })}
-                      className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  </div>
-                  <div className="flex items-center w-full justify-center gap-2">
-                    <p className="">₹</p>
-                    <input
-                      type="number"
-                      min="0"
-                      value={nimbusprice[product.productId._id] || "0"} // Default value to 1
-                      onChange={(e) => setNimbusPrice({ ...nimbusprice, [product.productId._id]: + e.target.value })}
                       className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
                       onClick={(e) => e.stopPropagation()}
                     />
@@ -145,7 +131,6 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
           <p className="dark:text-[#868686] text-black text-sm w-full">Name</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Size</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Price</p>
-          <p className="dark:text-[#868686] text-black text-sm w-full">Nimbus Price</p>
           <p className="dark:text-[#868686] text-black text-sm w-full">Quantity</p>
         </div>
         {selectedProducts.length > 0 ? selectedProducts.map((product) => (
@@ -156,7 +141,6 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
             <h4 className="font-semibold w-full">{product.name}</h4>
             <p className="dark:text-white text-black text-sm w-full">{product.size}</p>
             <p className="dark:text-white text-black text-sm w-full">₹{product.price.toFixed(2)}</p>
-            <p className="dark:text-white text-black text-sm w-full">₹{product.nimbusprice.toFixed(2)}</p>
             <div className="flex items-center justify-around dark:text-white text-black text-sm w-full">
               <div className="">{product.quantity}</div>
               <svg className="cursor-pointer" onClick={() => handleRemoveProduct(product)} xmlns="http://www.w3.org/2000/svg" width="21" height="22" viewBox="0 0 21 22" fill="none">

@@ -260,3 +260,9 @@ input {
         transform: rotate(360deg);
     }
     } 
+    input[type="date"].ledger-inp::-webkit-calendar-picker-indicator {
+      background-color: white;
+    }
+    .all-orders-inp-date::-webkit-calendar-picker-indicator {
+      display: none;
+  }
