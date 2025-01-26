@@ -47,6 +47,7 @@ const Navbar = () => {
     { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
     { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
     { path: "/assigned-order", text: "Assigned Order", icon: <MdOutlineExplore /> },
+    { path: "/ledger", text: "Ledger", icon: <MdOutlineExplore /> },
   ];
 
   const handleSignOut = async () => {

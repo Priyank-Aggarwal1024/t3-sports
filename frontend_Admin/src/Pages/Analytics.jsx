@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
-import { FiTrendingUp, FiDollarSign, FiShoppingBag, FiClock, FiUsers } from 'react-icons/fi';
+import { FiTrendingUp, FiDollarSign, FiShoppingBag, FiUsers } from 'react-icons/fi';
 import { useOrders } from '../contexts/OrdersContext';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, Filler, ArcElement } from 'chart.js';
+
+// Register the necessary components including ArcElement
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+  Filler,
+  ArcElement  // Register ArcElement for Doughnut/Pie charts
+);
 
 const Analytics = () => {
   const { orders, loading, error } = useOrders();
@@ -32,7 +46,7 @@ const Analytics = () => {
 
     const activeOrders = orders.filter((order) => order.status !== 'cancelled');
     const totalRevenue = activeOrders.reduce(
-      (sum, order) => sum + (Number(order.order_amount) || 0),
+      (sum, order) => sum + (Number(order.totalAmount) || 0),
       0
     );
     const prepaidCount = orders.filter((order) => order.payment_method === 'prepaid').length;
@@ -62,14 +76,14 @@ const Analytics = () => {
     const daysToInclude = timeRangeMap[timeRange];
     const startDate = new Date(today.setDate(today.getDate() - daysToInclude));
 
-    const filteredOrders = orders.filter((order) => new Date(order.order_date) >= startDate);
+    const filteredOrders = orders.filter((order) => new Date(order.dateOfOrder) >= startDate);
 
     // Group orders by date
     const ordersByDate = filteredOrders.reduce((acc, order) => {
-      const date = new Date(order.order_date).toLocaleDateString();
+      const date = new Date(order.dateOfOrder).toLocaleDateString();
       acc[date] = acc[date] || { count: 0, revenue: 0 };
       acc[date].count += 1;
-      acc[date].revenue += Number(order.order_amount) || 0;
+      acc[date].revenue += Number(order.totalAmount) || 0;
       return acc;
     }, {});
 
@@ -85,7 +99,7 @@ const Analytics = () => {
     const hourlyOrders = new Array(24).fill(0);
 
     orders.forEach((order) => {
-      const hour = new Date(order.order_date).getHours();
+      const hour = new Date(order.dateOfOrder).getHours();
       hourlyOrders[hour]++;
     });
 
@@ -98,7 +112,7 @@ const Analytics = () => {
   // New function to calculate state-wise distribution
   const calculateStateDistribution = () => {
     const stateData = orders.reduce((acc, order) => {
-      const state = order.shipping_state || 'Unknown';
+      const state = order?.customer?.state || 'Unknown';
       acc[state] = (acc[state] || 0) + 1;
       return acc;
     }, {});

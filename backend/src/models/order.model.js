@@ -23,7 +23,7 @@ const OrderSchema = new mongoose.Schema({
     productName: { type: String, required: true },
     quantity: { type: Number, required: true },
     price: { type: Number, required: true },
-    nimbusprice: { type: Number, required: true }
+    nimbusprice: { type: Number }
   }],
   shippingDetails: {
     shippingAddress: {
@@ -71,6 +71,9 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     enum: ["assign", "fulfilled"],
     deafult: "assign"
+  },
+  trackinglink:{
+    type:String
   }
 }, { timestamps: true });
 

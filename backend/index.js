@@ -10,6 +10,7 @@ import collectionRouter from "./src/routes/collection.route.js";
 import customerRouter from "./src/routes/customer.route.js";
 import warehouseRoutes from "./src/routes/warehouse.route.js";
 import stockRoutes from "./src/routes/stock.route.js";
+import ledgerRoutes from "./src/routes/ledger.route.js";
 import chalk from "chalk"; // Importing chalk
 import ImageKit from "imagekit";
 
@@ -58,6 +59,7 @@ connectDB()
     });
     app.use("/api/warehouses", warehouseRoutes);
     app.use("/api/stocks", stockRoutes);
+    app.use("/api/ledger",ledgerRoutes );
 
     // Default route
     app.get("/", (req, res) => {
