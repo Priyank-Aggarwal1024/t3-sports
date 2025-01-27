@@ -5,7 +5,7 @@ import { createLedger, getAllLedgers } from "../controllers/ledger.controller.js
 
 const router = express.Router();
 
-router.get("/", verifyToken, isAdmin, getAllLedgers );
-router.post("/create", verifyToken, isAdmin, createLedger );
+router.get("/", verifyToken, getAllLedgers);
+router.post("/create", verifyToken, isAdmin, createLedger);
 
 export default router;

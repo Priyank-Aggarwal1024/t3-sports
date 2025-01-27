@@ -5,7 +5,7 @@ import Signin from "../Pages/Signin";
 import Profile from "../Pages/Profile";
 import ForgotPassword from "../Pages/ForgotPassword";
 import ResetPassword from "../Pages/ResetPassword";
-import { PrivateRoute } from "./RouteGuards";
+import { AdminRoute, PrivateRoute } from "./RouteGuards";
 import AllOrders from "../Pages/AllOrders";
 import EditEvent from "../Pages/EditEvent";
 import axios from "axios";
@@ -49,6 +49,29 @@ const router = createBrowserRouter([
             element: <Home />,
           },
           {
+            path: "/all-orders",
+            element: <AllOrders />,
+          },
+          {
+            path: "/analytics",
+            element: <Analytics />,
+          },
+          {
+            path: "/orders/assigned/:id",
+            element: <AssignOrder />,
+          },
+          {
+            path: "/assigned-order",
+            element: <AssignedOrder />,
+          },
+
+        ],
+      },
+      {
+        path: "/",
+        element: <AdminRoute />,
+        children: [
+          {
             path: "/create",
             element: <Create />,
           },
@@ -57,24 +80,8 @@ const router = createBrowserRouter([
             element: <EditCustomer />,
           },
           {
-            path: "/all-orders",
-            element: <AllOrders />,
-          },
-          {
             path: "/order",
             element: <Order />,
-          },
-          {
-            path: "/analytics",
-            element: <Analytics />,
-          },
-          {
-            path: "/assigned-order",
-            element: <AssignedOrder />,
-          },
-          {
-            path: "/orders/assigned/:id",
-            element: <AssignOrder />,
           },
           {
             path: "/ledger",
@@ -114,7 +121,7 @@ const router = createBrowserRouter([
               return response.data;
             },
           },
-        ],
+        ]
       },
     ],
   },
