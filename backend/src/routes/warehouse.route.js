@@ -5,7 +5,7 @@ import { verifyToken } from '../utils/verifyUser.js';
 
 const router = express.Router();
 
-router.get("/", verifyToken, isAdmin, getAllWarehouses);
+router.get("/", verifyToken, getAllWarehouses);
 router.post("/create", verifyToken, isAdmin, createWarehouses);
 router.put("/add-product/:id", verifyToken, isAdmin, addProductInWarehouse);
 router.put("/remove-product/:id", verifyToken, isAdmin, removeProductInWarehouse);

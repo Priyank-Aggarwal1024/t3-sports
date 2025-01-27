@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const AllOrders = () => {
-  const { orders, loading, error } = useOrders();
+  const { orders, loading, error, fetchOrders } = useOrders();
   const [filterBy, setFilterBy] = useState("");
   // Pagination State
   const [currentPage, setCurrentPage] = useState(0);
@@ -81,10 +81,11 @@ const AllOrders = () => {
     }
     try {
       const response = await axios.put(`/api/orders/update/${updateOrderId}`, { status, trackinglink });
-      if(response.data.success){
+      if (response.data.success) {
         toast.success(response.data.message);
-      }else{
-       toast.error( response.data.message);
+        fetchOrders()
+      } else {
+        toast.error(response.data.message);
       }
     } catch (err) {
       toast.error(err.message)
@@ -99,9 +100,9 @@ const AllOrders = () => {
     }) : ""
     setTrackingLink(tl?.trackinglink || "");
   }, [updateOrderId])
-  useEffect(()=>{
+  useEffect(() => {
     console.log(status)
-  },[])
+  }, [])
   useEffect(() => {
     setFilteredOrders(orders);
   }, [orders])
@@ -266,7 +267,7 @@ const AllOrders = () => {
                       name={"status"}
                       placeholder={"Select Status"}
                       // value={value}
-                      onChange={({target}) => setStatus(target.value)}
+                      onChange={({ target }) => setStatus(target.value)}
                       className="border px-4 py-2 w-48 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                     <option value={""} className="w-full dark:bg-gray-600 dark:text-white">Select Status</option>
@@ -281,8 +282,8 @@ const AllOrders = () => {
                 <td className="py-2 px-4 border border-gray-600">{order.payment_method}</td>
                 <td className="py-2 px-4 border border-gray-600">{order.ordertype}</td>
                 <td className="py-2 px-4 border border-gray-600">{updateOrderId != order._id ? order?.trackinglink ?
-                 <Link to={order.trackinglink} target='_blank' className='text-blue-600 underline'>Track Order</Link>
-                : <Link to={"/all-orders"} className='text-blue-600 underline'>No Link</Link> :
+                  <Link to={order.trackinglink} target='_blank' className='text-blue-600 underline'>Track Order</Link>
+                  : <Link to={"/all-orders"} className='text-blue-600 underline'>No Link</Link> :
                   <input
                     type="text"
                     id="serachtext"

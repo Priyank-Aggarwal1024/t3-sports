@@ -7,3 +7,8 @@ export const PrivateRoute = () => {
 
   return currentUser ? <Outlet /> : <Navigate to="/sign-in" />;
 };
+export const AdminRoute = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
+  return currentUser?.role == "admin" ? <Outlet /> : <Navigate to="/" />;
+}
