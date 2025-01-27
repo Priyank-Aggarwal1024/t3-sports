@@ -41,7 +41,7 @@ export default function SignIn() {
       );
       const userData = userResponse.data;
 
-      if (userData.role !== "admin") {
+      if (userData.role !== "admin" && userData?.role !== "warehouse-admin") {
         toast.error("You are not an admin. Please go to the user portal.");
         return;
       }
@@ -76,7 +76,7 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="flex relative items-start justify-center h-[100vh] bg-white dark:bg-darkPrimary dark:text-white ">
+      <div className="flex relative items-start justify-center h-[100vh] bg-white dark:bg-darkPrimary dark:text-white w-full">
         <div className="hidden absolute lg:block w-full h-full bg-cover">
           <img
             className="w-full object-cover h-full brightness-50"
@@ -85,7 +85,7 @@ export default function SignIn() {
           />
         </div>
         <div
-          className={`w-1/2 glassDark dark:glass absolute left-0 h-full flex flex-col justify-center rounded-xl p-8`}
+          className={`lg:w-1/2 w-full max-w-[600px] lg:mx-0 mx-auto glassDark dark:glass lg:absolute lg:left-0 h-full flex flex-col justify-center rounded-xl p-8`}
         >
           <h1 className="text-3xl font-semibold text-center mb-12 text-black dark:text-white">
             Login to your Account

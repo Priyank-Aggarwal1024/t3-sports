@@ -6,7 +6,7 @@ import { isAdmin } from "../middleware/auth.js";
 import { verifyToken } from '../utils/verifyUser.js';
 
 
-router.get('/', verifyToken, isAdmin, getCustomers);
+router.get('/', verifyToken, getCustomers);
 router.post('/create', verifyToken, isAdmin, createCustomer);
 router.post('/search', verifyToken, isAdmin, getCustomerBySearch);
 router.put('/customer/:id', verifyToken, isAdmin, updateCustomer);

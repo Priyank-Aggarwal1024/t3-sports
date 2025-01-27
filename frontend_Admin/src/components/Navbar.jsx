@@ -39,15 +39,17 @@ const Navbar = () => {
       document.body.classList.remove("no-scroll");
     };
   }, [mobileMenuOpen]);
+  const adminRoute = currentUser?.role == "admin" ?
+    [{ path: "/create", text: "Create", icon: <BiSolidOffer /> },
+    { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
+    { path: "/ledger", text: "Ledger", icon: <MdOutlineExplore /> }] : [];
 
   const navItems = [
     { path: "/", text: "Home", icon: <LuHome /> },
-    { path: "/create", text: "Create", icon: <BiSolidOffer /> },
-    { path: "/all-orders", text: "All Orders", icon: <MdOutlineExplore /> },
-    { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
-    { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
+    ...adminRoute,
     { path: "/assigned-order", text: "Assigned Order", icon: <MdOutlineExplore /> },
-    { path: "/ledger", text: "Ledger", icon: <MdOutlineExplore /> },
+    { path: "/all-orders", text: "All Orders", icon: <MdOutlineExplore /> },
+    { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
   ];
 
   const handleSignOut = async () => {
@@ -166,7 +168,7 @@ const Navbar = () => {
             <Link to="/">
               <img src={logo2} width={120} alt="logo" />
             </Link>
-         
+
           </div>
         </div>
       )}

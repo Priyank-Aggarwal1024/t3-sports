@@ -47,7 +47,7 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      if (currentUser.role !== "Admin" && currentUser.role !== "admin") {
+      if (currentUser.role !== "Admin" && currentUser.role !== "admin" && currentUser.role !== "warehouse-admin") {
         handleSignOut();
       }
     } else {
