@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdDeleteForever } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom';
+import useProducts from '../contexts/useProducts';
 
 const OrderCard = ({ order, handleDeleteOrder }) => {
     const navigate = useNavigate();
+    console.log(order.products)
+    const {products} = useProducts();
     return (
         <div className="bg-white shadow-md rounded-lg p-4 mb-4 border border-gray-200">
             {/* Order Header */}
@@ -49,8 +52,9 @@ const OrderCard = ({ order, handleDeleteOrder }) => {
                             key={product._id}
                             className="flex justify-between items-center text-sm border-b py-2"
                         >
-                            <span>{product.productName}</span>
-                            <span>
+                            <span className='w-1/3'>{product.productName}</span>
+                            <span className='w-1/3 text-right'>{products.find((p)=>p._id==product._id)?.size}</span>
+                            <span className='w-1/3 text-right'>
                                 {product.quantity} x ₹{product.price}
                             </span>
                         </li>
