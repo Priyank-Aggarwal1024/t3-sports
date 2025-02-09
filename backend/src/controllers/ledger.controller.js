@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Customer from "../models/customer.model.js";
 import Ledger from "../models/ledger.model.js";
 
@@ -39,6 +40,58 @@ export const createLedger = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'An error occurred while creating the ledger entry. Please try again later.',
+    });
+  }
+};
+
+export const updateLedger = async (req, res) => {
+  try {
+    const { id } = req.params; // Ledger ID
+    const { amount } = req.body;
+
+    // ✅ Check if ledger ID format is valid
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid ledger ID format.",
+      });
+    }
+
+    // ✅ Check if ledger entry exists
+    const existingLedger = await Ledger.findById(id);
+    if (!existingLedger) {
+      return res.status(404).json({
+        success: false,
+        message: "Ledger entry not found.",
+      });
+    }
+    if (amount !== undefined && (isNaN(amount) || amount <= 0)) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount must be a valid positive number.",
+      });
+    }
+    const updateData = {
+       amount ,
+    };
+
+    // ✅ Update ledger entry
+    const updatedLedger = await Ledger.findByIdAndUpdate(id, updateData, {
+      new: true, 
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Ledger entry updated successfully.",
+      ledger: updatedLedger,
+    });
+  } catch (error) {
+    console.error("Error updating ledger entry:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the ledger entry. Please try again later.",
+      error: error.message,
     });
   }
 };

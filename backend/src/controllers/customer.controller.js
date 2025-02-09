@@ -55,12 +55,7 @@ export const createCustomer = async (req, res) => {
   try {
     const { fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype, country } = req.body;
 
-    let customer = await Customer.findOne({
-      $or: [
-        { phone: phone },
-        { email: email }
-      ]
-    });
+    let customer = await Customer.findOne({ phone: phone });
     if (customer) {
       return res.status(200).json({ error: "Already a customer." });
     }

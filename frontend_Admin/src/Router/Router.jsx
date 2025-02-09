@@ -17,6 +17,7 @@ import AssignOrder from "../components/AssignOrder";
 import Create from "../Pages/Create";
 import AssignedOrder from "../Pages/AssignedOrder";
 import LedgerComponent from "../Pages/Ledger";
+import OrderDetailPage from "../Pages/OrderDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
           {
             path: "/all-orders",
             element: <AllOrders />,
+          },
+          {
+            path: "/show-order/:id",
+            element: <OrderDetailPage />,
           },
           {
             path: "/analytics",
