@@ -66,9 +66,6 @@ export const createCustomerValidator = (customer) => {
     if (!customer?.customertype || customer.customertype.trim() === "") {
         return { error: true, message: "Customer customer type is required", field: "customertype" }
     }
-    if (!customer?.email || customer.email.trim() === "") {
-        return { error: true, message: "Customer email is required", field: "email" }
-    }
     return { error: false, message: "Validation successful" }
 }
 export const shippingValidator = (shippingDetails) => {

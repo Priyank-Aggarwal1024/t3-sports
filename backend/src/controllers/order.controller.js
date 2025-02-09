@@ -118,7 +118,7 @@ export const createOrder = async (req, res) => {
 
 export const getOrders = async (req, res) => {
   try {
-    const orders = (await Order.find().select('-products -shippingDetails -updatedAt -discount -insuranceRequired -otherpayment_status -other_platform -__v').populate("customer")).reverse();
+    const orders = (await Order.find().select('-shippingDetails -updatedAt -discount -insuranceRequired -otherpayment_status -other_platform -__v').populate("customer")).reverse();
     // const response = await axios.get('https://ship.nimbuspost.com/api/orders', {
     //   headers: {
     //     'NP-API-KEY': NIMBUS_API_KEY

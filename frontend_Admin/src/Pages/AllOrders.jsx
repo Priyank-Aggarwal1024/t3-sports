@@ -6,9 +6,11 @@ import { exportToExcel } from 'react-json-to-excel';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import useProducts from '../contexts/useProducts.js';
 
 const AllOrders = () => {
   const { orders, loading, error, fetchOrders } = useOrders();
+  const {products} = useProducts();
   const [filterBy, setFilterBy] = useState("");
   // Pagination State
   const [currentPage, setCurrentPage] = useState(0);
@@ -107,14 +109,24 @@ const AllOrders = () => {
     setFilteredOrders(orders);
   }, [orders])
   const filterAndTransformOrders = () => {
-    const transformedOrders = filteredOrders.map(order => {
-      const { customer, ...rest } = order; // Remove the customer field
-      return {
-        ...rest,
-        customerFname: customer?.fname,
-        customerLname: customer?.lname,
-      };
-    });
+    console.log(orders)
+    const transformedOrders = orders.flatMap((order) =>
+      order.products.map((product) => ({
+        orderNumber: order.order_number,
+        date: order.dateOfOrder.split("T")[0], // Extract only date
+        customerName: `${order?.customer?.fname||""} ${order?.customer?.lname||""}`,
+        customerType: order.customer?.customertype||"N/A",
+        sport: order.customer?.sport || "N/A",
+        productName: product.productName,
+        productSize: products.find((p)=>p._id==product._id)?.size || "N/A", // Default if missing
+        quantity: product.quantity,
+        "each price": product.price,
+        subtotal: product.price * product.quantity,
+        city: order?.customer?.city || "N/A",
+        state: order?.customer?.state || "N/A",
+      }))
+    )
+    console.log(transformedOrders)
     return transformedOrders;
   };
   if (loading) return <p>Loading orders...</p>;
@@ -124,7 +136,6 @@ const AllOrders = () => {
   if (!Array.isArray(orders) || orders.length === 0) {
     return <p>No orders found.</p>;
   }
-
   return (
     <div className="p-6 dark:bg-black bg-white">
       <div className='flex justify-between items-center lg:flex-row flex-col gap-6 my-6'>
@@ -252,7 +263,9 @@ const AllOrders = () => {
             {currentOrders.map((order, index) => (
               <tr key={index} className='text-sm'>
                 <td className="py-2 px-4 border border-gray-600">{index + 1 + (currentPage * ordersPerPage)}</td>
-                <td className="py-2 px-4 border border-gray-600">{order.order_number}</td>
+                <td className="py-2 px-4 border border-gray-600">
+                <Link to={`/show-order/${order._id}`} className="underline text-blue-500">{order.order_number}</Link>
+                </td>
                 <td className="py-2 px-4 border border-gray-600">{`${order.customer?.fname} ${order.customer?.lname}`}</td>
                 <td className="py-2 px-4 border border-gray-600">{order.customer?.phone}</td>
                 <td className="py-2 px-4 border border-gray-600">₹{order.totalAmount}</td>
