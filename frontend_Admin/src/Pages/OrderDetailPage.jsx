@@ -59,17 +59,17 @@ console.log(order)
         {/* Customer Info */}
         <div className="mb-4">
           <h3 className="text-lg font-semibold border-b border-gray-700 pb-2">Customer Info</h3>
-          <p><span className="font-semibold">Name:</span> {order?.customer.fname} {order?.customer.lname}</p>
-          <p><span className="font-semibold">Email:</span> {order?.customer.email}</p>
-          <p><span className="font-semibold">Phone:</span> {order?.customer.phone}</p>
-          <p><span className="font-semibold">Address:</span> {order?.customer.address}, {order?.customer.city}, {order?.customer.state}, {order?.customer.country} - {order?.customer.pincode}</p>
+          <p><span className="font-semibold">Name:</span> {order?.customer?.fname} {order?.customer?.lname}</p>
+          <p><span className="font-semibold">Email:</span> {order?.customer?.email||"N/A"}</p>
+          <p><span className="font-semibold">Phone:</span> {order?.customer?.phone||"N/A"}</p>
+          <p><span className="font-semibold">Address:</span> {order?.customer?.address||"N/A"}, {order?.customer?.city||"N/A"}, {order?.customer?.state||"N/A"}, {order?.customer?.country||"N/A"} - {order?.customer?.pincode||"N/A"}</p>
         </div>
 
         {/* Shipping Details */}
         <div className="mb-4">
           <h3 className="text-lg font-semibold border-b border-gray-700 pb-2">Shipping Details</h3>
           <p><span className="font-semibold">Type:</span> {order?.shipping_type}</p>
-          <p><span className="font-semibold">Charges:</span> ₹{order?.shippingDetails?.shippingCharges}</p>
+          <p><span className="font-semibold">Charges:</span> ₹{order?.shippingDetails?.shippingCharges||"N/A"}</p>
           <p><span className="font-semibold">Tracking:</span> <a href={order?.trackinglink} className="text-blue-400 underline" target="_blank" rel="noopener noreferrer">Track Order</a></p>
         </div>
 
@@ -86,10 +86,10 @@ console.log(order)
           <h3 className="text-lg font-semibold border-b border-gray-700 pb-2">Products</h3>
           {order?.products.map((product) => (
             <div key={product._id} className="border-b border-gray-700 py-2 flex justify-between">
-              <p><span className="font-semibold">Name:</span> {product.productName}</p>
-              <p><span className="font-semibold">Quantity:</span> {product.quantity}</p>
-              <p><span className="font-semibold">Price:</span> ₹{product.price}</p>
-              <p><span className="font-semibold">Size:</span> {products.find((p)=>p._id==product._id)?.size}</p>
+              <p><span className="font-semibold">Name:</span> {product?.productName}</p>
+              <p><span className="font-semibold">Quantity:</span> {product?.quantity}</p>
+              <p><span className="font-semibold">Price:</span> ₹{product?.price}</p>
+              <p><span className="font-semibold">Size:</span> {products.find((p)=>p._id==product?._id)?.size}</p>
             </div>
           ))}
         </div>
@@ -97,8 +97,8 @@ console.log(order)
         {/* Warehouse Info */}
         <div>
           <h3 className="text-lg font-semibold border-b border-gray-700 pb-2">Warehouse Info</h3>
-          <p><span className="font-semibold">Name:</span> {order?.warehouse_id.name}</p>
-          <p><span className="font-semibold">Location:</span> {order?.warehouse_id.address}</p>
+          <p><span className="font-semibold">Name:</span> {order?.warehouse_id?.name||"N/A"}</p>
+          <p><span className="font-semibold">Location:</span> {order?.warehouse_id?.address||"N/A"}</p>
         </div>
       </div>
 
