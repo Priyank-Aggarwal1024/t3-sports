@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from "react-router-dom"
 import axios from "axios"
+import useProducts from '../contexts/useProducts';
 function AssignOrder() {
+    const {products} = useProducts();
     const { id } = useParams();
     const [order, setOrder] = useState({});
     const [validtionMessage, setValidationMessage] = useState("");
@@ -108,6 +110,7 @@ function AssignOrder() {
     useEffect(() => {
         fetchOrderById();
     }, [id])
+    console.log(order)
     return (
         <div className="dark:bg-black bg-white sm:px-8 p-4">
             <div className="flex w-full sm:item-center sm:justify-between gap-2 sm:flex-row flex-col mb-6">
@@ -149,15 +152,17 @@ function AssignOrder() {
                                 <tr className="bg-gray-200 dark:bg-gray-700">
                                     <th className="border px-4 py-2">Product Name</th>
                                     <th className="border px-4 py-2">Quantity</th>
+                                    <th className="border px-4 py-2">Size</th>
                                     <th className="border px-4 py-2">Price</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {order && order.products && order.products.map((product, index) => (
                                     <tr key={index} className="odd:bg-gray-100 even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700">
-                                        <td className="border px-4 py-2">{product.productName}</td>
-                                        <td className="border px-4 py-2">{product.quantity}</td>
-                                        <td className="border px-4 py-2">₹{product.price}</td>
+                                        <td className="border px-4 py-2 text-left">{product.productName}</td>
+                                        <td className="border px-4 py-2 text-center">{product.quantity}</td>
+                                        <td className="border px-4 py-2 text-center">{products.find((p)=>p._id==product._id)?.size}</td>
+                                        <td className="border px-4 py-2 text-center">₹{product.price}</td>
                                     </tr>
                                 ))}
                             </tbody>
