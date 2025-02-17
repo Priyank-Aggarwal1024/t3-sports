@@ -18,6 +18,8 @@ const ProductForm = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setMessageTxt({ ...messageTxt, [e.target.name]: "" });
+    setIsFocused(false);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ const ProductForm = () => {
     setLoading(false);
   };
   const handleProductClick = (product) => {
-    console.log(product)
+    console.log(product);
     setFormData({
       ...formData,
       ["name"]: product.name,
@@ -57,11 +59,11 @@ const ProductForm = () => {
       ["price"]: product.price,
       ["images"]: product.images,
       ["category"]: product.category,
-      ["specification"]:product.specification||"",
-      ["sizechart"]:product.sizechart||""
+      ["specification"]: product.specification || "",
+      ["sizechart"]: product.sizechart || "",
     });
     setIsFocused(false);
-    setSearchText("")
+    setSearchText("");
   };
 
   useEffect(() => {
@@ -80,8 +82,8 @@ const ProductForm = () => {
     setFilteredProducts(products);
   }, [products]);
   useEffect(() => {
-    if(serachText){
-      setIsFocused(true)
+    if (serachText) {
+      setIsFocused(true);
     }
     setFilteredProducts(
       products.filter((product) => {
@@ -97,9 +99,7 @@ const ProductForm = () => {
         className="w-full rounded-md dark:shadow-md"
       >
         <div className="gap-x-[74px] md:gap-y-12 gap-y-6  md:grid md:grid-cols-2 flex flex-col">
-          <div className="md:col-span-2 relative"
-
-          >
+          <div className="md:col-span-2 relative">
             <label
               htmlFor={"collection"}
               className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
@@ -115,15 +115,12 @@ const ProductForm = () => {
               placeholder="Search Product by Name"
               className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {(isFocused || serachText)&& (
-              <div className="absolute z-[11] top-[101%] w-full bg-white dark:bg-black max-h-[50vh] overflow-y-auto h-60"
-              
-              >
+            {(isFocused || serachText) && (
+              <div className="absolute z-[11] top-[101%] w-full bg-white dark:bg-black max-h-[50vh] overflow-y-auto h-60">
                 {filteredProducts.map((product) => (
                   <div
                     key={product._id}
                     onClick={() => handleProductClick(product)}
-
                     className="p-4 rounded-xl w-full shadow-md flex items-center hover:cursor-pointer justify-between bg-white hover:opacity-75 dark:bg-gray-900 text-gray-900 dark:text-white min-w-[250px]"
                   >
                     <h2 className="font-bold w-3/6">{product.name}</h2>
