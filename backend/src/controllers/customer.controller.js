@@ -47,25 +47,48 @@
 //   }
 // };
 
-import Customer from '../models/customer.model.js';
-import Product from '../models/product.model.js';
+import Customer from "../models/customer.model.js";
+import Product from "../models/product.model.js";
 
 // Create a new customer
 export const createCustomer = async (req, res) => {
   try {
-    const { fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype, country } = req.body;
+    const {
+      fname,
+      lname,
+      phone,
+      address,
+      pincode,
+      city,
+      state,
+      sport,
+      customertype,
+      othersport,
+      email,
+      othercustomertype,
+      country,
+    } = req.body;
 
-    let customer = await Customer.findOne({ phone: phone });
-    if (customer) {
-      return res.status(200).json({ error: "Already a customer." });
-    }
-
-    customer = new Customer({ fname, lname, phone, address, pincode, city, state, sport, customertype, othersport, email, othercustomertype, country });
+    let customer = new Customer({
+      fname,
+      lname,
+      phone,
+      address,
+      pincode,
+      city,
+      state,
+      sport,
+      customertype,
+      othersport,
+      email,
+      othercustomertype,
+      country,
+    });
     await customer.save();
 
     res.status(201).json({ customer });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -87,14 +110,14 @@ export const getCustomerBySearch = async (req, res) => {
     if (!query) {
       query = "";
     }
-    console.log(query)
+    console.log(query);
     const customers = await Customer.find({
       $or: [
-        { fname: { $regex: query, $options: 'i' } },
-        { lname: { $regex: query, $options: 'i' } },
-        { phone: { $regex: query, $options: 'i' } },
-        { customerId: { $regex: query, $options: 'i' } },
-        { email: { $regex: query, $options: 'i' } },
+        { fname: { $regex: query, $options: "i" } },
+        { lname: { $regex: query, $options: "i" } },
+        { phone: { $regex: query, $options: "i" } },
+        { customerId: { $regex: query, $options: "i" } },
+        { email: { $regex: query, $options: "i" } },
       ],
     });
 
@@ -109,16 +132,27 @@ export const updateCustomer = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-    const customer = await Customer.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+    const customer = await Customer.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!customer) {
-      return res.status(404).json({ success: false, message: 'Customer not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Customer not found" });
     }
 
     res.status(200).json({ success: true, customer });
   } catch (err) {
-    console.log(err)
-    res.status(500).json({ error: err.message, success: false, message: "Internal Server Error" });
+    console.log(err);
+    res
+      .status(500)
+      .json({
+        error: err.message,
+        success: false,
+        message: "Internal Server Error",
+      });
   }
 };
 
@@ -130,10 +164,14 @@ export const deleteCustomer = async (req, res) => {
     const customer = await Customer.findByIdAndDelete(id);
 
     if (!customer) {
-      return res.status(404).json({ success: false, message: 'Customer not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Customer not found" });
     }
 
-    res.status(200).json({ success: true, message: 'Customer deleted successfully' });
+    res
+      .status(200)
+      .json({ success: true, message: "Customer deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
