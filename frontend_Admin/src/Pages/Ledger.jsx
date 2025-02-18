@@ -64,9 +64,12 @@ const LedgerComponent = () => {
     }
   };
   const handleCreateLedger = () => {
+    setLoading(true);
     console.log(selectedCustomer, transactionType, date, amount);
     if (!selectedCustomer || !transactionType || !amount || !date) {
       alert("Please fill in all fields");
+      setLoading(false);
+
       return;
     }
     // Create a new ledger entry
@@ -92,6 +95,7 @@ const LedgerComponent = () => {
         console.log(error);
         toast.error("Error creating ledger:", error.message);
       });
+    setLoading(false);
   };
   useEffect(() => {
     axios
@@ -183,7 +187,7 @@ const LedgerComponent = () => {
                   />
                 </div>
                 <button
-                  onClick={handleCreateLedger}
+                  onClick={() => !loading && handleCreateLedger()}
                   className="mt-4 w-full bg-blue-500 text-white p-2 rounded-md"
                 >
                   Create Ledger
@@ -249,29 +253,34 @@ const LedgerComponent = () => {
                           </p>
 
                           {/* Amount */}
-                          {ledger._id!=updateLedgerId?<p
-                            className={`text-xl text-center font-bold pb-2 flex justify-center items-center w-1/4 ${
-                              ledger.transactionType === "debit"
-                                ? "text-red-500 dark:text-red-400"
-                                : ledger.transactionType === "transaction-in"
-                                ? "text-green-500 dark:text-green-400"
-                                : ledger.transactionType === "transaction-out"
-                                ? "text-yellow-500 dark:text-yellow-400"
-                                : "text-gray-500 dark:text-gray-400" // Default color
-                            }`}
-                          >
-                            {ledger.transactionType === "debit" && "-"}
-                            {ledger.transactionType === "transaction-in" && "+"}
-                            {ledger.transactionType === "transaction-out" &&
-                              "-"}
-                            ₹{ledger.amount}
-                          </p>:<input
-        type="number"
-        value={uamount}
-        onChange={(e) => setUAmount(e.target.value)}
-        className="mt-2 w-1/4 p-2 border rounded-md dark:bg-gray-800 dark:text-white"
-        placeholder="Enter new amount"
-      />}
+                          {ledger._id != updateLedgerId ? (
+                            <p
+                              className={`text-xl text-center font-bold pb-2 flex justify-center items-center w-1/4 ${
+                                ledger.transactionType === "debit"
+                                  ? "text-red-500 dark:text-red-400"
+                                  : ledger.transactionType === "transaction-in"
+                                  ? "text-green-500 dark:text-green-400"
+                                  : ledger.transactionType === "transaction-out"
+                                  ? "text-yellow-500 dark:text-yellow-400"
+                                  : "text-gray-500 dark:text-gray-400" // Default color
+                              }`}
+                            >
+                              {ledger.transactionType === "debit" && "-"}
+                              {ledger.transactionType === "transaction-in" &&
+                                "+"}
+                              {ledger.transactionType === "transaction-out" &&
+                                "-"}
+                              ₹{ledger.amount}
+                            </p>
+                          ) : (
+                            <input
+                              type="number"
+                              value={uamount}
+                              onChange={(e) => setUAmount(e.target.value)}
+                              className="mt-2 w-1/4 p-2 border rounded-md dark:bg-gray-800 dark:text-white"
+                              placeholder="Enter new amount"
+                            />
+                          )}
 
                           {/* Date */}
                           <p className="text-sm text-center text-gray-600 w-1/4 dark:text-gray-300">
@@ -281,8 +290,9 @@ const LedgerComponent = () => {
                             {updateLedgerId != ledger._id ? (
                               <button
                                 className="w-fit bg-yellow-500 px-3 py-2 text-white rounded-md cursor-pointer"
-                                onClick={() => {setUpdateLedgerId(ledger._id)
-                                    setUAmount(ledger.amount)
+                                onClick={() => {
+                                  setUpdateLedgerId(ledger._id);
+                                  setUAmount(ledger.amount);
                                 }}
                               >
                                 Update Ledger
@@ -292,7 +302,6 @@ const LedgerComponent = () => {
                                 onClick={handleSaveLedger}
                                 className="w-fit bg-green-500 px-3 py-2 text-white rounded-md cursor-pointer"
                                 disabled={loading}
-
                               >
                                 {loading ? "Updating..." : "Update Ledger"}
                               </button>
