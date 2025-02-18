@@ -212,7 +212,8 @@ function WarehouseCard({ upq, setUpq }) {
                               )
                               .map((product) => (
                                 <option key={product._id} value={product._id}>
-                                  {product.name}
+                                  {product.name} &nbsp; &nbsp; &nbsp; &nbsp;{" "}
+                                  {`( ${product.size} )`}
                                 </option>
                               ))}
                           </select>
