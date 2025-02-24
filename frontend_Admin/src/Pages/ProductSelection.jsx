@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 
 const ProductSelection = ({ onProductSelect }) => {
@@ -13,7 +14,7 @@ const ProductSelection = ({ onProductSelect }) => {
   }, []);
 
   const handleAddProduct = (productId) => {
-    const product = products.find(p => p._id === productId);
+    const product = products.find((p) => p._id === productId);
     setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
     onProductSelect([...selectedProducts, { ...product, quantity: 1 }]);
   };
@@ -63,6 +64,9 @@ const ProductSelection = ({ onProductSelect }) => {
       </table>
     </div>
   );
+};
+ProductSelection.propTypes = {
+  onProductSelect: PropTypes.func.isRequired,
 };
 
 export default ProductSelection;

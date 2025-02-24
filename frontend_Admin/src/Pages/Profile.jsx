@@ -14,6 +14,7 @@ import { FaTimes } from "react-icons/fa";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import { validateInput } from "../constants";
+import ImageKit from "imagekit-javascript";
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -23,9 +24,6 @@ const Profile = () => {
   const fileInputRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [formData, setFormData] = useState({});
-  const [selectedInterests, setSelectedInterests] = useState(
-    currentUser.Interests
-  );
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -106,20 +104,31 @@ const Profile = () => {
 
     setUploadingImage(true);
 
-    const imageFormData = new FormData();
-    imageFormData.append("file", file);
-
+    const imagekit = new ImageKit({
+      publicKey: import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY,
+      urlEndpoint: import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT,
+      authenticationEndpoint: `${
+        import.meta.env.VITE_BASE_URL
+      }/product/imagekit/auth`,
+    });
     try {
-      const response = await axios.post(`/api/user/upload`, imageFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/product/imagekit/auth`
+      );
+      if (!response.ok)
+        throw new Error("Failed to fetch authentication parameters");
+      const authParams = await response.json();
+      const res = await imagekit.upload({
+        file,
+        fileName: file.name,
+        folder: "/uploads",
+        ...authParams,
       });
-
-      await updateUser({ avatar: response.data });
+      await updateUser({ avatar: res.url });
       setFile(null);
       fileInputRef.current.value = null;
     } catch (error) {
+      console.log(error);
       toast.error("Error uploading file");
     } finally {
       setUploadingImage(false);
@@ -133,15 +142,15 @@ const Profile = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleTypeChange = (e) => {
-    const value = e.target.value;
-    const isSelected = selectedInterests.includes(value);
-    setSelectedInterests((prevInterests) =>
-      isSelected
-        ? prevInterests.filter((interest) => interest !== value)
-        : [...prevInterests, value]
-    );
-  };
+  // const handleTypeChange = (e) => {
+  //   const value = e.target.value;
+  //   const isSelected = selectedInterests.includes(value);
+  //   setSelectedInterests((prevInterests) =>
+  //     isSelected
+  //       ? prevInterests.filter((interest) => interest !== value)
+  //       : [...prevInterests, value]
+  //   );
+  // };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -171,11 +180,7 @@ const Profile = () => {
       delete formData.password;
     }
 
-
-    if (
-      currentUser.role === "admin" ||
-      currentUser.role === "Admin"
-    ) {
+    if (currentUser.role === "admin" || currentUser.role === "Admin") {
       if (
         (!formData.phoneNo && !currentUser.phoneNo) ||
         (formData.phoneNo === "" && currentUser.phoneNo)
@@ -185,11 +190,10 @@ const Profile = () => {
       }
     }
 
-    const updatedFormData = { ...formData, Interests: selectedInterests };
+    const updatedFormData = { ...formData };
 
     await updateUser(updatedFormData);
   };
-
   return (
     <div className="">
       <ScrollRestoration />
@@ -207,6 +211,7 @@ const Profile = () => {
                 <div className="flex flex-col md:flex-row p-4 gap-4 items-center">
                   <form
                     onSubmit={handleFileSubmit}
+                    encType="multipart/form-data"
                     className="flex flex-col gap-4 items-center justify-center mt-4"
                   >
                     <div className="relative">
@@ -232,8 +237,9 @@ const Profile = () => {
 
                     <button
                       disabled={uploadingImage} // Disable button during image upload
-                      className={`border flex items-center gap-2 justify-center text-sm rounded-xl bg-transparent border-slate-300 py-2 px-4 ${uploadingImage ? "opacity-80 cursor-not-allowed" : ""
-                        }`}
+                      className={`border flex items-center gap-2 justify-center text-sm rounded-xl bg-transparent border-slate-300 py-2 px-4 ${
+                        uploadingImage ? "opacity-80 cursor-not-allowed" : ""
+                      }`}
                       type="submit"
                     >
                       <CgProfile />
@@ -295,8 +301,9 @@ const Profile = () => {
                       placeholder="Name"
                       defaultValue={currentUser.name}
                       id="name"
-                      className={`border p-2 md:p-3  text-black rounded-xl w-full ${errors.name ? "border-red" : ""
-                        }`}
+                      className={`border p-2 md:p-3  text-black rounded-xl w-full ${
+                        errors.name ? "border-red" : ""
+                      }`}
                       onChange={handleChange}
                     />
                     {errors.name && (
@@ -318,8 +325,9 @@ const Profile = () => {
                       placeholder="Username"
                       defaultValue={currentUser.username}
                       id="username"
-                      className={`border p-2 md:p-3 text-black rounded-xl w-full ${errors.username ? "border-red" : ""
-                        }`}
+                      className={`border p-2 md:p-3 text-black rounded-xl w-full ${
+                        errors.username ? "border-red" : ""
+                      }`}
                       onChange={handleChange}
                       required
                     />
@@ -362,8 +370,9 @@ const Profile = () => {
                       placeholder="PhoneNo"
                       id="phoneNo"
                       defaultValue={currentUser.phoneNo}
-                      className={`border p-2 md:p-3  text-black   rounded-xl w-full ${errors.name ? "border-red" : ""
-                        }`}
+                      className={`border p-2 md:p-3  text-black   rounded-xl w-full ${
+                        errors.name ? "border-red" : ""
+                      }`}
                       onChange={handleChange}
                     />
                     {errors.phoneNo && (
@@ -386,8 +395,9 @@ const Profile = () => {
                         placeholder="Password"
                         onChange={handleChange}
                         id="password"
-                        className={`border p-2 md:p-3  text-black  rounded-xl w-full ${errors.password ? "border-red" : ""
-                          }`}
+                        className={`border p-2 md:p-3  text-black  rounded-xl w-full ${
+                          errors.password ? "border-red" : ""
+                        }`}
                       />
 
                       <button
@@ -413,7 +423,7 @@ const Profile = () => {
                     <label className="text-xs md:text-sm font-semibold">
                       Choose your Interests
                     </label>
-                    <div className="grid grid-cols-2 gap-4 mt-2">
+                    {/* <div className="grid grid-cols-2 gap-4 mt-2">
                       {typeOptions.map((type) => (
                         <div
                           key={type}
@@ -428,7 +438,7 @@ const Profile = () => {
                           {type}
                         </div>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
 
                   <button

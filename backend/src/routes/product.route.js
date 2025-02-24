@@ -1,14 +1,13 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   createProduct,
   getProducts,
   getProductById,
   updateProduct,
   deleteProduct,
-} from "../controllers/product.controller.js";
-import { isAdmin } from "../middleware/auth.js";
-import { verifyToken } from "../utils/verifyUser.js";
-
+} = require("../controllers/product.controller.js");
+const { isAdmin } = require("../middleware/auth.js");
+const { verifyToken } = require("../utils/verifyUser.js");
 
 const router = express.Router();
 
@@ -27,4 +26,4 @@ router.put("/:id", verifyToken, isAdmin, updateProduct);
 // DELETE route to delete a product by id
 router.delete("/:id", verifyToken, isAdmin, deleteProduct);
 
-export default router;
+module.exports = router;

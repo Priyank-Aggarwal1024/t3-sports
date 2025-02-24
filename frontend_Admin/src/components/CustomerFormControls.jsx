@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function CustomerFormControls({
   name,
@@ -115,5 +116,18 @@ function CustomerFormControls({
       );
   }
 }
+CustomerFormControls.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["text", "select"]).isRequired,
+  options: PropTypes.arrayOf(PropTypes.string),
+  handleChange: PropTypes.func.isRequired,
+  customer: PropTypes.shape({
+    othersport: PropTypes.string,
+    othercustomertype: PropTypes.string,
+  }).isRequired,
+  placeholder: PropTypes.string,
+  customerErrorState: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 export default CustomerFormControls;

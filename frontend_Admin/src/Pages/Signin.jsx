@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri"; // Import icons from React Icons
 import axios from "axios";
@@ -54,8 +54,8 @@ export default function SignIn() {
 
       const response = await axios.post(`/api/auth/signin`, formData, {
         headers: {
-          'x-api-key': '12345678-abcd-90ef-ghij-klmnopqrstuv'
-        }
+          "x-api-key": "12345678-abcd-90ef-ghij-klmnopqrstuv",
+        },
       });
 
       if (response.data.success === false) {
@@ -72,7 +72,6 @@ export default function SignIn() {
       toast.error("Sign in failed: " + error.message);
     }
   };
-
 
   return (
     <>

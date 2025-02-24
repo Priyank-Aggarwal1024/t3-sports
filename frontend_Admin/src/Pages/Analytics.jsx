@@ -1,8 +1,25 @@
-import React, { useState } from 'react';
-import { Line, Doughnut, Bar } from 'react-chartjs-2';
-import { FiTrendingUp, FiDollarSign, FiShoppingBag, FiUsers } from 'react-icons/fi';
-import { useOrders } from '../contexts/OrdersContext';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, Filler, ArcElement } from 'chart.js';
+import React, { useState } from "react";
+import { Line, Doughnut, Bar } from "react-chartjs-2";
+import {
+  FiTrendingUp,
+  FiDollarSign,
+  FiShoppingBag,
+  FiUsers,
+} from "react-icons/fi";
+import { useOrders } from "../contexts/OrdersContext";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+  Filler,
+  ArcElement,
+} from "chart.js";
 
 // Register the necessary components including ArcElement
 ChartJS.register(
@@ -15,20 +32,17 @@ ChartJS.register(
   LineElement,
   PointElement,
   Filler,
-  ArcElement  // Register ArcElement for Doughnut/Pie charts
+  ArcElement // Register ArcElement for Doughnut/Pie charts
 );
 
 const Analytics = () => {
   const { orders, loading, error } = useOrders();
-  const [timeRange, setTimeRange] = useState('week'); // 'week', 'month', 'year'
+  const [timeRange, setTimeRange] = useState("week"); // 'week', 'month', 'year'
 
   // Utility function for Indian currency format
   const formatToIndianRupees = (number) => {
     const amount = Math.round(number) || 0;
-    return new Intl.NumberFormat('en-IN', {
-      maximumFractionDigits: 0,
-      style: 'decimal',
-    }).format(amount);
+    return amount.toLocaleString("en-IN");
   };
 
   // Calculate basic stats
@@ -44,14 +58,20 @@ const Analytics = () => {
         successRate: 0,
       };
 
-    const activeOrders = orders.filter((order) => order.status !== 'cancelled');
+    const activeOrders = orders.filter((order) => order.status !== "cancelled");
     const totalRevenue = activeOrders.reduce(
       (sum, order) => sum + (Number(order.totalAmount) || 0),
       0
     );
-    const prepaidCount = orders.filter((order) => order.payment_method === 'prepaid').length;
-    const cashCount = orders.filter((order) => order.payment_method === 'cash').length;
-    const cancelledOrders = orders.filter((order) => order.status === 'cancelled').length;
+    const prepaidCount = orders.filter(
+      (order) => order.payment_method === "prepaid"
+    ).length;
+    const cashCount = orders.filter(
+      (order) => order.payment_method === "cash"
+    ).length;
+    const cancelledOrders = orders.filter(
+      (order) => order.status === "cancelled"
+    ).length;
 
     return {
       totalRevenue,
@@ -76,7 +96,9 @@ const Analytics = () => {
     const daysToInclude = timeRangeMap[timeRange];
     const startDate = new Date(today.setDate(today.getDate() - daysToInclude));
 
-    const filteredOrders = orders.filter((order) => new Date(order.dateOfOrder) >= startDate);
+    const filteredOrders = orders.filter(
+      (order) => new Date(order.dateOfOrder) >= startDate
+    );
 
     // Group orders by date
     const ordersByDate = filteredOrders.reduce((acc, order) => {
@@ -112,7 +134,7 @@ const Analytics = () => {
   // New function to calculate state-wise distribution
   const calculateStateDistribution = () => {
     const stateData = orders.reduce((acc, order) => {
-      const state = order?.customer?.state || 'Unknown';
+      const state = order?.customer?.state || "Unknown";
       acc[state] = (acc[state] || 0) + 1;
       return acc;
     }, {});
@@ -124,7 +146,7 @@ const Analytics = () => {
 
     return {
       labels: sortedStates.map(([state]) => state),
-      data: sortedStates.map(([, count]) => count)
+      data: sortedStates.map(([, count]) => count),
     };
   };
 
@@ -138,22 +160,22 @@ const Analytics = () => {
     labels: timeMetrics.labels,
     datasets: [
       {
-        label: 'Daily Revenue',
+        label: "Daily Revenue",
         data: timeMetrics.revenues,
-        borderColor: '#0395d0',
-        backgroundColor: 'rgba(3, 149, 208, 0.2)',
+        borderColor: "#0395d0",
+        backgroundColor: "rgba(3, 149, 208, 0.2)",
         fill: true,
       },
     ],
   };
 
   const orderDistributionData = {
-    labels: ['Prepaid', 'Cash', 'Cancelled'],
+    labels: ["Prepaid", "Cash", "Cancelled"],
     datasets: [
       {
         data: [stats.prepaidCount, stats.cashCount, stats.cancelledOrders],
-        backgroundColor: ['#0395d0', '#0C0C0C', '#DC2626'],
-        hoverBackgroundColor: ['#db2777', '#C7C8CC', '#EF4444'],
+        backgroundColor: ["#0395d0", "#0C0C0C", "#DC2626"],
+        hoverBackgroundColor: ["#db2777", "#C7C8CC", "#EF4444"],
       },
     ],
   };
@@ -162,10 +184,10 @@ const Analytics = () => {
     labels: hourlyDist.labels,
     datasets: [
       {
-        label: 'Orders by Hour',
+        label: "Orders by Hour",
         data: hourlyDist.data,
-        backgroundColor: '#0395d0',
-        borderColor: '#0C0C0C',
+        backgroundColor: "#0395d0",
+        borderColor: "#0C0C0C",
         borderWidth: 1,
       },
     ],
@@ -173,16 +195,23 @@ const Analytics = () => {
 
   const stateDistributionData = {
     labels: stateDist.labels,
-    datasets: [{
-      label: 'Orders by State',
-      data: stateDist.data,
-      backgroundColor: Array(10).fill('#0395d0'),
-      borderColor: Array(10).fill('#0C0C0C'),
-      borderWidth: 1
-    }]
+    datasets: [
+      {
+        label: "Orders by State",
+        data: stateDist.data,
+        backgroundColor: Array(10).fill("#0395d0"),
+        borderColor: Array(10).fill("#0C0C0C"),
+        borderWidth: 1,
+      },
+    ],
   };
 
-  if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
@@ -206,7 +235,9 @@ const Analytics = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500">Total Revenue</p>
-              <h3 className="text-2xl font-bold">₹{formatToIndianRupees(stats.totalRevenue)}</h3>
+              <h3 className="text-2xl font-bold">
+                ₹{formatToIndianRupees(stats.totalRevenue)}
+              </h3>
             </div>
             <FiDollarSign className="text-[#2F60F3] text-2xl" />
           </div>
@@ -216,7 +247,9 @@ const Analytics = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500">Average Order Value</p>
-              <h3 className="text-2xl font-bold">₹{formatToIndianRupees(stats.avgOrderValue)}</h3>
+              <h3 className="text-2xl font-bold">
+                ₹{formatToIndianRupees(stats.avgOrderValue)}
+              </h3>
             </div>
             <FiShoppingBag className="text-[#2F60F3] text-2xl" />
           </div>
@@ -226,7 +259,9 @@ const Analytics = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-500">Success Rate</p>
-              <h3 className="text-2xl font-bold">{stats.successRate.toFixed(1)}%</h3>
+              <h3 className="text-2xl font-bold">
+                {stats.successRate.toFixed(1)}%
+              </h3>
             </div>
             <FiTrendingUp className="text-[#2F60F3] text-2xl" />
           </div>
@@ -245,7 +280,6 @@ const Analytics = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-
         <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full">
           <h2 className="text-xl font-bold mb-4">Revenue Trend</h2>
           <div className="h-96 w-full ">
@@ -267,7 +301,6 @@ const Analytics = () => {
         <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full">
           <h2 className="text-xl font-bold mb-4">Order Distribution</h2>
           <div className="h-96 w-full ">
-
             <Doughnut
               data={orderDistributionData}
               options={{
@@ -275,7 +308,7 @@ const Analytics = () => {
                 maintainAspectRatio: false,
                 plugins: {
                   legend: {
-                    position: 'bottom',
+                    position: "bottom",
                   },
                 },
               }}
@@ -284,8 +317,7 @@ const Analytics = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-12'>
-
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full mb-6">
           <h2 className="text-xl font-bold mb-4">Hourly Order Distribution</h2>
           <div className="h-96 w-full ">
@@ -312,20 +344,23 @@ const Analytics = () => {
         <div className="bg-white dark:bg-darkPrimary dark:text-white text-black shadow-lg rounded-md p-4 w-full mb-6">
           <h2 className="text-xl font-bold mb-4">Top States by Orders</h2>
           <div className="h-96 w-full ">
-            <Bar data={stateDistributionData} options={{
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  beginAtZero: true,
+            <Bar
+              data={stateDistributionData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
                 },
-              },
-              plugins: {
-                legend: {
-                  display: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
                 },
-              },
-            }} />
+              }}
+            />
           </div>
         </div>
       </div>

@@ -1,7 +1,15 @@
-import express from "express";
-import { createOrder, deleteOrder, fulfillOrder, getAssignedOrders, getOrderById, getOrders, updateOrder } from "../controllers/order.controller.js";
-import { isAdmin, isWarehouseAdmin } from "../middleware/auth.js";
-import { verifyToken } from "../utils/verifyUser.js";
+const express = require("express");
+const {
+  createOrder,
+  deleteOrder,
+  fulfillOrder,
+  getAssignedOrders,
+  getOrderById,
+  getOrders,
+  updateOrder,
+} = require("../controllers/order.controller.js");
+const { isAdmin, isWarehouseAdmin } = require("../middleware/auth.js");
+const { verifyToken } = require("../utils/verifyUser.js");
 const router = express.Router();
 
 // Create Order Route
@@ -13,4 +21,4 @@ router.put("/fulfill/:id", verifyToken, isWarehouseAdmin, fulfillOrder);
 router.put("/update/:id", verifyToken, isWarehouseAdmin, updateOrder);
 router.delete("/:id", verifyToken, isAdmin, deleteOrder);
 
-export default router;
+module.exports = router;

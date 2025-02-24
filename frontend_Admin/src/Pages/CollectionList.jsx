@@ -5,7 +5,7 @@ import { IoMdClose, IoMdAdd } from "react-icons/io";
 import useProducts from "../contexts/useProducts";
 
 const CollectionList = () => {
-  const { products, getProductById } = useProducts();
+  const { products } = useProducts();
   const [collections, setCollections] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState({});
   const [colloading, setColloading] = useState(false);
@@ -109,7 +109,7 @@ const CollectionList = () => {
       <h2 className="text-3xl font-bold dark:text-white text-black mb-6">
         Our Collections
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-screen overflow-y-auto">
         {colloading ? (
           <div className="text-white text-xl">Loading...</div>
         ) : collections.length > 0 ? (
@@ -117,7 +117,7 @@ const CollectionList = () => {
             <div className="" key={ind}>
               <div
                 key={collection._id}
-                className="bg-white dark:bg-darkPrimary shadow-lg rounded-md md:p-9 p-6 transition-transform transform w-full flex flex-col md:gap-9 gap-5"
+                className="bg-white dark:bg-darkPrimary shadow-lg rounded-md md:p-9 sm:p-6 px-3 py-4 transition-transform transform w-full flex flex-col md:gap-9 gap-5"
               >
                 <div
                   className="flex justify-between items-center cursor-pointer"
@@ -154,79 +154,82 @@ const CollectionList = () => {
                     </svg>
                   )}
                 </div>
-                {open[collection._id] && (
-                  <div>
-                    <ul className="pb-3">
-                      {collection.products.map((product) => (
-                        <li
-                          key={product._id}
-                          className="flex  items-center md:mb-[18px] mb-3 "
+                <div className="overflow-x-auto w-full">
+                  {open[collection._id] && (
+                    <div className="min-w-[350px]">
+                      <div className="my-4 flex gap-2">
+                        <select
+                          name={collection._id}
+                          value={selectedProducts[collection._id] || ""}
+                          onChange={(e) =>
+                            setSelectedProducts((prev) => ({
+                              ...prev,
+                              [collection._id]: e.target.value,
+                            }))
+                          }
+                          className="border rounded-md w-full text-sm pl-2 hover:cursor-pointer"
                         >
-                          <div className="flex justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
-                            <span className="font-medium text-black dark:text-white">
-                              {product?.name}
-                            </span>
-                            <span className="text-[#2F60F3] font-semibold">
-                              ${product?.price}
-                            </span>
-                          </div>
-                          <button
-                            onClick={() =>
-                              handleRemoveProduct(collection._id, product._id)
-                            }
-                            className="dark:text-white text-black rounded-md py-1 pl-1 text-2xl cursor-pointer"
+                          <option value="" disabled>
+                            Select product to add
+                          </option>
+                          {products
+                            .filter(
+                              (product) =>
+                                !collection.products.some(
+                                  (wp) => wp._id === product._id
+                                )
+                            )
+                            .map((product) => (
+                              <option key={product._id} value={product._id}>
+                                {product.name}
+                              </option>
+                            ))}
+                        </select>
+                        <button
+                          onClick={() =>
+                            !adding && handleAddProduct(collection._id)
+                          }
+                          className="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition duration-200"
+                          disabled={!selectedProducts[collection._id]}
+                        >
+                          <IoMdAdd />
+                        </button>
+                      </div>
+                      <ul className="pb-3">
+                        {collection.products.map((product) => (
+                          <li
+                            key={product._id}
+                            className="flex  items-center md:mb-[18px] mb-3 "
                           >
-                            <IoMdClose />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="my-4 flex gap-2">
-                      <select
-                        name={collection._id}
-                        value={selectedProducts[collection._id] || ""}
-                        onChange={(e) =>
-                          setSelectedProducts((prev) => ({
-                            ...prev,
-                            [collection._id]: e.target.value,
-                          }))
-                        }
-                        className="border rounded-md w-full text-sm pl-2 hover:cursor-pointer"
+                            <div className="flex justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
+                              <span className="font-medium text-black dark:text-white">
+                                {product?.name}
+                              </span>
+                              <span className="text-[#2F60F3] font-semibold">
+                                ${product?.price}
+                              </span>
+                            </div>
+                            <button
+                              onClick={() =>
+                                handleRemoveProduct(collection._id, product._id)
+                              }
+                              className="dark:text-white text-black rounded-md py-1 pl-1 text-2xl cursor-pointer"
+                            >
+                              <IoMdClose />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div
+                        className="text-[#df4f4f] text-center cursor-pointer text-[17px] font-medium font-['Inter']"
+                        onClick={() => handleDelete(collection._id)}
                       >
-                        <option value="" disabled>
-                          Select product to add
-                        </option>
-                        {products
-                          .filter(
-                            (product) =>
-                              !collection.products.some(
-                                (wp) => wp._id === product._id
-                              )
-                          )
-                          .map((product) => (
-                            <option key={product._id} value={product._id}>
-                              {product.name}
-                            </option>
-                          ))}
-                      </select>
-                      <button
-                        onClick={() =>
-                          !adding && handleAddProduct(collection._id)
-                        }
-                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2 px-4 transition duration-200"
-                        disabled={!selectedProducts[collection._id]}
-                      >
-                        <IoMdAdd />
-                      </button>
+                        Delete collection
+                      </div>
                     </div>
-                    <div
-                      className="text-[#df4f4f] text-center cursor-pointer text-[17px] font-medium font-['Inter']"
-                      onClick={() => handleDelete(collection._id)}
-                    >
-                      Delete collection
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           ))

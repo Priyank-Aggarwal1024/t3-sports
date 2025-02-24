@@ -1,19 +1,26 @@
-import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
-import { errorHandler } from "../utils/error.js";
+const jwt = require("jsonwebtoken");
+const User = require("../models/user.model.js");
+const { errorHandler } = require("../utils/error.js");
 
-export const verifyToken = async (req, res, next) => {
-  const token = req.headers['authorization']?.startsWith('Bearer ')
-    ? req.headers['authorization'].slice(7)
+const verifyToken = async (req, res, next) => {
+  const token = req.headers["authorization"]?.startsWith("Bearer ")
+    ? req.headers["authorization"].slice(7)
     : req.cookies.access_token;
 
   if (!token) {
-    return res.status(401).json({ success: false, message: "Unauthorized access: No token provided." });
+    return res
+      .status(401)
+      .json({
+        success: false,
+        message: "Unauthorized access: No token provided.",
+      });
   }
 
   jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
     if (err) {
-      return res.status(403).json({ success: false, message: "Forbidden: Invalid token." });
+      return res
+        .status(403)
+        .json({ success: false, message: "Forbidden: Invalid token." });
     }
 
     try {
@@ -29,3 +36,4 @@ export const verifyToken = async (req, res, next) => {
     }
   });
 };
+module.exports = { verifyToken };

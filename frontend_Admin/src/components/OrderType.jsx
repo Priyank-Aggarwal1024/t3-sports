@@ -1,4 +1,5 @@
-import React from 'react'
+import React from "react";
+import PropTypes from "prop-types";
 
 const OrderType = ({ onChange }) => {
   const handleOrderTypeChange = ({ target }) => {
@@ -8,7 +9,10 @@ const OrderType = ({ onChange }) => {
   return (
     <div className="space-y-4 w-full">
       <div className="form-control">
-        <label htmlFor="payment_method" className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4">
+        <label
+          htmlFor="payment_method"
+          className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-4"
+        >
           Order Type
         </label>
         <select
@@ -23,7 +27,9 @@ const OrderType = ({ onChange }) => {
         </select>
       </div>
     </div>
-  )
-}
-
-export default OrderType
+  );
+};
+OrderType.propTypes = {
+  onChange: PropTypes.func.isRequired,
+};
+export default OrderType;

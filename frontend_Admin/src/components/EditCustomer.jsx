@@ -23,9 +23,12 @@ const EditCustomer = () => {
 
   useEffect(() => {
     if (editCustomer) {
-      const { __v, _id, createdAt, customerId, updatedAt, ...fields } =
-        editCustomer;
-      setCustomer(fields);
+      delete editCustomer["__v"];
+      delete editCustomer["_id"];
+      delete editCustomer["createdAt"];
+      delete editCustomer["customerId"];
+      delete editCustomer["updatedAt"];
+      setCustomer(editCustomer);
     }
   }, [editCustomer]);
   const handleSubmitCustomer = async () => {

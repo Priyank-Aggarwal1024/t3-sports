@@ -1,11 +1,18 @@
-import dotenv from "dotenv";
+const dotenv = require("dotenv");
 dotenv.config();
 
-export const DB_NAME = "T3Sports";
+const DB_NAME = "T3Sports";
 
-export const allowedOrigins = process.env.ORIGINS.split(',');
+const allowedOrigins = process.env.ORIGINS.split(",");
 
-export const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3001;
 
-export const API_KEY = '12345678-abcd-90ef-ghij-klmnopqrstuv';
-// export const API_KEY = '123-abc-456-def';
+const API_KEY = "12345678-abcd-90ef-ghij-klmnopqrstuv";
+// const API_KEY = '123-abc-456-def';
+
+module.exports = {
+  DB_NAME,
+  allowedOrigins,
+  port,
+  API_KEY,
+};

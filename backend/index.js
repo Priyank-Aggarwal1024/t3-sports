@@ -1,18 +1,18 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import { port, allowedOrigins } from "./src/constants.js";
-import connectDB from "./src/db/index.js";
-import userRouter from "./src/routes/user.route.js";
-import authRouter from "./src/routes/auth.route.js";
-import orderRouter from "./src/routes/order.route.js";
-import productRouter from "./src/routes/product.route.js";
-import collectionRouter from "./src/routes/collection.route.js";
-import customerRouter from "./src/routes/customer.route.js";
-import warehouseRoutes from "./src/routes/warehouse.route.js";
-import stockRoutes from "./src/routes/stock.route.js";
-import ledgerRoutes from "./src/routes/ledger.route.js";
-import chalk from "chalk"; // Importing chalk
-import ImageKit from "imagekit";
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const { port, allowedOrigins } = require("./src/constants.js");
+const connectDB = require("./src/db/index.js");
+const userRouter = require("./src/routes/user.route.js");
+const authRouter = require("./src/routes/auth.route.js");
+const orderRouter = require("./src/routes/order.route.js");
+const productRouter = require("./src/routes/product.route.js");
+const collectionRouter = require("./src/routes/collection.route.js");
+const customerRouter = require("./src/routes/customer.route.js");
+const warehouseRoutes = require("./src/routes/warehouse.route.js");
+const stockRoutes = require("./src/routes/stock.route.js");
+const ledgerRoutes = require("./src/routes/ledger.route.js");
+const chalk = require("chalk");
+const ImageKit = require("imagekit");
 
 // Create an Express app
 const app = express();
@@ -28,8 +28,14 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", origin);
   }
   res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-Key");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, X-API-Key"
+  );
 
   if (req.method === "OPTIONS") {
     return res.sendStatus(200);
@@ -59,7 +65,7 @@ connectDB()
     });
     app.use("/api/warehouses", warehouseRoutes);
     app.use("/api/stocks", stockRoutes);
-    app.use("/api/ledger",ledgerRoutes );
+    app.use("/api/ledger", ledgerRoutes);
 
     // Default route
     app.get("/", (req, res) => {
@@ -72,7 +78,10 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.error(chalk.red("MongoDB connection failed:"), chalk.yellow(err.message));
+    console.error(
+      chalk.red("MongoDB connection failed:"),
+      chalk.yellow(err.message)
+    );
     process.exit(1); // Exit the process with failure
   });
 
