@@ -1,5 +1,5 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   createCollection,
   getCollections,
   getCollectionByName,
@@ -7,7 +7,7 @@ import {
   deleteCollection,
   removeProductFromCollection,
   addProductToCollection,
-} from "../controllers/collection.controller.js";
+} = require("../controllers/collection.controller.js");
 
 const router = express.Router();
 
@@ -27,10 +27,9 @@ router.put("/:id", updateCollection);
 router.delete("/:id", deleteCollection);
 
 // Add a product to a collection
-router.put('/:id/add-product', addProductToCollection);
+router.put("/:id/add-product", addProductToCollection);
 
 // Remove a product from a collection
-router.put('/:id/remove-product', removeProductFromCollection);
+router.put("/:id/remove-product", removeProductFromCollection);
 
-
-export default router;
+module.exports = router;

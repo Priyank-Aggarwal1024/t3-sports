@@ -72,10 +72,14 @@ const CollectionForm = () => {
                 [...e.target.selectedOptions].map((option) => option.value)
               )
             }
-            className="w-full h-40 px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full h-40 px-0 md:px-2 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {products.map((product) => (
-              <option className="hover:cursor-pointer hover:bg-gray-500 px-2 rounded-md" key={product._id} value={product._id}>
+              <option
+                className="hover:cursor-pointer hover:bg-gray-500 px-2 rounded-md"
+                key={product._id}
+                value={product._id}
+              >
                 {product.name}
               </option>
             ))}
@@ -85,7 +89,7 @@ const CollectionForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="w-full md:py-3 py-2 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
           Create Collection
         </button>

@@ -22,7 +22,6 @@ const LedgerComponent = () => {
   const [updateLedgerId, setUpdateLedgerId] = useState("");
   const [uamount, setUAmount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   // Handle customer selection
   const handleCustomerSelect = (customer) => {
     setSelectedCustomer(customer);
@@ -38,35 +37,35 @@ const LedgerComponent = () => {
   };
   const handleSaveLedger = async () => {
     if (!uamount || isNaN(uamount) || uamount <= 0) {
-      setMessage("Please enter a valid positive amount.");
+      alert("Please enter a valid positive amount.");
       return;
     }
 
     try {
       setLoading(true);
-      setMessage("");
-
       const response = await axios.put(`/api/ledger/${updateLedgerId}`, {
         amount: uamount,
       });
 
       if (response.data.success) {
-        setMessage("Ledger updated successfully!");
+        alert("Ledger updated successfully!");
       } else {
-        setMessage(response.data.message || "Failed to update ledger.");
+        alert(response.data.message || "Failed to update ledger.");
       }
     } catch (error) {
       console.error("Error updating ledger:", error);
-      setMessage(error.response?.data?.message || "An error occurred.");
+      alert(error.response?.data?.message || "An error occurred.");
     } finally {
       setLoading(false);
       setUpdateLedgerId("");
     }
   };
   const handleCreateLedger = () => {
+    setLoading(true);
     console.log(selectedCustomer, transactionType, date, amount);
     if (!selectedCustomer || !transactionType || !amount || !date) {
       alert("Please fill in all fields");
+      setLoading(false);
       return;
     }
     // Create a new ledger entry
@@ -92,6 +91,7 @@ const LedgerComponent = () => {
         console.log(error);
         toast.error("Error creating ledger:", error.message);
       });
+    setLoading(false);
   };
   useEffect(() => {
     axios
@@ -108,7 +108,7 @@ const LedgerComponent = () => {
     >
       <div className="flex flex-col md:flex-row">
         {/* Left side: Customer List */}
-        <div className="md:w-1/4 max-h-screen h-screen overflow-y-auto bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-lg mb-6 md:mb-0">
+        <div className="md:w-1/4 max-h-screen h-screen overflow-y-auto bg-gray-100 dark:bg-black border p-4 rounded-lg shadow-lg mb-6 md:mb-0">
           <h2 className="text-xl font-bold mb-4">Select Customer</h2>
           <div className="relative mb-3">
             <input
@@ -140,7 +140,7 @@ const LedgerComponent = () => {
         </div>
 
         {/* Right side: Ledger Data & Form */}
-        <div className="md:w-3/4 max-h-screen h-screen overflow-y-auto ml-0 md:ml-6 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+        <div className="md:w-3/4 max-h-screen h-screen overflow-y-auto ml-0 md:ml-6 bg-gray-100 dark:bg-black border px-2 py-3 sm:p-4 rounded-lg shadow-lg">
           {selectedCustomer ? (
             <>
               {/* Create Ledger Form */}
@@ -153,7 +153,7 @@ const LedgerComponent = () => {
                   <select
                     value={transactionType}
                     onChange={(e) => setTransactionType(e.target.value)}
-                    className="p-2 w-full rounded-md bg-black text-white dark:bg-black dark:text-white"
+                    className="p-2 w-full rounded-md bg-gray-300 dark:text-white dark:bg-black text-black shadow-sm shadow-gray-500"
                   >
                     <option value="">Select Type</option>
                     <option value="transaction-in">Transaction In</option>
@@ -168,7 +168,7 @@ const LedgerComponent = () => {
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(+e.target.value)}
-                    className="p-2 w-full rounded-md bg-black text-white dark:bg-black dark:text-white"
+                    className="p-2 w-full rounded-md bg-gray-300 dark:text-white dark:bg-black text-black shadow-sm shadow-gray-500"
                   />
                 </div>
                 <div>
@@ -179,11 +179,11 @@ const LedgerComponent = () => {
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="p-2 ledger-inp w-full rounded-md bg-black text-white dark:bg-black dark:text-white"
+                    className="p-2 ledger-inp w-full rounded-md bg-gray-300 dark:text-white dark:bg-black text-black shadow-sm shadow-gray-500"
                   />
                 </div>
                 <button
-                  onClick={handleCreateLedger}
+                  onClick={() => !loading && handleCreateLedger()}
                   className="mt-4 w-full bg-blue-500 text-white p-2 rounded-md"
                 >
                   Create Ledger
@@ -192,7 +192,7 @@ const LedgerComponent = () => {
 
               {/* Ledger Data */}
               <div className="w-full flex justify-between items-center pb-2">
-                <h2 className="text-xl font-bold mb-4 dark:text-white">
+                <h2 className="text-xl font-bold dark:text-white">
                   Ledger Entries
                 </h2>
                 <button
@@ -211,7 +211,7 @@ const LedgerComponent = () => {
                       `ledger-${selectedCustomer}`
                     )
                   }
-                  className="text-white bg-green-600 p-2 mt-4 "
+                  className="text-white bg-green-600 p-2 "
                 >
                   Download as Excel
                 </button>
@@ -225,7 +225,7 @@ const LedgerComponent = () => {
                     .map((ledger) => (
                       <div
                         key={ledger._id}
-                        className="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="flex items-center md:p-4 p-1 md:flex-nowrap flex-wrap justify-center md:gap-1 gap-2 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-200 ease-in-out cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                       >
                         {/* Transaction Type Icon */}
                         <div className="flex items-center justify-center bg-blue-500 dark:bg-blue-700 text-white p-2 rounded-full">
@@ -241,48 +241,58 @@ const LedgerComponent = () => {
                           )}
                         </div>
 
-                        <div className="ml-4 w-full flex flex-wrap justify-between items-center">
+                        <div className="md:ml-4 w-full flex flex-wrap md:flex-nowrap justify-between items-center">
                           {/* Transaction Type */}
-                          <p className="font-semibold text-lg w-1/4 text-gray-800 dark:text-white text-start">
-                            {transactionTypeDisplay[ledger.transactionType] ||
-                              ledger.transactionType}
-                          </p>
+                          <div className=" w-full flex items-center">
+                            <p className="font-semibold text-lg text-gray-800 dark:text-white text-start w-full">
+                              {transactionTypeDisplay[ledger.transactionType] ||
+                                ledger.transactionType}
+                            </p>
 
-                          {/* Amount */}
-                          {ledger._id!=updateLedgerId?<p
-                            className={`text-xl text-center font-bold pb-2 flex justify-center items-center w-1/4 ${
-                              ledger.transactionType === "debit"
-                                ? "text-red-500 dark:text-red-400"
-                                : ledger.transactionType === "transaction-in"
-                                ? "text-green-500 dark:text-green-400"
-                                : ledger.transactionType === "transaction-out"
-                                ? "text-yellow-500 dark:text-yellow-400"
-                                : "text-gray-500 dark:text-gray-400" // Default color
-                            }`}
-                          >
-                            {ledger.transactionType === "debit" && "-"}
-                            {ledger.transactionType === "transaction-in" && "+"}
-                            {ledger.transactionType === "transaction-out" &&
-                              "-"}
-                            ₹{ledger.amount}
-                          </p>:<input
-        type="number"
-        value={uamount}
-        onChange={(e) => setUAmount(e.target.value)}
-        className="mt-2 w-1/4 p-2 border rounded-md dark:bg-gray-800 dark:text-white"
-        placeholder="Enter new amount"
-      />}
+                            {/* Amount */}
+                            {ledger._id != updateLedgerId ? (
+                              <p
+                                className={`text-xl w-full text-center font-bold pb-2 flex justify-center items-center ${
+                                  ledger.transactionType === "debit"
+                                    ? "text-red-500 dark:text-red-400"
+                                    : ledger.transactionType ===
+                                      "transaction-in"
+                                    ? "text-green-500 dark:text-green-400"
+                                    : ledger.transactionType ===
+                                      "transaction-out"
+                                    ? "text-yellow-500 dark:text-yellow-400"
+                                    : "text-gray-500 dark:text-gray-400" // Default color
+                                }`}
+                              >
+                                {ledger.transactionType === "debit" && "-"}
+                                {ledger.transactionType === "transaction-in" &&
+                                  "+"}
+                                {ledger.transactionType === "transaction-out" &&
+                                  "-"}
+                                ₹{ledger.amount}
+                              </p>
+                            ) : (
+                              <input
+                                type="number"
+                                value={uamount}
+                                onChange={(e) => setUAmount(e.target.value)}
+                                className="mt-2 w-1/4 p-2 border rounded-md dark:bg-gray-800 dark:text-white"
+                                placeholder="Enter new amount"
+                              />
+                            )}
 
-                          {/* Date */}
-                          <p className="text-sm text-center text-gray-600 w-1/4 dark:text-gray-300">
-                            Date: {new Date(ledger.date).toLocaleDateString()}
-                          </p>
-                          <div className="w-1/4 flex justify-end">
+                            {/* Date */}
+                            <p className="text-sm text-center text-gray-600 dark:text-gray-300 w-full">
+                              Date: {new Date(ledger.date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="md:w-fit md:min-w-36 w-full flex justify-end">
                             {updateLedgerId != ledger._id ? (
                               <button
-                                className="w-fit bg-yellow-500 px-3 py-2 text-white rounded-md cursor-pointer"
-                                onClick={() => {setUpdateLedgerId(ledger._id)
-                                    setUAmount(ledger.amount)
+                                className="w-full bg-yellow-500 px-3 py-2 text-white rounded-md cursor-pointer"
+                                onClick={() => {
+                                  setUpdateLedgerId(ledger._id);
+                                  setUAmount(ledger.amount);
                                 }}
                               >
                                 Update Ledger
@@ -290,9 +300,8 @@ const LedgerComponent = () => {
                             ) : (
                               <button
                                 onClick={handleSaveLedger}
-                                className="w-fit bg-green-500 px-3 py-2 text-white rounded-md cursor-pointer"
+                                className="w-full bg-green-500 px-3 py-2 text-white rounded-md cursor-pointer"
                                 disabled={loading}
-
                               >
                                 {loading ? "Updating..." : "Update Ledger"}
                               </button>

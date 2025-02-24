@@ -1,5 +1,5 @@
 // useProducts.js
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -7,20 +7,23 @@ const useProducts = () => {
   const [count, setCount] = useState(0);
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [updatedProductData, setUpdatedProductData] = useState({ name: "", price: "" });
-  const [ploading, setPloading] = useState(false)
+  const [updatedProductData, setUpdatedProductData] = useState({
+    name: "",
+    price: "",
+  });
+  const [ploading, setPloading] = useState(false);
 
   // Fetch products data
   useEffect(() => {
     const fetchProducts = async () => {
-      setPloading(true)
+      setPloading(true);
       try {
         const response = await axios.get("/api/products");
         setProducts(response.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
-      setPloading(false)
+      setPloading(false);
     };
     fetchProducts();
   }, [count]);
@@ -36,7 +39,7 @@ const useProducts = () => {
       return products[products.findIndex((prd) => prd._id == id)];
     }
     return;
-  }
+  };
   // Delete product
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm(
@@ -59,7 +62,7 @@ const useProducts = () => {
   const handleEdit = (product) => {
     setEditingProduct(product);
     setUpdatedProductData({
-      ...product
+      ...product,
     });
   };
 
@@ -92,7 +95,7 @@ const useProducts = () => {
     handleEdit,
     handleUpdate,
     getProductById,
-    ploading
+    ploading,
   };
 };
 

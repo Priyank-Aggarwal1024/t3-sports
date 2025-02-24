@@ -8,9 +8,9 @@
 // });
 
 // const Customer = mongoose.model('Customer', customerSchema);
-// export default Customer;
+// module.exports = Customer;
 
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const customerSchema = new mongoose.Schema(
   {
@@ -105,4 +105,4 @@ customerSchema.pre("save", function (next) {
   next();
 });
 const Customer = mongoose.model("Customer", customerSchema);
-export default Customer;
+module.exports = Customer;

@@ -1,9 +1,9 @@
-import Customer from "../models/customer.model.js";
-import Order from "../models/order.model.js";
-import axios from 'axios';
-import Warehouse from "../models/Warehouse.model.js"
-import nodemailer from 'nodemailer'
-import Ledger from "../models/ledger.model.js";
+const Customer = require("../models/customer.model.js");
+const Order = require("../models/order.model.js");
+const axios = require("axios");
+const Warehouse = require("../models/Warehouse.model.js");
+const nodemailer = require("nodemailer");
+const Ledger = require("../models/ledger.model.js");
 const NIMBUS_API_KEY = process.env.NIMBUS_API_KEY;
 
 const generateEmailHtml = (savedOrder, customerDetails, warehouse) => {
@@ -16,7 +16,7 @@ const generateEmailHtml = (savedOrder, customerDetails, warehouse) => {
     </div>
 `;
 
-  savedOrder.products.forEach(prod => {
+  savedOrder.products.forEach((prod) => {
     str += `
     <div style="font-size: 14px; margin-bottom: 5px;">
       <span style="display: inline-block; width: 120px;">${prod.productName}</span>
@@ -58,46 +58,42 @@ const generateEmailHtml = (savedOrder, customerDetails, warehouse) => {
     </body>
     </html>
 `;
-  return html
-}
+  return html;
+};
 
-
-
-export const createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   try {
     const orderdata = req.body;
     const newOrder = new Order({ ...orderdata, ordertype: "assign" });
     const savedOrder = await newOrder.save();
     const customerDetails = await Customer.findById(orderdata.customer);
-    if (!customerDetails) throw new Error('Customer not found');
-
+    if (!customerDetails) throw new Error("Customer not found");
 
     const warehouseId = orderdata.warehouse_id;
     orderdata.products.forEach(async (prod) => {
-
-      const warehouse = await Warehouse.findOneAndUpdate(
+      await Warehouse.findOneAndUpdate(
         { _id: warehouseId, "products.productId": prod._id },
         {
-          $inc: { "products.$.quantity": -prod.quantity } // Decrement the quantity
+          $inc: { "products.$.quantity": -prod.quantity }, // Decrement the quantity
         },
         { new: true }
       );
-    })
+    });
     await savedOrder.save();
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: `${process.env.NODEMAILER_EMAIL}`, // Your Gmail address
         pass: `${process.env.NODEMAILER_PASS}`, // Replace with the app password
       },
     });
     const warehouse = await Warehouse.findById(savedOrder.warehouse_id);
-    let emailHtml = generateEmailHtml(savedOrder, customerDetails, warehouse)
+    let emailHtml = generateEmailHtml(savedOrder, customerDetails, warehouse);
     await transporter.sendMail({
       from: `T3 Sports <${process.env.NODEMAILER_EMAIL}>`, // Sender address
       to: `${warehouse.email}`, // List of recipients
       subject: "New Order Created", // Subject line
-      html: emailHtml
+      html: emailHtml,
     });
     return res.status(201).json({
       success: true,
@@ -106,33 +102,40 @@ export const createOrder = async (req, res) => {
       // trackingId: nimbusResponse.data.tracking_id,
       // order_id: nimbusResponse.data.data
     });
-
   } catch (error) {
     console.error("Error creating order:", error);
     return res.status(500).json({
       success: false,
-      message: "Error creating order: " + (error.response?.data?.message || error.message)
+      message:
+        "Error creating order: " +
+        (error.response?.data?.message || error.message),
     });
   }
 };
 
-export const getOrders = async (req, res) => {
+const getOrders = async (req, res) => {
   try {
-    const orders = (await Order.find().select('-shippingDetails -updatedAt -discount -insuranceRequired -otherpayment_status -other_platform -__v').populate("customer")).reverse();
+    const orders = (
+      await Order.find()
+        .select(
+          "-shippingDetails -updatedAt -discount -insuranceRequired -otherpayment_status -other_platform -__v"
+        )
+        .populate("customer")
+    ).reverse();
     // const response = await axios.get('https://ship.nimbuspost.com/api/orders', {
     //   headers: {
     //     'NP-API-KEY': NIMBUS_API_KEY
     //   }
     // });
 
-    res.status(200).json({success:true,orders});
+    res.status(200).json({ success: true, orders });
   } catch (error) {
-    console.error('Error fetching orders:', error.message);
-    res.status(500).json({ message: 'Failed to fetch orders' });
+    console.error("Error fetching orders:", error.message);
+    res.status(500).json({ message: "Failed to fetch orders" });
   }
 };
 
-export const getAssignedOrders = async (req, res) => {
+const getAssignedOrders = async (req, res) => {
   try {
     // Fetch all orders with ordertype 'assign'
     const assignedOrders = await Order.find({ ordertype: "assign" })
@@ -159,55 +162,69 @@ export const getAssignedOrders = async (req, res) => {
     });
   }
 };
-export const getOrderById = async (req, res) => {
+const getOrderById = async (req, res) => {
   const { id } = req.params;
 
   try {
     const order = await Order.findById(id)
-      .populate('warehouse_id')
-      .populate('customer');
+      .populate("warehouse_id")
+      .populate("customer");
 
     if (!order) {
-      return res.status(404).json({ success: false, message: 'Order not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
     }
 
     return res.status(200).json({ success: true, order });
   } catch (error) {
-    console.error('Error fetching order by ID:', error);
-    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error("Error fetching order by ID:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };
-export const fulfillOrder = async (req, res) => {
+const fulfillOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { breadth, height, length,nimbusProducts, ...data } = req.body
-    const order = await Order.findByIdAndUpdate(id, { ...data, volumetricWeight: breadth * height * length, ordertype: "fulfilled" }, {
-      new: true, // Returns the updated document
-      runValidators: true, // Ensures validations defined in the schema are applied
-    }).populate("customer");
+    const { breadth, height, length, nimbusProducts, ...data } = req.body;
+    const order = await Order.findByIdAndUpdate(
+      id,
+      {
+        ...data,
+        volumetricWeight: breadth * height * length,
+        ordertype: "fulfilled",
+      },
+      {
+        new: true, // Returns the updated document
+        runValidators: true, // Ensures validations defined in the schema are applied
+      }
+    ).populate("customer");
     if (!order) {
-      return res.status(500).json({ success: false, message: 'Order id is required!' });
+      return res
+        .status(500)
+        .json({ success: false, message: "Order id is required!" });
     }
     const ledgerDate = new Date().toISOString(); // If no date is provided, use the current date
 
     const ledgerEntry = new Ledger({
-      transactionType:"debit",
-      customer:order.customer._id,
-      amount:order.totalAmount,
-      date:ledgerDate
+      transactionType: "debit",
+      customer: order.customer._id,
+      amount: order.totalAmount,
+      date: ledgerDate,
     });
 
     // Save the ledger entry to the database
     await ledgerEntry.save();
     let nimbusdata = {};
     if (order.platform == "nimbus") {
-      const nimbusProductsData = nimbusProducts.map((prod)=>{
+      const nimbusProductsData = nimbusProducts.map((prod) => {
         return {
-          name:prod.productName,
-          price:prod.price,
-          qty:prod.quantity
-        }
-      })
+          name: prod.productName,
+          price: prod.price,
+          qty: prod.quantity,
+        };
+      });
       const nimbusOrderData = {
         order_number: order.order_number,
         payment_method: order.payment_method,
@@ -224,41 +241,44 @@ export const fulfillOrder = async (req, res) => {
         pincode: order.shippingDetails.shippingAddress.pincode,
         country: order.shippingDetails.shippingAddress.country,
         products: nimbusProductsData,
-        breadth, height, length,
-        weight: data.weight
+        breadth,
+        height,
+        length,
+        weight: data.weight,
       };
       const nimbusResponse = await axios.post(
-        'https://ship.nimbuspost.com/api/orders/create',
+        "https://ship.nimbuspost.com/api/orders/create",
         nimbusOrderData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            'NP-API-KEY': NIMBUS_API_KEY
-          }
+            "Content-Type": "multipart/form-data",
+            "NP-API-KEY": NIMBUS_API_KEY,
+          },
         }
       );
       order.nimbuspostTrackingId = nimbusResponse.data.tracking_id;
       await order.save();
       nimbusdata = {
         trackingId: nimbusResponse.data.tracking_id,
-        order_id: nimbusResponse.data.data
-      }
-
+        order_id: nimbusResponse.data.data,
+      };
     }
     return res.status(201).json({
       success: true,
       message: "Order Fulfilled successfully",
       order,
-      ...nimbusdata
+      ...nimbusdata,
     });
   } catch (error) {
-    console.error('Error fetching order by ID:', error);
-    return res.status(500).json({ success: false, message: 'Internal Server Error', error });
+    console.error("Error fetching order by ID:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error", error });
   }
-}
+};
 
 // Update order status and tracking link
-export const updateOrder = async (req, res) => {
+const updateOrder = async (req, res) => {
   const { id } = req.params;
   const { status, trackinglink } = req.body; // Assuming you send status and trackingLink in the request body
 
@@ -271,22 +291,25 @@ export const updateOrder = async (req, res) => {
         trackinglink: trackinglink, // Update the tracking link
       },
       { new: true } // Return the updated order
-    )
+    );
     // If order not found, return a 404
     if (!updatedOrder) {
-      return res.status(404).json({ success: false, message: 'Order not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
     }
 
     // Return the updated order in the response
     return res.status(200).json({ success: true, order: updatedOrder });
   } catch (error) {
-    console.error('Error updating order:', error);
-    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    console.error("Error updating order:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };
 
-
-export const deleteOrder = async (req, res) => {
+const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -322,7 +345,19 @@ export const deleteOrder = async (req, res) => {
     console.error("Error deleting order:", error);
     return res.status(500).json({
       success: false,
-      message: "Error deleting order: " + (error.response?.data?.message || error.message),
+      message:
+        "Error deleting order: " +
+        (error.response?.data?.message || error.message),
     });
   }
+};
+
+module.exports = {
+  createOrder,
+  deleteOrder,
+  fulfillOrder,
+  getAssignedOrders,
+  getOrderById,
+  getOrders,
+  updateOrder,
 };

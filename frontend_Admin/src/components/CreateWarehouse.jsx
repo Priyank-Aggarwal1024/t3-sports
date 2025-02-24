@@ -12,10 +12,10 @@ const errorWarehouseState = {
   address: "",
   email: "",
 };
-function CreateWarehouse(props) {
+function CreateWarehouse() {
   const [data, setData] = useState(initialWarehouseState);
   const { products, ploading } = useProducts();
-  const { createWarehouse, warehouse } = useWarehouse();
+  const { createWarehouse } = useWarehouse();
   const [loading, setLoading] = useState(false);
   const [messageWarehouse, setMessageWarehouse] = useState(errorWarehouseState);
   const [quantity, setQuantity] = useState({});
@@ -75,9 +75,9 @@ function CreateWarehouse(props) {
     setData(initialWarehouseState);
   };
   return (
-    <form className="w-full block">
+    <form className="w-full block max-w-full">
       <div className="grid md:grid-cols-2 gap-12 dark:bg-darkPrimary rounded-lg">
-        <div className="w-full flex flex-col lg:gap-12 gap-6">
+        <div className="w-full flex flex-col lg:gap-12 gap-6 max-w-full">
           <div className="w-full">
             <label
               htmlFor="email"
@@ -145,7 +145,7 @@ function CreateWarehouse(props) {
             )}
           </div>
         </div>
-        <div className="w-full flex flex-col dark:bg-black bg-white rounded gap-2 text-balck dark:text-white p-4">
+        <div className="w-full overflow-y-auto sm:max-h-96 max-h-screen flex flex-col dark:bg-black bg-white rounded gap-2 text-sm text-balck dark:text-white sm:p-4">
           <div className="w-full rounded-md  py-2 px-4 flex items-center justify-between">
             <span className="w-full text-center">Name</span>
             <span className="w-full text-center">Photo</span>
@@ -158,41 +158,43 @@ function CreateWarehouse(props) {
           ) : products.length > 0 ? (
             products.map((prod, index) => (
               <div
-                className="w-full border-white rounded-md border py-2 px-4 bg-neutral-100 dark:bg-darkPrimary flex items-center justify-between"
+                className="w-full border-white gap-2 rounded-md border xs:flex-nowrap flex-wrap py-2 sm:px-4 px-1 bg-neutral-100 dark:bg-darkPrimary flex items-center justify-between"
                 key={index}
               >
-                <span className="w-full text-center"> {prod.name}</span>
-                <div className="w-full text-center flex justify-center">
-                  <img
-                    className="w-12 h-12 rounded-md "
-                    src={prod.images[0]}
-                    alt="product image"
-                  />
-                </div>
-                <span className="w-full text-center"> {prod.size}</span>
-                <div className="flex items-center w-full justify-center gap-2">
-                  <input
-                    type="number"
-                    min="0"
-                    value={quantity[prod._id] || "0"} // Default value to 1
-                    onChange={(e) =>
-                      handleQuantityChange(prod._id, +e.target.value)
-                    }
-                    className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
-                    onClick={(e) => e.stopPropagation()}
-                  />
+                <span className="w-full text-center  "> {prod.name}</span>
+                <div className="w-full flex items-center sm:gap-2 gap-1">
+                  <div className="w-full text-center flex justify-center">
+                    <img
+                      className="w-12 h-12 rounded-md "
+                      src={prod.images[0]}
+                      alt="product image"
+                    />
+                  </div>
+                  <span className="w-full text-center"> {prod.size}</span>
+                  <div className="flex items-center w-full justify-center gap-2">
+                    <input
+                      type="number"
+                      min="0"
+                      value={quantity[prod._id] || "0"} // Default value to 1
+                      onChange={(e) =>
+                        handleQuantityChange(prod._id, +e.target.value)
+                      }
+                      className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
                 </div>
                 {data.products.findIndex((it) => it.productId == prod._id) !=
                 -1 ? (
                   <span
-                    className="flex items-center justify-center w-full text-center h-full bg-red-500 px-4 py-2 rounded-lg cursor-pointer "
+                    className="flex items-center justify-center w-full text-center bg-red-500 px-4 py-2 rounded-lg cursor-pointer "
                     onClick={() => handleRemoveProduct(prod._id)}
                   >
                     Remove
                   </span>
                 ) : (
                   <span
-                    className="flex items-center justify-center w-full text-center h-full bg-green-500 px-4 py-2 rounded-lg cursor-pointer "
+                    className="flex items-center justify-center w-full text-center bg-green-500 px-4 py-2 rounded-lg cursor-pointer "
                     onClick={() => handleAddProduct(prod._id)}
                   >
                     Add
@@ -205,7 +207,7 @@ function CreateWarehouse(props) {
           )}
         </div>
         <div
-          className="w-full md:col-span-2 flex items-center justify-center gap-4  rounded-md bg-[#2F60F3] cursor-pointer py-3 px-4 text-center text-white font-bold text-md uppercase"
+          className="w-full md:col-span-2 flex items-center justify-center gap-4  rounded-md bg-[#2F60F3] cursor-pointer py-1.5 sm:py-3 px-4 text-center text-white font-bold text-md uppercase"
           onClick={handleSubmit}
         >
           {loading && <span className="loader"></span>}

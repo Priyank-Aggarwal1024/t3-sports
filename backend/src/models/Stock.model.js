@@ -1,31 +1,34 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-const StockSchema = new mongoose.Schema({
+const StockSchema = new mongoose.Schema(
+  {
     warehouse: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Warehouse",
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Warehouse",
+      required: true,
     },
     product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
     },
     size: {
-        type: String,
-        enum: ['Small', 'Medium', 'Large', 'Extra Large'],
-        required: true
+      type: String,
+      enum: ["Small", "Medium", "Large", "Extra Large"],
+      required: true,
     },
     colour: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     quantity: {
-        type: Number,
-        required: true,
-        min: [0, "Quantity must be a positive number"]
-    }
-}, { timestamps: true });
+      type: Number,
+      required: true,
+      min: [0, "Quantity must be a positive number"],
+    },
+  },
+  { timestamps: true }
+);
 
 const Stock = mongoose.model("Stock", StockSchema);
-export default Stock;
+module.exports = Stock;

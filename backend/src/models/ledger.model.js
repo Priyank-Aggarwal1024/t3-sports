@@ -1,15 +1,16 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+
 // Ledger Schema
 const ledgerSchema = new mongoose.Schema(
   {
     transactionType: {
       type: String,
-      enum: ['debit', 'transaction-in', 'transaction-out'],
+      enum: ["debit", "transaction-in", "transaction-out"],
       required: true,
     },
     customer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Customer',
+      ref: "Customer",
       required: true,
     },
     amount: {
@@ -27,6 +28,6 @@ const ledgerSchema = new mongoose.Schema(
 );
 
 // Create the Ledger model
-const Ledger = mongoose.model('Ledger', ledgerSchema);
+const Ledger = mongoose.model("Ledger", ledgerSchema);
 
-export default Ledger
+module.exports = Ledger;

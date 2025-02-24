@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 
 const clientId = import.meta.env.VITE_GOOGLE_AUTH_KEY;
 
-
 const OAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,11 +49,11 @@ const OAuth = () => {
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      toast.error("Could not sign in with Google")
+      toast.error("Could not sign in with Google");
     }
   };
 
-  const onFailure = (response) => {
+  const onFailure = () => {
     toast.error("Login failed. Please try again.");
   };
 

@@ -5,7 +5,6 @@ import axios from "axios";
 import { validateInput } from "../constants";
 import toast from "react-hot-toast";
 
-
 function ResetPassword() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -53,13 +52,7 @@ function ResetPassword() {
 
   const handleResendOTP = async () => {
     try {
-      const response = await axios.post(
-        `/api/auth/resend-otp`,
-        { email },
-        {
-
-        }
-      );
+      await axios.post(`/api/auth/resend-otp`, { email }, {});
       setResendStatus("OTP sent successfully");
     } catch (error) {
       console.error("Error resending OTP:", error);
@@ -83,9 +76,7 @@ function ResetPassword() {
     try {
       const response = await axios.get(
         `/api/auth/verifyOTP?code=${formData.otp}`,
-        {
-
-        }
+        {}
       );
 
       const data = response.data;
@@ -102,7 +93,6 @@ function ResetPassword() {
               headers: {
                 "Content-Type": "application/json",
               },
-
             }
           );
           const responseData = res.data;
@@ -143,8 +133,9 @@ function ResetPassword() {
               name="otp"
               id="otp"
               required
-              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${errors.otp ? "border-red" : ""
-                }`}
+              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${
+                errors.otp ? "border-red" : ""
+              }`}
               onChange={handleChange}
             />
             {errors.otp && (
@@ -171,8 +162,9 @@ function ResetPassword() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${errors.password ? "border-red" : ""
-                }`}
+              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${
+                errors.password ? "border-red" : ""
+              }`}
               id="password"
               name="password"
               required
@@ -201,8 +193,9 @@ function ResetPassword() {
             <input
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
-              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${errors.confirmPassword ? "border-red" : ""
-                }`}
+              className={`appearance-none block w-full border rounded-xl py-3 px-4 leading-tight text-black focus:outline-none ${
+                errors.confirmPassword ? "border-red" : ""
+              }`}
               id="confirmPassword"
               name="confirmPassword"
               required

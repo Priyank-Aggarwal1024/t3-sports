@@ -184,51 +184,6 @@ const ProductForm = () => {
             )}
           </div>
 
-          {/* Original Price Optional
-          <div className="w-full">
-            <label
-              htmlFor="originalprice"
-              className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
-            >
-              Original Price
-            </label>
-            <input
-              type="number"
-              min={0}
-              id="originalprice"
-              name="originalprice"
-              placeholder="Enter original price"
-              value={formData.originalprice}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {
-              messageTxt.originalprice && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.originalprice}</p>
-            }
-          </div> */}
-
-          {/* Quantity
-          <div className="w-full">
-            <label
-              htmlFor="quantity"
-              className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
-            >
-              Quantity
-            </label>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              placeholder="Enter quantity"
-              value={formData.quantity}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {
-              messageTxt.quantity && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.quantity}</p>
-            }
-          </div> */}
-
           {/* Specifications */}
           <div className="w-full">
             <label
@@ -270,28 +225,6 @@ const ProductForm = () => {
               </p>
             )}
           </div>
-
-          {/* Colour
-          <div className="w-full">
-            <label
-              htmlFor="colour"
-              className="block md:text-[20px] text-[15px] dark:text-white text-black font-['Inter'] md:mb-6 mb-2"
-            >
-              Colour
-            </label>
-            <input
-              type="text"
-              id="colour"
-              name="colour"
-              placeholder="Enter colour"
-              value={formData.colour}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {
-              messageTxt.colour && <p className="text-red-500 text-[12px] pt-1 pl-1">{messageTxt.colour}</p>
-            }
-          </div> */}
 
           {/* Category */}
           <div className="w-full">
@@ -388,7 +321,7 @@ const ProductForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 mt-4 bg-blue-600 flex items-center justify-center gap-4 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="w-full md:py-3 py-2 mt-4 bg-blue-600 flex items-center justify-center gap-4 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
           {loading && <span className="loader"></span>}
           <span>Create Product</span>
