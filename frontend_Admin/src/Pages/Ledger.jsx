@@ -91,6 +91,10 @@ const LedgerComponent = () => {
         console.log(error);
         toast.error("Error creating ledger:", error.message);
       });
+    setTransactionType("");
+    setDate("");
+    setAmount("");
+
     setLoading(false);
   };
   useEffect(() => {

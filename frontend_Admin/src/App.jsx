@@ -17,7 +17,8 @@ import Loader from "./components/Loader.jsx";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 axios.defaults.withCredentials = true;
-axios.defaults.headers.common['X-API-Key'] = import.meta.env.VITE_BACKEND_API_KEY;
+axios.defaults.headers.common["X-API-Key"] =
+  import.meta.env.VITE_BACKEND_API_KEY;
 
 const libraries = ["places"];
 
@@ -47,7 +48,11 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      if (currentUser.role !== "Admin" && currentUser.role !== "admin" && currentUser.role !== "warehouse-admin") {
+      if (
+        currentUser.role !== "Admin" &&
+        currentUser.role !== "admin" &&
+        currentUser.role !== "warehouse-admin"
+      ) {
         handleSignOut();
       }
     } else {
@@ -69,7 +74,6 @@ const App = () => {
       dispatch(signOutUserFailure(error.message));
     }
   };
-  console.log("Designed by: \n\nElanine Creatives \n\n[elanine.com]\n")
 
   return (
     <LoadScript
@@ -80,9 +84,7 @@ const App = () => {
         <ThemeProvider value={{ themeMode, darkTheme, lightTheme }}>
           <OrdersProvider>
             <Navbar />
-            <Toaster
-              position="top-right"
-            />
+            <Toaster position="top-right" />
             <Outlet />
             <Footer />
           </OrdersProvider>

@@ -13,6 +13,8 @@ const stockRoutes = require("./src/routes/stock.route.js");
 const ledgerRoutes = require("./src/routes/ledger.route.js");
 const chalk = require("chalk");
 const ImageKit = require("imagekit");
+const apiKeyMiddleware = require("./src/middleware/apiKeyMiddleware.js");
+const { verifyToken } = require("./src/utils/verifyUser.js");
 
 // Create an Express app
 const app = express();
@@ -48,7 +50,8 @@ app.use(express.json());
 // app.use(router);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(apiKeyMiddleware);
+app.use(verifyToken);
 // Connect to MongoDB
 connectDB()
   .then(() => {

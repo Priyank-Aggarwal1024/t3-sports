@@ -8,14 +8,11 @@ const verifyToken = async (req, res, next) => {
     : req.cookies.access_token;
 
   if (!token) {
-    return res
-      .status(401)
-      .json({
-        success: false,
-        message: "Unauthorized access: No token provided.",
-      });
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized access: No token provided.",
+    });
   }
-
   jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
     if (err) {
       return res

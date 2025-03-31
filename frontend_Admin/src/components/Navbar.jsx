@@ -39,19 +39,26 @@ const Navbar = () => {
       document.body.classList.remove("no-scroll");
     };
   }, [mobileMenuOpen]);
-  const adminRoute = currentUser?.role == "admin" ?
-    [{ path: "/create", text: "Create", icon: <BiSolidOffer /> },
-    { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
-    { path: "/ledger", text: "Ledger", icon: <MdOutlineExplore /> }] : [];
+  const adminRoute =
+    currentUser?.role == "admin"
+      ? [
+          { path: "/create", text: "Create", icon: <BiSolidOffer /> },
+          { path: "/order", text: "Create Order", icon: <MdOutlineExplore /> },
+          { path: "/ledger", text: "Ledger", icon: <MdOutlineExplore /> },
+        ]
+      : [];
 
   const navItems = [
     { path: "/", text: "Home", icon: <LuHome /> },
     ...adminRoute,
-    { path: "/assigned-order", text: "Assigned Order", icon: <MdOutlineExplore /> },
+    {
+      path: "/assigned-order",
+      text: "Assigned Order",
+      icon: <MdOutlineExplore />,
+    },
     { path: "/all-orders", text: "All Orders", icon: <MdOutlineExplore /> },
     { path: "/analytics", text: "Analytics", icon: <MdOutlineExplore /> },
   ];
-
   const handleSignOut = async () => {
     try {
       setLoading(true);
@@ -79,8 +86,9 @@ const Navbar = () => {
       <div className="xs:px-6 flex justify-between items-center">
         {/* Hamburger menu for mobile */}
         <button
-          className={`md:hidden text-2xl z-50 cursor-pointer hover:text-gray-400 transition-transform duration-300 ${mobileMenuOpen ? "transform rotate-180" : ""
-            }`}
+          className={`md:hidden text-2xl z-50 cursor-pointer hover:text-gray-400 transition-transform duration-300 ${
+            mobileMenuOpen ? "transform rotate-180" : ""
+          }`}
           onClick={toggleMobileMenu}
         >
           {mobileMenuOpen ? <CgClose /> : <RiMenu5Fill />}
@@ -98,21 +106,23 @@ const Navbar = () => {
         </div>
 
         {/* Navigation items for desktop */}
-        <div className="hidden md:flex flex-grow flex-wrap justify-center gap-7">
-          {navItems.map((item, index) => (
-            <NavLink
-              key={index}
-              to={item.path}
-              className={({ isActive }) =>
-                isActive
-                  ? "bg-black font-[Inter] text-white dark:text-black dark:bg-[#2F60F3] px-3 py-2 text-xs rounded-md"
-                  : "bg-transparent border border-black dark:border-0 text-black dark:text-white dark:bg-black px-3 py-2 text-xs rounded-md"
-              }
-            >
-              {item.text}
-            </NavLink>
-          ))}
-        </div>
+        {currentUser && (
+          <div className="hidden md:flex flex-grow flex-wrap justify-center gap-7">
+            {navItems.map((item, index) => (
+              <NavLink
+                key={index}
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-black font-[Inter] text-white dark:text-black dark:bg-[#2F60F3] px-3 py-2 text-xs rounded-md"
+                    : "bg-transparent border border-black dark:border-0 text-black dark:text-white dark:bg-black px-3 py-2 text-xs rounded-md"
+                }
+              >
+                {item.text}
+              </NavLink>
+            ))}
+          </div>
+        )}
 
         <div className="relative md:ml-auto flex gap-2">
           <ThemeBtn />
@@ -145,7 +155,7 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu */}
-      {mobileMenuOpen && (
+      {mobileMenuOpen && currentUser && (
         <div className="md:hidden h-[80vh] dark:bg-black dark:text-white bg-black text-white my-6 py-4 px-4 w-full flex justify-between text-2xl items-left flex-col">
           <div>
             {navItems.map((item, index) => (
@@ -168,7 +178,6 @@ const Navbar = () => {
             <Link to="/">
               <img src={logo2} width={120} alt="logo" />
             </Link>
-
           </div>
         </div>
       )}
