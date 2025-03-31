@@ -86,7 +86,7 @@ export default function SignIn() {
         <div
           className={`lg:w-1/2 w-full max-w-[600px] lg:mx-0 mx-auto glassDark dark:glass lg:absolute lg:left-0 h-full flex flex-col justify-center rounded-xl p-8`}
         >
-          <h1 className="text-3xl font-semibold text-center mb-12 text-black dark:text-white">
+          <h1 className="text-3xl font-semibold text-center mb-8 text-black dark:text-white">
             Login to your Account
           </h1>
 
@@ -137,29 +137,11 @@ export default function SignIn() {
             </Link>
             <button
               disabled={loading}
+              type="submit"
               className="w-full bg-black dark:bg-[#2F60F3] text-white dark:text-black py-3 rounded-xl uppercase hover:opacity-95 disabled:opacity-80 text-xs"
             >
               {loading ? "Loading..." : "Sign In"}
             </button>
-            <div className="mt-4 flex items-center justify-between">
-              <span className="border-b w-1/5 border-black/20 dark:border-[#2F60F3] lg:w-1/4"></span>
-              <Link
-                to={"/sign-in"}
-                className="text-xs text-center text-gray-500 uppercase"
-              >
-                OR
-              </Link>
-
-              <span className="border-b w-1/5 border-black/20 dark:border-[#2F60F3] lg:w-1/4"></span>
-            </div>
-            <div className="mt-4 flex items-center justify-center">
-              <Link
-                to={"/sign-up"}
-                className="text-xs text-center text-black dark:text-white underline underline-offset-4 uppercase"
-              >
-                Register
-              </Link>
-            </div>
           </form>
           {error && (
             <p className="text-red-500 mt-5 text-xs text-center">{error}</p>
