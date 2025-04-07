@@ -82,25 +82,30 @@ const CollectionList = () => {
   };
 
   const handleRemoveProduct = async (collectionId, productId) => {
-    try {
-      await axios.put(`/api/collections/${collectionId}/remove-product`, {
-        productId,
-      });
-      const updatedCollections = collections.map((collection) =>
-        collection._id === collectionId
-          ? {
-              ...collection,
-              products: collection.products.filter(
-                (product) => product._id !== productId
-              ),
-            }
-          : collection
-      );
-      setCollections(updatedCollections);
-      toast.success("Product removed from collection successfully");
-    } catch (error) {
-      console.error("Error removing product from collection:", error);
-      toast.error("An error occurred while removing the product");
+    const confirm = window.confirm(
+      "Are you sure you want to remove this product?"
+    );
+    if (confirm) {
+      try {
+        await axios.put(`/api/collections/${collectionId}/remove-product`, {
+          productId,
+        });
+        const updatedCollections = collections.map((collection) =>
+          collection._id === collectionId
+            ? {
+                ...collection,
+                products: collection.products.filter(
+                  (product) => product._id !== productId
+                ),
+              }
+            : collection
+        );
+        setCollections(updatedCollections);
+        toast.success("Product removed from collection successfully");
+      } catch (error) {
+        console.error("Error removing product from collection:", error);
+        toast.error("An error occurred while removing the product");
+      }
     }
   };
 
@@ -154,8 +159,8 @@ const CollectionList = () => {
                     </svg>
                   )}
                 </div>
-                <div className="overflow-x-auto w-full">
-                  {open[collection._id] && (
+                {open[collection._id] && (
+                  <div className="overflow-x-auto w-full">
                     <div className="min-w-[350px]">
                       <div className="my-4 flex gap-2">
                         <select
@@ -206,7 +211,7 @@ const CollectionList = () => {
                                 {product?.name}
                               </span>
                               <span className="text-[#2F60F3] font-semibold">
-                                ${product?.price}
+                                ₹{product?.price}
                               </span>
                             </div>
                             <button
@@ -228,8 +233,8 @@ const CollectionList = () => {
                         Delete collection
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           ))

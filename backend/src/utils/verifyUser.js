@@ -21,11 +21,10 @@ const verifyToken = async (req, res, next) => {
     }
 
     try {
-      const user = await User.findById(decoded.id);
+      const user = await User.findOne({ _id: decoded.id });
       if (!user) {
         return next(errorHandler(404, "User not found"));
       }
-
       req.user = user;
       next();
     } catch (error) {

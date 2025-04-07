@@ -114,15 +114,17 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
                   <p className="dark:text-white text-black text-sm w-full">
                     Name
                   </p>
-                  <p className="dark:text-white text-black text-sm w-full">
-                    Size
-                  </p>
-                  <p className="dark:text-white text-black text-sm w-full">
-                    Price
-                  </p>
-                  <p className="dark:text-white text-black text-sm w-full">
-                    Quantity
-                  </p>
+                  <div className="flex w-full items-center gap-1">
+                    <p className="dark:text-white text-black text-sm w-full">
+                      Size
+                    </p>
+                    <p className="dark:text-white text-black text-sm w-full">
+                      Price
+                    </p>
+                    <p className="dark:text-white text-black text-sm w-full">
+                      Quantity
+                    </p>
+                  </div>
                 </div>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map(
@@ -165,7 +167,7 @@ const ProductSelection = ({ onProductSelect, selectedWarehouse }) => {
                                     [product.productId._id]: +e.target.value,
                                   })
                                 }
-                                className="block w-[64px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
+                                className="block w-[96px] rounded-md p-1 pl-4 dark:bg-black bg-white shadow-sm border  dark:text-white text-black text-sm"
                                 onClick={(e) => e.stopPropagation()}
                               />
                             </div>

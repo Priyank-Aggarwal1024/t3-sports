@@ -50,14 +50,15 @@ app.use(express.json());
 // app.use(router);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(apiKeyMiddleware);
-app.use(verifyToken);
+
 // Connect to MongoDB
 connectDB()
   .then(() => {
     // Set up routes
-    app.use("/api/user", userRouter);
     app.use("/api/auth", authRouter);
+    app.use(apiKeyMiddleware);
+    app.use(verifyToken);
+    app.use("/api/user", userRouter);
     app.use("/api/orders", orderRouter);
     app.use("/api/products", productRouter);
     app.use("/api/collections", collectionRouter);

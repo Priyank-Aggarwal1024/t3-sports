@@ -41,7 +41,6 @@ const signin = async (req, res, next) => {
         .status(401)
         .json({ success: false, message: "Invalid email or password" });
     }
-
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_KEY, {
       expiresIn: "365d",
     });

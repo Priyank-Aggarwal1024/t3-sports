@@ -17,6 +17,7 @@ function WarehouseCard({ upq, setUpq }) {
   const [selectedProducts, setSelectedProducts] = useState({}); // Track selected product per warehouse
   const [open, setOpen] = useState({});
   const [quantity, setQuantity] = useState(0);
+  const [warehouseProductSearch, setWarehouseProductSearch] = useState({});
   const [warehouseEdit, setWarehouseEdit] = useState({
     warehouse: "",
     productId: "",
@@ -42,8 +43,13 @@ function WarehouseCard({ upq, setUpq }) {
   // Handle product removal
   const handleRemoveProduct = (warehouseId, productId) => {
     if (productId) {
-      removeProductInWarehouse(warehouseId, productId);
-      setSelectedProducts((prev) => ({ ...prev, [warehouseId]: "" }));
+      const confirm = window.confirm(
+        "Are you sure you want to remove this product?"
+      );
+      if (confirm) {
+        removeProductInWarehouse(warehouseId, productId);
+        setSelectedProducts((prev) => ({ ...prev, [warehouseId]: "" }));
+      }
     }
   };
   return (
@@ -98,8 +104,8 @@ function WarehouseCard({ upq, setUpq }) {
                         </svg>
                       )}
                     </div>
-                    <div className="overflow-x-auto w-full">
-                      {open[warehouse._id] && (
+                    {open[warehouse._id] && (
+                      <div className="overflow-x-auto w-full">
                         <div className="w-full max-h-96 overflow-y-auto min-w-[550px]">
                           <div className="my-4 flex gap-2">
                             <select
@@ -151,94 +157,114 @@ function WarehouseCard({ upq, setUpq }) {
                               <IoMdAdd />
                             </button>
                           </div>
+                          <input
+                            type="text"
+                            placeholder="Search product"
+                            className="w-full px-2 py-1 rounded-md border-none outline-none mb-4"
+                            onChange={(e) =>
+                              setWarehouseProductSearch({
+                                ...warehouseProductSearch,
+                                [warehouse._id]: e.target.value,
+                              })
+                            }
+                          />
+
                           <ul className="pb-3">
-                            {warehouse.products.map((product) => (
-                              <li
-                                key={product._id}
-                                className="flex items-center md:mb-[18px] mb-3 "
-                              >
-                                <div className="flex flex-wrap justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
-                                  <span className="font-medium w-3/6 text-black dark:text-white">
-                                    {product.productId.name}
-                                  </span>
-                                  {warehouseEdit.productId ==
-                                    product.productId._id &&
-                                  warehouseEdit.warehouse == warehouse._id ? (
-                                    <input
-                                      type="number"
-                                      className="bg-white placeholder:dark:text-[#858585] placeholder:text-gray-700 border rounded-md w-12 text-sm pl-2 hover:cursor-pointer"
-                                      name="quantity"
-                                      id="quantity"
-                                      min={0}
-                                      value={warehouseEdit.quantity}
-                                      onChange={({ target }) =>
-                                        setWarehouseEdit({
-                                          ...warehouseEdit,
-                                          quantity: +target.value,
-                                        })
-                                      }
-                                    />
-                                  ) : (
-                                    <span className="font-medium w-1/6 text-black dark:text-white">
-                                      {product.quantity}
-                                    </span>
-                                  )}
-                                  <span className="font-medium w-1/6 text-black dark:text-white">
-                                    {product.productId.size}
-                                  </span>
-                                  <span className="text-[#2F60F3] w-1/6 font-semibold">
-                                    ₹{product.productId.price}
-                                  </span>
-                                </div>
-                                <div className="flex items-center">
-                                  {warehouseEdit.productId ==
-                                    product.productId._id &&
-                                  warehouseEdit.warehouse == warehouse._id ? (
-                                    <button
-                                      onClick={() => {
-                                        editWarehouseProductQuantity(
-                                          warehouseEdit
-                                        );
-                                        setWarehouseEdit({
-                                          warehouse: "",
-                                          productId: "",
-                                          quantity: 0,
-                                        });
-                                        setUpq(!upq);
-                                      }}
-                                      className="dark:text-white text-black rounded-md py-1 text-lg cursor-pointer bg-green-500 w-16 ml-2"
-                                    >
-                                      Save
-                                    </button>
-                                  ) : (
-                                    <button
-                                      onClick={() =>
-                                        setWarehouseEdit({
-                                          quantity: product.quantity,
-                                          productId: product.productId._id,
-                                          warehouse: warehouse._id,
-                                        })
-                                      }
-                                      className="dark:text-white text-black rounded-md py-1 text-lg cursor-pointer bg-yellow-500 w-16 ml-2"
-                                    >
-                                      Edit
-                                    </button>
-                                  )}
-                                  <button
-                                    onClick={() => {
-                                      handleRemoveProduct(
-                                        warehouse._id,
-                                        product.productId._id
-                                      );
-                                      setUpq(!upq);
-                                    }}
-                                    className="dark:text-white text-black rounded-md py-1 pl-1 text-2xl cursor-pointer"
+                            {warehouse.products.map(
+                              (product) =>
+                                new RegExp(
+                                  warehouseProductSearch[warehouse._id],
+                                  "i"
+                                ).test(product.productId.name) && (
+                                  <li
+                                    key={product._id}
+                                    className="flex items-center md:mb-[18px] mb-3 "
                                   >
-                                    <IoMdClose />
-                                  </button>
-                                </div>
-                              </li>
-                            ))}
+                                    <div className="flex flex-wrap justify-between items-center w-full p-2.5 dark:bg-black bg-white  rounded-[5px] shadow-sm">
+                                      <span className="font-medium w-3/6 text-black dark:text-white">
+                                        {product.productId.name}
+                                      </span>
+                                      {warehouseEdit.productId ==
+                                        product.productId._id &&
+                                      warehouseEdit.warehouse ==
+                                        warehouse._id ? (
+                                        <input
+                                          type="number"
+                                          className="bg-white placeholder:dark:text-[#858585] placeholder:text-gray-700 border rounded-md w-12 text-sm pl-2 hover:cursor-pointer"
+                                          name="quantity"
+                                          id="quantity"
+                                          min={0}
+                                          value={warehouseEdit.quantity}
+                                          onChange={({ target }) =>
+                                            setWarehouseEdit({
+                                              ...warehouseEdit,
+                                              quantity: +target.value,
+                                            })
+                                          }
+                                        />
+                                      ) : (
+                                        <span className="font-medium w-1/6 text-black dark:text-white">
+                                          {product.quantity}
+                                        </span>
+                                      )}
+                                      <span className="font-medium w-1/6 text-black dark:text-white">
+                                        {product.productId.size}
+                                      </span>
+                                      <span className="text-[#2F60F3] w-1/6 font-semibold">
+                                        ₹{product.productId.price}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center">
+                                      {warehouseEdit.productId ==
+                                        product.productId._id &&
+                                      warehouseEdit.warehouse ==
+                                        warehouse._id ? (
+                                        <button
+                                          onClick={() => {
+                                            editWarehouseProductQuantity(
+                                              warehouseEdit
+                                            );
+                                            setWarehouseEdit({
+                                              warehouse: "",
+                                              productId: "",
+                                              quantity: 0,
+                                            });
+                                            setUpq(!upq);
+                                          }}
+                                          className="dark:text-white text-black rounded-md py-1 text-lg cursor-pointer bg-green-500 w-16 ml-2"
+                                        >
+                                          Save
+                                        </button>
+                                      ) : (
+                                        <button
+                                          onClick={() =>
+                                            setWarehouseEdit({
+                                              quantity: product.quantity,
+                                              productId: product.productId._id,
+                                              warehouse: warehouse._id,
+                                            })
+                                          }
+                                          className="dark:text-white text-black rounded-md py-1 text-lg cursor-pointer bg-yellow-500 w-16 ml-2"
+                                        >
+                                          Edit
+                                        </button>
+                                      )}
+                                      <button
+                                        onClick={() => {
+                                          handleRemoveProduct(
+                                            warehouse._id,
+                                            product.productId._id
+                                          );
+                                          setUpq(!upq);
+                                        }}
+                                        className="dark:text-white text-black rounded-md py-1 pl-1 text-2xl cursor-pointer"
+                                      >
+                                        <IoMdClose />
+                                      </button>
+                                    </div>
+                                  </li>
+                                )
+                            )}
                           </ul>
 
                           <div
@@ -248,8 +274,8 @@ function WarehouseCard({ upq, setUpq }) {
                             Delete warehouse
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
