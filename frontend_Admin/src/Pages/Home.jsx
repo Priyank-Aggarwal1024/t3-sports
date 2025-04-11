@@ -47,13 +47,14 @@ const Home = () => {
     }
   };
   useEffect(() => {
+    let _products = (
+      (products || [])
+        .filter((product) => regex.test(product.name))
+        .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage) ||
+      []
+    ).map((item) => ({ ...item, quantity: 0 }));
     if (warehouses && warehouses.length > 0) {
-      const _products = (
-        products?.slice(
-          currentPage * itemsPerPage,
-          (currentPage + 1) * itemsPerPage
-        ) || []
-      ).map((item) => ({
+      _products = _products.map((item) => ({
         ...item,
         quantity: warehouses.reduce((total, warehouse) => {
           const product = warehouse?.products?.find(
@@ -62,10 +63,13 @@ const Home = () => {
           return product ? total + product.quantity : total;
         }, 0),
       }));
-      setFproducts(_products);
     }
+    setFproducts(_products);
     return () => {};
-  }, [products, warehouses]);
+  }, [products, warehouses, searchText, currentPage]);
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchText]);
   useEffect(() => {
     getWarehouse();
   }, [upq]);
@@ -292,132 +296,129 @@ const Home = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {fproducts.map(
-                        (product, index) =>
-                          regex.test(product.name) && (
-                            <tr
-                              key={product._id}
-                              className="border border-gray-700 text-black dark:text-white"
-                            >
-                              <td className="px-4 py-1 text-sm">
-                                {index + 1 + currentPage * itemsPerPage}
-                              </td>
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                {product?.quantity} Units
-                              </td>
+                      {fproducts.map((product, index) => (
+                        <tr
+                          key={product._id}
+                          className="border border-gray-700 text-black dark:text-white"
+                        >
+                          <td className="px-4 py-1 text-sm">
+                            {index + 1 + currentPage * itemsPerPage}
+                          </td>
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            {product?.quantity} Units
+                          </td>
 
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                {editingProduct?._id === product._id ? (
-                                  <input
-                                    type="text"
-                                    className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                    value={updatedProductData.name}
-                                    onChange={(e) =>
-                                      setUpdatedProductData({
-                                        ...updatedProductData,
-                                        name: e.target.value,
-                                      })
-                                    }
-                                  />
-                                ) : (
-                                  product.name
-                                )}
-                              </td>
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                <img
-                                  src={product.images[0]}
-                                  alt={product.name}
-                                  className="w-14 h-14"
-                                />
-                              </td>
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                {editingProduct?._id === product._id ? (
-                                  <input
-                                    type="number"
-                                    min={0}
-                                    className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                    value={updatedProductData.price}
-                                    onChange={(e) =>
-                                      setUpdatedProductData({
-                                        ...updatedProductData,
-                                        price: e.target.value,
-                                      })
-                                    }
-                                  />
-                                ) : (
-                                  `₹${product.price}`
-                                )}
-                              </td>
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                {editingProduct?._id === product._id ? (
-                                  <input
-                                    type="text"
-                                    className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                    value={updatedProductData.size}
-                                    onChange={(e) =>
-                                      setUpdatedProductData({
-                                        ...updatedProductData,
-                                        size: e.target.value,
-                                      })
-                                    }
-                                  />
-                                ) : (
-                                  product.size
-                                )}
-                              </td>
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                {editingProduct?._id === product._id ? (
-                                  <input
-                                    type="text"
-                                    className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
-                                    value={updatedProductData.category}
-                                    onChange={(e) =>
-                                      setUpdatedProductData({
-                                        ...updatedProductData,
-                                        category: e.target.value,
-                                      })
-                                    }
-                                  />
-                                ) : (
-                                  product.category
-                                )}
-                              </td>
-                              <td className="px-4 py-1 text-sm border border-gray-600">
-                                {editingProduct?._id === product._id ? (
-                                  <div className="flex gap-2 items-center">
-                                    <button
-                                      className="flex gap-2 bg-green-400 items-center py-1 px-3 rounded-md text-black"
-                                      onClick={() => handleUpdate(product._id)}
-                                    >
-                                      Save
-                                    </button>
-                                    <button
-                                      className="flex gap-2 bg-red-500 items-center py-1 px-3 rounded-md text-black"
-                                      onClick={() => setEditingProduct(null)}
-                                    >
-                                      Cancel
-                                    </button>
-                                  </div>
-                                ) : (
-                                  <div className="flex gap-2 items-center">
-                                    <button
-                                      className="flex gap-2 bg-orange-400 items-center py-1 px-3 rounded-md text-black"
-                                      onClick={() => handleEdit(product)}
-                                    >
-                                      <FaEdit /> Edit
-                                    </button>
-                                    <button
-                                      className="flex gap-2 bg-red-500 items-center py-1 px-3 rounded-md text-black"
-                                      onClick={() => handleDelete(product._id)}
-                                    >
-                                      <RiDeleteBin5Fill /> Delete
-                                    </button>
-                                  </div>
-                                )}
-                              </td>
-                            </tr>
-                          )
-                      )}
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            {editingProduct?._id === product._id ? (
+                              <input
+                                type="text"
+                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
+                                value={updatedProductData.name}
+                                onChange={(e) =>
+                                  setUpdatedProductData({
+                                    ...updatedProductData,
+                                    name: e.target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              product.name
+                            )}
+                          </td>
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            <img
+                              src={product.images[0]}
+                              alt={product.name}
+                              className="w-14 h-14"
+                            />
+                          </td>
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            {editingProduct?._id === product._id ? (
+                              <input
+                                type="number"
+                                min={0}
+                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
+                                value={updatedProductData.price}
+                                onChange={(e) =>
+                                  setUpdatedProductData({
+                                    ...updatedProductData,
+                                    price: e.target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              `₹${product.price}`
+                            )}
+                          </td>
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            {editingProduct?._id === product._id ? (
+                              <input
+                                type="text"
+                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
+                                value={updatedProductData.size}
+                                onChange={(e) =>
+                                  setUpdatedProductData({
+                                    ...updatedProductData,
+                                    size: e.target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              product.size
+                            )}
+                          </td>
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            {editingProduct?._id === product._id ? (
+                              <input
+                                type="text"
+                                className="bg-gray-400 rounded-md px-3 py-1 text-black block w-full"
+                                value={updatedProductData.category}
+                                onChange={(e) =>
+                                  setUpdatedProductData({
+                                    ...updatedProductData,
+                                    category: e.target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              product.category
+                            )}
+                          </td>
+                          <td className="px-4 py-1 text-sm border border-gray-600">
+                            {editingProduct?._id === product._id ? (
+                              <div className="flex gap-2 items-center">
+                                <button
+                                  className="flex gap-2 bg-green-400 items-center py-1 px-3 rounded-md text-black"
+                                  onClick={() => handleUpdate(product._id)}
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  className="flex gap-2 bg-red-500 items-center py-1 px-3 rounded-md text-black"
+                                  onClick={() => setEditingProduct(null)}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex gap-2 items-center">
+                                <button
+                                  className="flex gap-2 bg-orange-400 items-center py-1 px-3 rounded-md text-black"
+                                  onClick={() => handleEdit(product)}
+                                >
+                                  <FaEdit /> Edit
+                                </button>
+                                <button
+                                  className="flex gap-2 bg-red-500 items-center py-1 px-3 rounded-md text-black"
+                                  onClick={() => handleDelete(product._id)}
+                                >
+                                  <RiDeleteBin5Fill /> Delete
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 )}

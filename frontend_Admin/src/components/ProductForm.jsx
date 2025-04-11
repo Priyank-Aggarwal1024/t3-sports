@@ -111,11 +111,10 @@ const ProductForm = () => {
               name={"clone"}
               onChange={({ target }) => setSearchText(target.value)}
               onFocus={() => setIsFocused(true)}
-              // onBlur={() => setIsFocused(false)}
               placeholder="Search Product by Name"
               className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {(isFocused || serachText) && (
+            {isFocused && (
               <div className="absolute z-[11] top-[101%] w-full bg-white dark:bg-black max-h-[50vh] overflow-y-auto h-60">
                 {filteredProducts.map((product) => (
                   <div
