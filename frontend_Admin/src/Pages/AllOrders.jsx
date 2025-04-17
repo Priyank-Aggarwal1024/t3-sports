@@ -116,26 +116,62 @@ const AllOrders = () => {
   useEffect(() => {
     setFilteredOrders(orders);
   }, [orders]);
+  console.log(orders);
   const filterAndTransformOrders = () => {
-    console.log(orders);
-    const transformedOrders = orders.flatMap((order) =>
-      order.products.map((product) => ({
-        orderNumber: order.order_number,
-        date: order.dateOfOrder.split("T")[0], // Extract only date
-        customerName: `${order?.customer?.fname || ""} ${
-          order?.customer?.lname || ""
-        }`,
-        customerType: order.customer?.customertype || "N/A",
-        sport: order.customer?.sport || "N/A",
-        productName: product.productName,
-        productSize: products.find((p) => p._id == product._id)?.size || "N/A", // Default if missing
-        quantity: product.quantity,
-        "each price": product.price,
-        subtotal: product.price * product.quantity,
-        city: order?.customer?.city || "N/A",
-        state: order?.customer?.state || "N/A",
-      }))
-    );
+    const transformedOrders = orders.map((order) => ({
+      orderNumber: order.order_number,
+      date: order.dateOfOrder?.split("T")[0] || "N/A",
+      note: order.note || "",
+      platform: order.platform || "N/A",
+      shippingType: order.shipping_type || "N/A",
+      orderStatus: order.status || "N/A",
+
+      customerName: `${order?.customer?.fname || ""} ${
+        order?.customer?.lname || ""
+      }`.trim(),
+      customerType: order.customer?.customertype || "N/A",
+      sport: order.customer?.sport || "N/A",
+      phone: order.customer?.phone || "N/A",
+      customerEmail: order.customer?.email || "N/A",
+      city: order?.customer?.city || "N/A",
+      state: order?.customer?.state || "N/A",
+      country: order?.customer?.country || "N/A",
+      pincode: order?.customer?.pincode || "N/A",
+
+      productName: order.products
+        .map((product) => product.productName)
+        .join(", "),
+      productSize: order.products
+        .map(
+          (product) => products.find((p) => p._id == product._id)?.size || "N/A"
+        )
+        .join(", "),
+      quantity: order.products.map((product) => product.quantity).join(", "),
+      "each price": order.products.map((product) => product.price).join(", "),
+      subtotal: order.products
+        .map((product) => product.price * product.quantity)
+        .join(", "),
+
+      warehouseName: order?.warehouse_id?.name || "N/A",
+      warehouseAddress: order?.warehouse_id?.address || "N/A",
+      warehouseEmail: order?.warehouse_id?.email || "N/A",
+
+      shippingAddress:
+        order?.shippingDetails?.shippingAddress?.address || "N/A",
+      shippingCity: order?.shippingDetails?.shippingAddress?.city || "N/A",
+      shippingState: order?.shippingDetails?.shippingAddress?.state || "N/A",
+      shippingPincode:
+        order?.shippingDetails?.shippingAddress?.pincode || "N/A",
+      shippingCountry:
+        order?.shippingDetails?.shippingAddress?.country || "N/A",
+      shippingCharges: order?.shippingDetails?.shippingCharges || 0,
+      codCharges: order?.shippingDetails?.codCharges || 0,
+
+      paymentStatus: order.payment_status || "N/A",
+      paymentMethod: order.payment_method || "N/A",
+      totalAmount: order.totalAmount || 0,
+    }));
+
     console.log(transformedOrders);
     return transformedOrders;
   };
