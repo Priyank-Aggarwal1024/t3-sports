@@ -111,6 +111,7 @@ const ProductForm = () => {
               name={"clone"}
               onChange={({ target }) => setSearchText(target.value)}
               onFocus={() => setIsFocused(true)}
+              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
               placeholder="Search Product by Name"
               className="w-full px-4 py-2 border-0 rounded-md bg-white dark:bg-black text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

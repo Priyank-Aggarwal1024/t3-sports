@@ -118,9 +118,16 @@ const getOrders = async (req, res) => {
     const orders = (
       await Order.find()
         .select(
-          "-shippingDetails -updatedAt -discount -insuranceRequired -otherpayment_status -other_platform -__v"
+          "-updatedAt -discount -insuranceRequired -otherpayment_status -other_platform -__v"
         )
-        .populate("customer")
+        .populate({
+          path: "customer",
+          select: "-createdAt -updatedAt -othercustomertype -othersport -__v",
+        })
+        .populate({
+          path: "warehouse_id",
+          select: "-products -createdAt -updatedAt -__v",
+        })
     ).reverse();
     // const response = await axios.get('https://ship.nimbuspost.com/api/orders', {
     //   headers: {
